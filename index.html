@@ -1480,6 +1480,66 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .ss-title{font-size:17px;font-weight:600;text-align:center;margin-bottom:12px}
 .sysshare.android .ss-head,.sysshare.android .ss-apps{border-color:rgba(30,27,27,.10)} .sysshare.android .ss-app i{border-radius:999px}
 
+/* ═══ 9/30 · round 5 ═══ */
+/* bottom sheets keep 24pt below the content (vs-body already has 24) */
+.vsheet.ios{padding-bottom:0!important} .vsheet.android{padding-bottom:0!important}
+/* add-page: 4 options in one row that scrolls sideways (current · blank · 2 system papers) */
+.appanel .ap-opts{display:flex;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;padding:0 12px!important;margin:0 -12px 2px;gap:16px!important;scroll-padding:12px}
+.appanel .ap-opts::-webkit-scrollbar{display:none}
+.appanel .ap-opt{width:96px;flex:0 0 96px!important}
+.appanel .ap-opt>span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:96px}
+/* sticky L2: trailing cell = white chip with the chevron centred ON it, no matter which row renders it */
+.ddbtn.stkacc{position:relative!important;width:44px!important;height:44px!important;padding:0!important;margin:0!important;display:flex!important;align-items:center;justify-content:center;background:none!important}
+.ddbtn.stkacc .stksw{display:block!important;width:24px!important;height:24px!important;border-radius:8px!important;background:#fff!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.24)!important}
+.ddbtn.stkacc .dch{position:absolute!important;inset:0!important;width:auto!important;height:auto!important;display:flex!important;align-items:center;justify-content:center;opacity:1!important}
+.ddbtn.stkacc .dch svg{width:14px!important;height:14px!important;opacity:.85}
+/* sticker panel in a phone sheet (Freenotes layout): header on top, 3-column grid, category strip at the bottom */
+.stk-head{display:none}
+.vsheet .stkpanel{display:flex;flex-direction:column;max-height:none;width:auto}
+.vsheet .stk-head{display:flex;align-items:center;justify-content:space-between;height:56px;flex:0 0 auto;order:0}
+.stk-hbtn{height:40px;padding:0 18px;border-radius:999px;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08);font-size:16px;color:#1e1b1b}
+.stk-hbtn.ghost{background:rgba(120,120,128,.16);box-shadow:none}
+.stk-htitle{font-size:17px;font-weight:600}
+.vsheet .stk-body{order:1;padding:8px 0 0!important}
+.vsheet .stk-title{display:none}
+.vsheet .stk-grid{grid-template-columns:repeat(3,1fr);gap:12px;max-height:calc(100% - 140px)}
+.vsheet .stk-cell,.vsheet .stk-add{width:auto;height:auto;aspect-ratio:1;border-radius:14px;border:1px solid rgba(30,27,27,.10);background:#fff}
+.vsheet .stk-img{width:70%;height:70%}
+.vsheet .stk-tabs{order:2;height:68px;border-bottom:0;border-top:0;background:rgba(120,120,128,.10);border-radius:20px;margin-top:12px;padding:8px 10px;gap:8px}
+.vsheet .stk-tab{width:64px;height:52px;flex:0 0 auto}
+.vsheet .stk-chip{width:64px;height:52px;border-radius:999px!important;background:rgba(255,255,255,.55)}
+.vsheet .stk-tab[aria-pressed=true] .stk-chip{background:#fff;box-shadow:0 0 0 2px rgba(30,27,27,.35)}
+.device.android .vsheet .stkpanel{border-radius:0}
+/* export options dialog */
+.expdlg{position:absolute;z-index:80;left:50%;top:50%;transform:translate(-50%,-50%);width:560px;max-width:calc(100% - 32px);border-radius:32px;background:rgba(250,250,252,.97);backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);box-shadow:0 0 0 .5px rgba(0,0,0,.06),0 24px 64px rgba(16,24,40,.28);padding:12px 24px 28px;box-sizing:border-box;color:#1e1b1b}
+.expdlg.phone{width:100%;max-width:none;left:0;top:auto;bottom:0;transform:none;border-radius:32px 32px 0 0;padding:12px 20px 24px}
+.ex-head{display:flex;align-items:center;height:56px;margin-bottom:12px}
+.ex-cancel{height:40px;padding:0 18px;border-radius:999px;background:rgba(120,120,128,.16);font-size:16px;color:#1e1b1b}
+.ex-title{flex:1;text-align:center;font-size:17px;font-weight:600}
+.ex-go{height:40px;padding:0 22px;border-radius:999px;background:#3478F6;color:#fff;font-size:16px;font-weight:600}
+.ex-fmts{display:flex;gap:12px}
+.ex-fmt{flex:1 1 0;min-width:0;height:96px;border-radius:20px;background:#fff;border:1.5px solid rgba(30,27,27,.10);position:relative;text-align:left;padding:14px 16px;display:flex;flex-direction:column;gap:4px;color:#1e1b1b;box-sizing:border-box}
+.ex-fmt[aria-pressed="true"]{border-color:#3478F6;background:rgba(52,120,246,.08)}
+.ex-ft{font-size:17px;font-weight:600} .ex-fs{font-size:12px;color:rgba(60,60,67,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 36px)}
+.ex-fmt i{position:absolute;right:14px;bottom:12px;width:28px;height:28px;display:flex;color:#1e1b1b} .ex-fmt i svg{width:28px;height:28px}
+.ex-fmt[aria-pressed="true"] i{color:#3478F6}
+.ex-lab{font-size:13px;color:rgba(60,60,67,.6);margin:18px 0 8px 4px}
+.ex-field{height:48px;border-radius:14px;background:#fff;border:1px solid rgba(30,27,27,.10);display:flex;align-items:center;padding:0 16px;font-size:17px}
+.ex-list{background:#fff;border-radius:14px;border:1px solid rgba(30,27,27,.10)}
+.ex-row{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 16px;font-size:17px}
+.expdlg.android{border-radius:28px;background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
+.expdlg.android.phone{border-radius:28px 28px 0 0}
+.expdlg.android .ex-go{background:var(--accent);color:var(--on-accent)} .expdlg.android .ex-cancel{background:#EFEFEF}
+.expdlg.android .ex-fmt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-sf)} .expdlg.android .ex-fmt[aria-pressed="true"] i{color:var(--accent)}
+
+/* export dialog switch (same component as the menus / share modal) */
+.expdlg .sw{width:40px;height:24px;border-radius:999px;background:#d4d4d8;position:relative;flex:0 0 auto;display:inline-block}
+.expdlg .sw[aria-pressed="true"]{background:var(--accent)}
+.expdlg .sw i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:999px;background:#fff;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.expdlg .sw[aria-pressed="true"] i{left:18px}
+.device.ios .expdlg .sw{width:51px;height:31px} .device.ios .expdlg .sw i{width:27px;height:27px} .device.ios .expdlg .sw[aria-pressed="true"] i{left:22px}
+.device.android .expdlg .sw{width:52px;height:32px;background:#E6E1E5;border:2px solid #79747E;box-sizing:border-box} .device.android .expdlg .sw i{width:16px;height:16px;top:6px;left:6px;background:#79747E;box-shadow:none} .device.android .expdlg .sw[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)} .device.android .expdlg .sw[aria-pressed="true"] i{left:26px;top:2px;width:24px;height:24px;background:#fff}
+
 </style>
 </head>
 <body>
@@ -1823,7 +1883,9 @@ const SIZES=[
 
 /* 默认模式看设备，不看宽度 (规则文档 · 默认模式判定): phone-class devices (iPhone in either orientation — no stylus; folded foldables; Android phones) open read-only first; tablets and unfolded foldables open in edit. Custom sizes fall back to the shorter side < 600. The last mode used on a document wins over the default (S.docMode). */
 const PHONE_PRESETS=new Set(['p16','p16l','imini','iminil','duoFold','duoFoldL','a_s24','a_s24l','a_pixel','a_pixell']);
-const phoneDevice=()=>S.custom?Math.min(S.w,S.h)<600:PHONE_PRESETS.has(S.size);
+const phoneDevice=()=>S.custom?Math.max(S.w,S.h)<=932:PHONE_PRESETS.has(S.size);   /* 9/30 Tom: a resized window is phone-class only if it fits inside the largest iPhone (932) — a short iPad window must NOT flip to read-only */
+/* 9/30 Tom · L2 hard rule: tapping an L1 tool opens its L2; tapping the ACTIVE tool again collapses it; each tool remembers its own state (default expanded); switching tools restores that tool's state */
+const secHidden=(a)=>{const k=a||ACTIVE_FOR[S.st]||S.st; return !!(S.secHideBy&&S.secHideBy[k]);};
 const readMode=()=>{const dm=S.docMode[(S.tabs[S.tab]||{}).n]; return S.version==='v1'&&S.view!=='library'&&(dm==='ro'||(S.w<600&&phoneDevice()&&dm!=='edit'));};
 const STATES=[['writing','笔'],['tape','胶带'],['tapeMode','胶带 · 绘制模式'],['tapeWidth','胶带 · 宽度'],
   ['penWidth','笔头粗细'],['eraser','橡皮'],['eraserType','橡皮 · 类型'],['eraserSet','橡皮 · 设置'],
@@ -2071,7 +2133,7 @@ function tapeWidthBtn(){
   return `<button class="wbtn" data-act="tapeWidth" aria-pressed="true" aria-label="胶带宽度" style="color:${activeInk(true)}"><span class="wr" style="${activeChip(true)}">${strokeWidthIcon(Math.min(2,Math.max(0,S.tapeW-1)))}</span></button>`;}
 function railFor(W){
   setInk(railInk());
-  if(S.secHide) return '';
+  if(secHidden()) return '';
   const st=ACTIVE_FOR[S.st]||S.st, avail=W-GEO.CENTERED_OVERHEAD;
   if(st==='writing') return railWrap(
     ['pen','ballpen','brush','highlighter','pencil'].map(p=>tool(p,S.pen===p,'pen')).join('')
@@ -2216,6 +2278,7 @@ function stickerPanel(pos){
   else if(tab==='mine'){title='我的';cells=`<button class="stk-add" aria-label="添加贴纸">${svg('plus')}</button>`+(S.myStk||[]).map(cellOf).join('');}
   else{const pk=STK_PACKS.find(p=>p[0]===tab);title=pk[1];cells=pk[2].map(cellOf).join('');}
   return `<div class="stkpanel" style="${panelStyle()};${pos};color:#1e1b1b">
+    <div class="stk-head"><button class="stk-hbtn" data-act="closesheet">取消</button><span class="stk-htitle">${title}</span><button class="stk-hbtn ghost">编辑</button></div>
     <div class="stk-tabs">${tabs}</div>
     <div class="stk-body"><div class="stk-title">${title}</div>${empty?`<div class="stk-empty">${empty}</div>`:`<div class="stk-grid">${cells}</div>`}</div></div>`;
 }
@@ -2746,7 +2809,7 @@ function libSidebar(){
 }
 /* the option row for a tool, as the v1 second row builds it */
 function secBody(active,avail){
-  if(S.secHide||active==='ruler'||active==='mic') return '';
+  if(secHidden(active)||active==='ruler'||active==='mic') return '';
   if(active==='writing') return penRowV1(avail);
   if(active==='tape') return tapeRowV1(avail);
   if(active==='eraser') return eraserRowV1();
@@ -2885,7 +2948,7 @@ function dropdown(kind,pos){ const dropdownKind=kind;
     <div class="ap-opts">
       <button class="ap-opt" data-act="np-same"><span class="ap-thumb"><span class="tw">${window.PAGE_THUMB?window.PAGE_THUMB(NB().page):''}</span></span><span>当前模板</span></button>
       <button class="ap-opt" data-act="np-blank"><span class="ap-thumb blank"></span><span>空白页面</span></button>
-      
+      ${TPL_GROUPS[0][2].slice(0,2).map(([img,nm])=>`<button class="ap-opt" data-act="np-tpl"><span class="ap-thumb" style="background:#fff url(${window.ASSET[img+'.png']||img+'.png'}) center/cover"></span><span>${nm}</span></button>`).join('')}   ${''/* 9/30 Tom: + the first two system papers, row scrolls sideways */}
     </div>
     <div class="sep"></div>
     <button data-act="np-more">${svg('tmpl')}<span class="col"><span>更多模板…</span></span><span class="chev">${svg('chevRight')}</span></button></div>`;}
@@ -2930,6 +2993,16 @@ function shareBody(phone){const pw=S.sharePw;
     <div class="sh-sec">额外安全</div>
     <div class="sh-grp"><div class="sh-row"><span>需要密码</span><button class="sw" data-act="sharepw" aria-pressed="${pw}" aria-label="需要密码"><i></i></button></div>
       ${pw?`<div class="sh-row"><span>密码</span><span class="sh-val mono">nqD9TfrQ ${svg('copy')}</span></div>`:''}</div>`;}
+/* 9/30 · export options (Freenotes / Goodnotes export sheet, phase-one scope): format PDF | 图片 · file name · include page background → 导出 opens the system share sheet */
+function exportDialog({W,H,phone,duo}){
+  const and=S.dev==='android'; const fmt=S.expFmt||'pdf'; const bg=S.expBg!==false; const name=S.expName||NB().n;
+  const fcard=(k,l,sub,ic)=>`<button class="ex-fmt" data-expfmt="${k}" aria-pressed="${fmt===k}"><span class="ex-ft">${l}</span><span class="ex-fs">${sub}</span><i>${svg(ic)}</i></button>`;
+  return `<div class="scrim" data-act="closesys"></div><div class="expdlg${phone?' phone':''}${and?' android':''}" role="dialog">
+    <div class="ex-head"><button class="ex-cancel" data-act="closesys">取消</button><div class="ex-title">${S.expScope==='all'?'导出整本':'导出本页'}</div><button class="ex-go" data-act="expgo">导出</button></div>
+    <div class="ex-fmts">${fcard('pdf','PDF','可在其他 PDF 软件中编辑','imgPdf')}${fcard('img','图片','PNG · 每页一张','image')}</div>
+    <div class="ex-lab">文件名</div><div class="ex-field">${name}</div>
+    <div class="ex-lab">导出选项</div><div class="ex-list"><div class="ex-row"><span>包含页面背景</span><span class="sw" data-act="expbg" aria-pressed="${bg}"><i></i></span></div></div></div>`;
+}
 /* 9/30 · system share sheet mock: iOS UIActivityViewController (header · app row · action circles); Android share sheet */
 function sysShareSheet({W,H,phone,duo}){
   const nb=NB(); const and=S.dev==='android';
@@ -3280,7 +3353,7 @@ function render(){
       if(opt&&(opt[0]||opt[1])) body=`${opt[0]||''}${opt[1]?`<span class="divider"></span>${opt[1]}`:''}`;
       else body=railSecondary(active);}
     if(active==='ruler'||active==='mic') body='';      /* the ruler has no secondary options */
-    if(S.secHide) body='';                             /* the row is collapsed until the active tool is tapped again */
+    if(secHidden(active)) body='';                     /* collapsed only if THIS tool was collapsed by tapping it again */
     const pillHTML=body?`<div class="cap secpill${active==='stickyNote'?' sticky':''}" style="${pill};color:${INK};max-width:${Math.min(LITE.SEC_MAX,Math.round(v1phone?canvasW-LITE.COMPACT_LEFT-12:canvasW-2*LITE.PAD))}px">
           <div class="fadewrap" style="--fadec:${fadeC}"><div class="cap hscroll" style="min-width:0">${body}</div></div></div>`:'';
     if(v1phone){
@@ -3382,7 +3455,7 @@ function render(){
     let men='';
     if(st==='more')   men+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+4}px`);
     if(st==='addpage') men+=dropdown('addpage',`right:${pr+96}px;top:${duo?70:cTopV+8}px`);
-    const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):'');   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
+    const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):(st==='exportopts'?exportDialog({W,H,phone,duo}):''));   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
     if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='mic'&&S.rec) men+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTopV+8}px`);
     /* tool panels: popover ≥600 wide, sheet below (or in a compact-height posture); menus stay menus (UIMenu on iOS) */
@@ -3396,6 +3469,7 @@ function render(){
     if(st==='collab') pan+=collabPanel(`right:${duo?pr:pr+96}px;top:${duo?70:cTop+8}px`);
     inner+=duoSheet?duoSheetWrap(pan,W,H,hClass==='compact'):pan;
     if(st==='export') inner+=dropdown('export',`right:${pr}px;top:${duo?70:cTop+8}px`);
+    if(st==='exportopts') inner+=exportDialog({W,H,phone,duo}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
     if(st==='more')   inner+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+4}px`);
     if(st==='mic'&&S.rec) inner+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTop+8}px`);
     if(S.anno){
@@ -3470,6 +3544,7 @@ function render(){
         `<button data-sheet="${ic}">${svg(ic)}<span>${l}</span></button>`).join('')}</div>`;
     if(st==='layers') inner+=layersPanel(`right:10px;top:${cTop+58}px`);
     if(st==='export') inner+=dropdown('export',`right:10px;top:${cTop+58}px`);
+    if(st==='exportopts') inner+=exportDialog({W,H,phone,duo}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
     if(st==='more')   inner+=dropdown('more',`right:10px;top:${navH+tabH+4}px`);
     if(st==='mic'&&S.rec) inner+=recDrawer();   /* phone tier (<600) → bottom drawer */
   }
@@ -4229,7 +4304,7 @@ function bindCanvas(root){
     }
   }
 }
-const LIM={w:[375,1600],h:[420,1400]};   /* the phone floor is the real floor */
+const LIM={w:[375,1600],h:[375,1400]};   /* 9/30 Tom: iPhone SE is the smallest supported window (375 short side); no other height rules */
 let gripsBound=false;
 function bindGrips(stage,zf){
   if(gripsBound) return; gripsBound=true;
@@ -4263,7 +4338,7 @@ function bindGrips(stage,zf){
 function reconcileState(){
   const compact=S.version!=='v1'&&S.w<BP.NARROW;
   if(S.version==='v1'&&COMPACT_STATES.includes(S.st)) S.st='writing';
-  if(compact&&!COMPACT_STATES.concat(SHEET_STATES,['layers','export','exportmenu','sysshare','more','mic']).includes(S.st)) S.st='l1';
+  if(compact&&!COMPACT_STATES.concat(SHEET_STATES,['layers','export','exportmenu','exportopts','sysshare','more','mic']).includes(S.st)) S.st='l1';
   if(!compact&&COMPACT_STATES.includes(S.st)) S.st='writing';
   syncState();
 }
@@ -4306,7 +4381,7 @@ function bind(root,compact){
     cv.addEventListener('scroll',onScroll,{passive:true});
   }
   root.onclick=e=>{
-    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
+    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
     if(!b){
       /* canvas tap: an unpinned sheet is single-use and hands the toolbar straight back */
       if(S.pageMenu!=null&&!e.target.closest('.pagemenu')){if(S.swallowClick){S.swallowClick=false;return;}S.pageMenu=null;return render();}
@@ -4328,7 +4403,7 @@ function bind(root,compact){
     if(d.tmtab!==undefined){S.tab=+d.tmtab;S.tabMgr=false;S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
-    if(d.mi){S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'sysshare':d.mi);syncState();return render();}
+    if(d.mi){ if(d.mi==='expPage'||d.mi==='expAll'){S.expScope=d.mi==='expAll'?'all':'page';} S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'exportopts':d.mi);syncState();return render();}
     if(d.act==='closelib'){S.lib=false;S.libDrawer=false;return render();}
     if(d.act==='libdrawer'){S.libDrawer=!S.libDrawer;return render();}
     if(d.libcreate){ if(!['notebook','quicknote','textdoc','whiteboard'].includes(d.libcreate)){S.libNew=false;return render();} const nm=(d.libcreate==='quicknote'?'速记 ':d.libcreate==='whiteboard'?'白板 ':d.libcreate==='textdoc'?'文本 ':'未命名笔记 ')+(S.tabs.length+1); S.tabs.push({...S.tabs[0],n:nm,cover:'#FFFFFF',paper:'#fff',rule:d.libcreate==='whiteboard'?'dot':'line',pages:1,page:0,scroll:0,kind:'plain'}); S.tab=S.tabs.length-1; S.view='doc'; S.libNew=false; if(S.version!=='v1'&&S.w<BP.NARROW) S.st=phoneDevice()?'ro':'l1'; else S.st='writing'; syncState(); return render(); }
@@ -4360,6 +4435,9 @@ function bind(root,compact){
     if(d.act==='rename'){S.renaming=true;S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='renameok'){const inp=b.closest('.dlg').querySelector('input');if(inp&&inp.value.trim())NB().n=inp.value.trim();S.renaming=false;return render();}
     if(d.act==='closesys'){S.st=S.lastTool||'writing';syncState();return render();}
+    if(d.act==='expgo'){S.st='sysshare';syncState();return render();}
+    if(d.act==='expbg'){S.expBg=S.expBg===false;return render();}
+    if(d.expfmt){S.expFmt=d.expfmt;return render();}
     if(d.act==='renamecancel'){S.renaming=false;return render();}
     if(d.act==='tmpl'){S.tmplOpen=true;S.tmplFrom='change';S.tmplSel=NB().rule;S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='tmplclose'){S.tmplOpen=false;return render();}
@@ -4504,7 +4582,7 @@ function bind(root,compact){
       if(k==='mic'){if(!S.rec){startRec();S.st=S.lastTool||'writing';}else S.st=S.st==='mic'?(S.lastTool||'writing'):'mic';syncState();return render();}
       if(['layers','more','collab'].includes(k)){S.st=S.st===k?(S.lastTool||'writing'):k;syncState();return render();}
       if(k==='ai') return;
-      if(L1.includes(k)&&!['elements','ruler'].includes(k)&&(ACTIVE_FOR[S.st]||S.st)===k){S.secHide=!S.secHide;return render();}
+      if(L1.includes(k)&&!['elements','ruler'].includes(k)&&(ACTIVE_FOR[S.st]||S.st)===k){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=!S.secHideBy[k];return render();}
       if(k==='tape'){S.st='tape';syncState();return render();}   /* L1 only opens L2 — 胶带模式 lives on the row's first button */
       if(k==='ruler'){toggleRuler();S.st='ruler';syncState();return render();}
       if(k==='elements'){S.st=S.st==='elements'?'writing':'elements';syncState();return render();}
