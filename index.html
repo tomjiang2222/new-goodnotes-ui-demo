@@ -1346,6 +1346,51 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 /* 9/29 · selected tab overlaps the surface below by 1pt (no seam) */
 .tabstrip .tab.on{height:45px!important}
 
+/* 9/29 · Page-navigation sidebar as an OVERLAY (<737): same panel as the wide layout, glass so the page shows through, shadow only to its right (clip-path keeps it off the tab strip), dark scrim over the canvas */
+.psidebar.over{background:rgba(249,249,249,.84)!important;backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);box-shadow:8px 0 28px rgba(0,0,0,.16),1px 0 0 rgba(0,0,0,.06);clip-path:inset(0 -80px 0 0)}
+.device.android .psidebar.over{background:#F9F9F9!important;backdrop-filter:none;-webkit-backdrop-filter:none}
+.pscrim{position:absolute;right:0;bottom:0;z-index:15;background:rgba(0,0,0,.22)}
+/* 9/29 · dock lock active = Secondary tint + filled glyph (unlike the other dock buttons) */
+.pgpill .lockbtn[aria-pressed="true"] i{background:var(--accent-sf,#DCE9F7)!important;color:var(--accent,#0A66D0)!important}
+/* 9/29 · collaborators: both lists share the white surface; “previously viewed” keeps full-contrast names, only the timestamp is muted. Avatar button = Figma 3214-80429 (secondary fill, 32 tall, pill) */
+.cb-list.dim{background:#fff!important}
+.cb-row.dim span{color:#1e1b1b!important;font-weight:400}
+.cb-row.dim b{color:rgba(64,59,59,.55)!important;font-weight:400}
+.avatars{background:rgba(30,27,27,.06);border-radius:999px;height:32px;padding:0 6px 0 2px!important;margin:0 4px}
+.avatars .avwrap{background:none!important;padding:0!important}
+.avatars b{opacity:.75}
+/* 9/29 · library tiles (Figma tablet library / web demo direction): no card background, the favourite star sits ON the cover's corner */
+.lh-tile,.lh-tile.white{background:transparent!important;box-shadow:none!important;border-radius:0}
+.lh-cw{position:relative;display:block;flex:0 0 auto}
+.lh-cw.portrait{height:82%;aspect-ratio:3/4}
+.lh-cw.land{width:78%;aspect-ratio:4/3}
+.lh-cw.sheet{width:80%;aspect-ratio:4/3}
+.lh-cw>.lh-cover{width:100%!important;height:100%!important;display:block}
+.lh-cw>.lh-star{left:auto!important;right:-6px!important;top:-6px!important;width:24px;height:24px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.28))}
+.lh-cw>.lh-star svg{width:24px;height:24px}
+/* 9/29 · sliders: iOS look at Lite's density — 5pt track, tick dots, 40×24 white pill knob that never leaves the panel (track inset by half a knob); rows tightened */
+.pop.penset{width:320px!important;padding:14px 20px 16px!important}
+.pop.penset .pspreview{height:88px!important;margin-bottom:6px}
+.pop.penset .slider{margin:18px 0 0!important}
+.pop.penset .slider .top{margin-bottom:14px!important;font-size:15px!important}
+.pop.penset .slider .top em{font-size:15px!important}
+.pop.penset .popbtn.adv{margin-top:18px!important;padding:10px!important}
+.device .slider .track{height:5px!important;border-radius:3px!important;margin:0 20px!important}
+.device .slider .track i{border-radius:3px!important}
+.device .slider .track::after{top:11px!important;height:4px}
+.device .slider .track b,.device.android .slider .track b{width:40px!important;height:24px!important;border-radius:12px!important;box-shadow:0 2px 6px rgba(0,0,0,.16),0 0 0 .5px rgba(0,0,0,.08)!important}
+.device.ios .slider .track.drag b{width:46px!important;height:28px!important;border-radius:14px!important}
+.device.android .slider .track.drag b{width:40px!important;height:24px!important}
+/* 9/29 · scroll-edge fades for panels that had to shrink to the window */
+.scrollfade{position:relative}
+.scrollfade::before,.scrollfade::after{content:"";position:sticky;left:0;right:0;display:block;height:32px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:5}
+.scrollfade::before{top:0;margin-bottom:-32px;background:linear-gradient(rgba(247,247,248,.96),rgba(247,247,248,0))}
+.scrollfade::after{bottom:0;margin-top:-32px;background:linear-gradient(rgba(247,247,248,0),rgba(247,247,248,.96))}
+.scrollfade[data-fade*="t"]::before{opacity:1}
+.scrollfade[data-fade*="b"]::after{opacity:1}
+/* 9/29 · Android: the sheet's primary confirm must stay primary (the generic Android .sh-copy grey was winning on specificity) */
+.device.android .sh-copy.primary,.device.android .tpcard .sh-copy.primary.sm{background:var(--accent)!important;color:var(--on-accent)!important}
+
 </style>
 </head>
 <body>
@@ -2559,7 +2604,7 @@ function libraryView(c){const {W,H,phone,wide,top=0,overlay=false,right=0}=c; /*
   const pool=LIB_RECENTS.filter(r=>(tab==='all'||r.shared)&&(kind==='all'||(r.kind||'notes')===kind)&&(S.libMore||!r.more));
   const hiddenLeft=LIB_RECENTS.filter(r=>(tab==='all'||r.shared)&&(kind==='all'||(r.kind||'notes')===kind)&&r.more).length>0&&!S.libMore;
   const cards=pool.map(r=>`<button class="lh-card" data-act="opendoc" data-doc="${r.n}">
-      <span class="lh-tile${r.kind?' white':''}">${tile(r)}${r.star?`<i class="lh-star"><svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.2 5.7.7-4.2 3.9 1.1 5.6L12 16.3l-5.1 2.7 1.1-5.6-4.2-3.9 5.7-.7z" fill="#F5B400" stroke="#F5B400" stroke-width="2.6" stroke-linejoin="round"/></svg></i>`:''}</span>
+      <span class="lh-tile${r.kind?' white':''}"><span class="lh-cw ${(r.kind==='board'||r.kind==='text')?'sheet':(r.portrait?'portrait':'land')}">${tile(r)}${r.star?`<i class="lh-star"><svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.2 5.7.7-4.2 3.9 1.1 5.6L12 16.3l-5.1 2.7 1.1-5.6-4.2-3.9 5.7-.7z" fill="#F5B400" stroke="#F5B400" stroke-width="2.6" stroke-linejoin="round"/></svg></i>`:''}</span></span>
       <span class="lh-name">${r.n}</span><span class="lh-meta">${r.t}</span></button>`).join('');
   const tpls=LIB_TPL.filter(t=>cat==='featured'||t[4].includes(cat)).map(([n,by,av,img])=>`<button class="lh-tpl"><span class="lh-tplimg"><img src="${img}" alt="" decoding="sync" loading="eager"></span><span class="lh-tplcap"><span class="lh-tplname">${n}</span><span class="lh-tplby"><i>${av}</i>${by}</span></span></button>`).join('');
   const chips=`<div class="lh-chips">${[['all','全部'],['shared','与我共享']].map(([k,l])=>`<button class="lh-chip" data-libtab="${k}" aria-pressed="${tab===k}">${l}</button>`).join('')}</div>
@@ -2968,7 +3013,8 @@ function render(){
   const tight=W<BP.MIN_SUPPORTED||(v1&&phone);   /* below MIN_SUPPORTED — or v1 on a phone — drop redo */
   const v1phone=v1&&phone&&!duo;                  /* 2824:94112 — undo leads the second row */
   const _dm=S.docMode[S.tabs[S.tab].n]; const roV1=v1&&!duo&&!duoPort&&!flexMode&&S.view!=='library'&&(_dm==='ro'||(phoneDevice()&&_dm!=='edit'))   /* 9/29: phone-CLASS devices open read-only in BOTH orientations (iPhone landscape 874 is tablet-width but still has no stylus) */; /* 第一版手机只读态 (Figma 3507-62075): no tool row until the user taps edit */
-  const navH=duo?8:duoPort?(noStrip?15:24):(phone?(S.showStatus?(compact?54:32):0):(S.showStatus?(hClass==='compact'?20:32):0)),   /* status bar hidden by default; phones keep the island clearance */ tabH=noStrip?0:((compact||hClass==='compact')?44:52), toolH=(compact||flexMode||roV1)?0:60;
+  const stShow=S.showStatus||(S.view==='library'&&!duo&&!duoPort&&!flexMode);   /* 9/29 Tom: the library page always shows the system status bar (Figma tablet library) */
+  const navH=duo?8:duoPort?(noStrip?15:24):(phone?(stShow?(compact?54:32):0):(stShow?(hClass==='compact'?20:32):0)),   /* status bar hidden by default; phones keep the island clearance */ tabH=noStrip?0:((compact||hClass==='compact')?44:52), toolH=(compact||flexMode||roV1)?0:60;
   const barGap=roV1?0:((noStrip&&!duo&&!duoPort)?11:3);   /* pill sits 6 inside its 60 row → 16 from the edge without a tab bar, 8 below the tab bar with one */
   const cTop=navH+tabH+toolH+barGap;
   const floatNav=false; /* 9/28: the floating (Claude-style) navigation branch is dropped */   /* iOS branch: Claude-style floating page navigation */
@@ -3014,7 +3060,7 @@ function render(){
   const statusInk=S.view==='library'?'#1e1b1b':(noStrip?inkOn(t.band?bandMix:t.canvasBg):navInk);   /* 9/29: on the library page the top band is white, so the status cluster turns dark (Tom: 回首页顶部对比度) */
   if(duoPort){ inner+=duoPortStatus(statusInk);   /* 104×48 at right 24 / top 24 — the hardware region that never hides */
     if(false) inner+=`<div class="dt-trailwrap"><div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export')}${tool('layers',st==='layers')}</div>${(noStrip&&!duo)?`<div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:''}</div>`; }
-  if(!duo&&!duoPort&&S.showStatus) inner+=`<div class="statusbar" style="height:${navH}px;color:${statusInk}">
+  if(!duo&&!duoPort&&stShow) inner+=`<div class="statusbar" style="height:${navH}px;color:${statusInk}">
     <div>9:41${(compact||hClass==='compact')?'':'&nbsp;&nbsp;2月11日周四'}</div>
     <div class="sig"><i style="width:15px;height:10px"></i><i style="width:13px;height:10px"></i><i style="width:21px;height:10px"></i></div></div>`;
 
@@ -3023,7 +3069,7 @@ function render(){
   const tabMin=compact?Math.min(176,Math.max(132,Math.round(canvasW*0.44))):Math.min(231,Math.max(148,titleMax+71));
   const foldTabs=compact||phone||(duo&&W<BP.NARROW);   /* 9/29: Duo unfolded reads like an iPad — every tab shows its name; folded reads like an iPhone */   /* small screens: the selected tab must stay readable */
   if(!noStrip){
-  inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP):(duoPort?DUO_STATUS_W:0)}px;height:${tabH+1}px;color:${navInk}">   ${''/* 9/29: strip is 1pt taller and the selected tab 45 tall, so it overlaps the surface below by 1pt — kills the anti-aliasing hairline between tab and canvas (Duo mock reference) */}
+  inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP)+16:(duoPort?DUO_STATUS_W:0)}px;height:${tabH+1}px;color:${navInk}">   ${''/* 9/29: +16 on Duo so the “+” never touches the fold-column status region */}   ${''/* 9/29: strip is 1pt taller and the selected tab 45 tall, so it overlaps the surface below by 1pt — kills the anti-aliasing hairline between tab and canvas (Duo mock reference) */}
     <div class="fixed" style="${duo?'padding-left:12px':''}">
       ${(phone&&!duo)?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
       ${duo?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
@@ -3214,7 +3260,8 @@ function render(){
     inner+=`<div class="menu nocaret pagemenu" data-pmfor="${S.pageMenu}" style="${panelStyle()};left:248px;top:120px;color:#1e1b1b;min-width:232px">${S.dev!=='android'?`<div class="mh pmh"><div class="t2">第 ${S.pageMenu+1} 页</div></div>`:''}${PM.map(it=>it==='sep'?'<div class="sep"></div>':`<button class="${it[0]==='trash'?'danger':''}" data-act="${it[2]}">${svg(it[0])}<span class="col"><span>${it[1]}</span></span></button>`).join('')}</div>`;}
   if(S.sidebar&&floatNav) inner+=`<div class="navscrim" data-act="sidebar"></div>`;
   const floatWide=floatNav&&!(phone||compact);   /* wide: the panel runs to the bottom and the dock moves beside it */
-  if(S.sidebar) inner+=`<div class="psidebar${floatNav?' float':''}" style="${floatNav?`${panelStyle()};top:${cTop+2}px;bottom:${floatWide?16:16+((phone||compact)?176:44)+8}px;left:${uiLeft+16}px`:`background:#F9F9F9;top:${navH+tabH}px;${sidebarPush?'box-shadow:1px 0 0 rgba(0,0,0,.07)':'box-shadow:2px 0 18px rgba(0,0,0,.18)'}`}">
+  if(S.sidebar&&!floatNav&&!sidebarPush) inner+=`<div class="pscrim" data-act="sidebar" style="left:240px;top:${navH+tabH}px"></div>`;   /* 9/29 Tom: overlaying page sidebar = same panel as the wide layout + a dark overlay on its right; tapping it closes */
+  if(S.sidebar) inner+=`<div class="psidebar${floatNav?' float':''}${(!floatNav&&!sidebarPush)?' over':''}" style="${floatNav?`${panelStyle()};top:${cTop+2}px;bottom:${floatWide?16:16+((phone||compact)?176:44)+8}px;left:${uiLeft+16}px`:`background:#F9F9F9;top:${navH+tabH}px;${sidebarPush?'box-shadow:1px 0 0 rgba(0,0,0,.07)':''}`}">
     <div class="ph"><span>页面</span><button class="cx" data-act="sidebar" aria-label="关闭侧边栏">${svg('close')}</button></div>
     <div class="list">
       ${[...Array(NB().pages)].map((_,i)=>`<div class="pg ${NB().page===i?'on':''}" data-page="${i}">
@@ -3329,7 +3376,7 @@ function render(){
   S._dockAuto=false;
   /* the dock is ONE unit — page entry · zoom % · lock — bottom-left on every device and in both navigation branches;
      it only shows while the page scrolls or zooms (2.5s), on wide screens as a pill, on narrow ones as a column without the glyph */
-  const lockBtn=cls=>`<button class="${cls} lockbtn" data-act="lockzoom" aria-pressed="${!!S.zoomLock}" aria-label="锁定缩放"><i>${svg(S.zoomLock?'lock':'unlock')}</i></button>`;
+  const lockBtn=cls=>`<button class="${cls} lockbtn" data-act="lockzoom" aria-pressed="${!!S.zoomLock}" aria-label="锁定缩放"><i>${svg(S.zoomLock?'lockFill':'unlock')}</i></button>`;   /* active = filled glyph on the secondary tint */
   const dockPill=(x,y)=>`<div class="pgpill${hid}" style="${surfStyle()};color:#1e1b1b;left:${x}px;bottom:${y}px">
       <button class="seg pg" data-act="pgjump" aria-label="页面导航">${svg('pages')}<span>${NB().page+1}/ ${NB().pages}</span></button>
       <span class="vs"></span><span class="seg pct">${S.zoomPct}%</span><span class="vs"></span>${lockBtn('seg')}</div>`;
@@ -3363,7 +3410,7 @@ function render(){
   if(S.anno) inner+=`<div class="anno">${anno.filter(Boolean).join('')}</div>`;
   if(S.view==='library'){ const lt=duoPort?84:0, lw=duo?W-DUO_STRIP:W;
     if(duo||duoPort) inner+=libraryView({W,H:H-lt,top:lt,right:duo?DUO_STRIP:0,phone,compact:lw<BP.SIDEBAR_PUSH,wide:lw>=BP.SIDEBAR_PUSH,v1,duo,duoPort,overlay:true});
-    else { inner=libraryView({W,H,top:0,phone,compact:cw<BP.SIDEBAR_PUSH,wide:cw>=BP.SIDEBAR_PUSH,v1,duo,duoPort}); anno=[]; } }
+    else { const sb=inner.match(/<div class="statusbar"[\s\S]*?<\/div>\s*<\/div>/); inner=(sb?sb[0]:'')+libraryView({W,H:H-navH,top:navH,phone,compact:cw<BP.SIDEBAR_PUSH,wide:cw>=BP.SIDEBAR_PUSH,v1,duo,duoPort}); anno=[]; } }
   const stage=document.getElementById('stage');
   const fit=Math.min(1,(stage.clientWidth-64)/W,(stage.clientHeight-64)/H);
   const zf=S.dragZf!=null?S.dragZf:(S.zoom==='fit'?fit:(S.zoom==='real'?realZf(W):parseFloat(S.zoom)));
@@ -4115,7 +4162,8 @@ function reconcileState(){
   syncState();
 }
 /* 规则文档: a popover never crosses the screen edge — after layout, anything floating is pushed back inside with a 12pt buffer (menus, panels, the object menu) */
-function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; const r=el.getBoundingClientRect(); const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
+function fadeEdges(el){ const top=el.scrollTop>4, bot=el.scrollTop+el.clientHeight<el.scrollHeight-4; el.dataset.fade=(top?'t':'')+(bot?'b':''); }
+function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; if(h0>H-24-Math.max(12,t0)&&h0>H-24){ /* 9/29 Tom: too tall for the window → keep a 12pt buffer, scroll inside, fade the scroll edges */ el.style.maxHeight=(H-24)+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
 function bind(root,compact){
   /* Rodney's sticky drag (10051:263687): drag a colour swatch ≥8pt → an 88×88 ghost follows the finger; drop on a page → note placed there; drop off-page → colour armed */
   root.addEventListener('pointerdown',ev=>{ const sw=ev.target.closest('[data-sticky]'); if(!sw||ev.button>0) return; const idx=+sw.dataset.sticky, color=STICKY[idx]; const x0=ev.clientX,y0=ev.clientY; let ghost=null; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1;
