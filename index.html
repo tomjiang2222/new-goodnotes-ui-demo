@@ -2946,7 +2946,7 @@ function render(){
   const rightCollapsed=W<BP.NARROW;               /* BP_RIGHT_COLLAPSE */
   const tight=W<BP.MIN_SUPPORTED||(v1&&phone);   /* below MIN_SUPPORTED — or v1 on a phone — drop redo */
   const v1phone=v1&&phone&&!duo;                  /* 2824:94112 — undo leads the second row */
-  const _dm=S.docMode[S.tabs[S.tab].n]; const roV1=v1&&!duo&&!duoPort&&!flexMode&&S.view!=='library'&&(_dm==='ro'||(phone&&phoneDevice()&&_dm!=='edit')); /* 第一版手机只读态 (Figma 3507-62075): no tool row until the user taps edit */
+  const _dm=S.docMode[S.tabs[S.tab].n]; const roV1=v1&&!duo&&!duoPort&&!flexMode&&S.view!=='library'&&(_dm==='ro'||(phoneDevice()&&_dm!=='edit'))   /* 9/29: phone-CLASS devices open read-only in BOTH orientations (iPhone landscape 874 is tablet-width but still has no stylus) */; /* 第一版手机只读态 (Figma 3507-62075): no tool row until the user taps edit */
   const navH=duo?8:duoPort?(noStrip?15:24):(phone?(S.showStatus?(compact?54:32):0):(S.showStatus?(hClass==='compact'?20:32):0)),   /* status bar hidden by default; phones keep the island clearance */ tabH=noStrip?0:((compact||hClass==='compact')?44:52), toolH=(compact||flexMode||roV1)?0:60;
   const barGap=roV1?0:((noStrip&&!duo&&!duoPort)?11:3);   /* pill sits 6 inside its 60 row → 16 from the edge without a tab bar, 8 below the tab bar with one */
   const cTop=navH+tabH+toolH+barGap;
