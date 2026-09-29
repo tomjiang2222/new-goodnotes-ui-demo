@@ -1402,13 +1402,6 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device.ios .dlg .dlg-btns button+button{border-left:0!important}
 .device.ios .dlg .dlg-btns .ghost{background:rgba(120,120,128,.16)!important;color:#1e1b1b!important;font-weight:400!important}
 .device.ios .dlg .dlg-btns .primary{background:#3478F6!important;color:#fff!important;font-weight:600!important}
-/* Menus & context menus: 250 wide glass, edge-to-edge 44pt rows with hairline dividers, 8pt group bands, 17pt labels with leading glyphs */
-.device.ios .menu:not(.static):not(.appanel){min-width:250px;padding:0!important;gap:0!important;border-radius:26px!important;overflow:hidden}
-.device.ios .menu:not(.static):not(.appanel)>button{border-radius:0!important;min-height:44px!important;padding:0 16px!important;font-size:17px!important;gap:12px}
-.device.ios .menu:not(.static):not(.appanel)>button+button{box-shadow:inset 0 .5px 0 rgba(60,60,67,.29)}
-.device.ios .menu:not(.static):not(.appanel) .sep{height:8px!important;margin:0!important;background:rgba(60,60,67,.10)!important;border:0}
-.device.ios .menu:not(.static):not(.appanel) .sep+button{box-shadow:none}
-.device.ios .menu:not(.static):not(.appanel)>button:active{background:rgba(60,60,67,.12);opacity:1}
 /* Edit menu on canvas objects (UIEditMenuInteraction): text actions in a glass capsule, no glyphs */
 .device.ios .objmenu .omg button svg{display:none}
 .device.ios .objmenu .omg button::after{content:attr(aria-label);font-size:17px;white-space:nowrap;color:#1e1b1b}
@@ -1431,6 +1424,61 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device.ios .kb .k.sp{flex:1 1 auto;max-width:none;font-size:16px}
 .device.ios .kb .k.ret{width:88px;background:#3478F6;color:#fff;font-size:16px}
 .device.ios .kb .btm{height:40px;padding:0 20px;align-items:center;font-size:20px;opacity:.8}
+
+/* ═══ 9/30 · Tom review round 4 ═══ */
+/* dock lock (per screenshots): locked = outline lock on a grey disc · unlocked = open lock, no disc */
+.pgpill .lockbtn i{background:none!important;color:#1e1b1b!important}
+.pgpill .lockbtn[aria-pressed="true"] i{background:rgba(30,27,27,.08)!important;color:#1e1b1b!important}
+/* sliders: the track spans the whole row; the knob's EDGES meet the track ends (left:P% + translateX(-P%)) — one pill knob everywhere on iOS, including the width slider */
+.device .slider .track{margin:0!important}
+.spanel .ptrack{margin:0!important}
+.device.ios .slider .track b,.device.android .slider .track b,.device.android .slider .track.drag b,.device.ios .slider .track.drag b,.spanel .ptrack b,.device.ios .wtrack b,.device.ios .wtrack.drag b{transform:translate(calc(-1 * var(--p,50%)),-50%)!important}
+.spanel .ptrack b{top:50%!important;width:40px!important;height:24px!important;border-radius:12px!important;box-shadow:0 2px 6px rgba(0,0,0,.16),0 0 0 .5px rgba(0,0,0,.08)!important}
+.device.ios .wtrack b{top:50%!important;width:40px!important;height:24px!important;border-radius:12px!important}
+.device.ios .wtrack.drag b{width:46px!important;height:28px!important;border-radius:14px!important}
+/* add-page popover: iOS 27 segmented control (32pt pill track, white selected pill, labels never overflow); thumbs reuse the template-sheet card size (96×132) */
+.appanel .tg2.ap-pos{height:32px!important;padding:2px!important;border-radius:999px!important;background:rgba(120,120,128,.12)!important;width:100%!important;box-sizing:border-box;display:flex}
+.appanel .tg2 button{flex:1 1 0!important;min-width:0!important;height:28px!important;border-radius:999px!important;font-size:13px!important;padding:0 6px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;line-height:28px;text-align:center}
+.appanel .tg2 button[aria-pressed="true"]{background:#fff!important;box-shadow:0 1px 3px rgba(16,24,40,.14),0 0 0 .5px rgba(0,0,0,.04)!important;font-weight:600}
+.device.android .appanel .tg2.ap-pos{background:rgba(30,27,27,.07)!important}
+.device.android .appanel .tg2 button[aria-pressed="true"]{box-shadow:0 1px 3px rgba(16,24,40,.12)!important}
+.appanel .ap-opts{padding:0 24px!important;gap:16px!important}
+.appanel .ap-opt{width:96px;flex:0 0 96px!important}
+.appanel .ap-thumb{width:96px!important;height:132px!important;aspect-ratio:auto!important;border-radius:12px!important}
+/* template sheet close: 44pt disc hit area (iOS grey tint · Android #EFEFEF) */
+.tpcard .sh-x i{width:44px!important;height:44px!important;border-radius:999px;background:rgba(120,120,128,.16);display:flex;align-items:center;justify-content:center}
+.device.android .tpcard .sh-x i{background:#EFEFEF}
+/* sticky-note L2 (Figma 3564-61367): #F5F5F5 pill, .5 hairline, 0 4 12 shadow; 44 cells with 24 rounded-8 chips (inset 0 1 2 .24); selected = 36 disc rgba(24,24,27,.10); trailing cell = white chip + chevron */
+.secpill.sticky{background:#F5F5F5!important;box-shadow:0 4px 12px rgba(0,0,0,.18)!important;border:.5px solid rgba(30,27,27,.12)!important;padding:0 4px!important}
+.secpill.sticky .swatch .ring{width:36px!important;height:36px!important;border-radius:999px!important}
+.secpill.sticky .swatch[aria-pressed="true"] .ring{background:rgba(24,24,27,.10)!important}
+.secpill.sticky .swatch .well{width:24px!important;height:24px!important;border-radius:8px!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.24)!important}
+.secpill.sticky .swatch[aria-pressed="true"] .well{box-shadow:inset 0 1px 2px rgba(0,0,0,.24)!important}
+.secpill.sticky .ddbtn.stkacc{width:44px!important;height:44px;position:relative;padding:0!important;display:flex;align-items:center;justify-content:center}
+.secpill.sticky .ddbtn.stkacc .stksw{display:block!important;width:24px;height:24px;border-radius:8px;background:#fff;box-shadow:inset 0 1px 2px rgba(0,0,0,.24)}
+.secpill.sticky .ddbtn.stkacc .dch{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.secpill.sticky .ddbtn.stkacc .dch svg{width:14px!important;height:14px!important;opacity:.85}
+/* system share sheet */
+.sysshare{position:absolute;z-index:80;left:50%;top:50%;transform:translate(-50%,-50%);width:560px;max-width:calc(100% - 32px);border-radius:32px;background:rgba(250,250,252,.96);backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);box-shadow:0 0 0 .5px rgba(0,0,0,.06),0 24px 64px rgba(16,24,40,.28);padding:24px 32px 28px;box-sizing:border-box;color:#1e1b1b}
+.sysshare.phone{width:100%;max-width:none;left:0;top:auto;bottom:0;transform:none;border-radius:32px 32px 0 0;padding:20px 20px 32px}
+.ss-head{display:flex;align-items:center;gap:20px;padding-bottom:20px;border-bottom:.5px solid rgba(60,60,67,.29)}
+.ss-thumb{width:72px;height:88px;border-radius:12px;flex:0 0 auto;background:#fff repeating-linear-gradient(0deg,rgba(0,0,0,.08) 0 1px,transparent 1px 8px);box-shadow:0 1px 4px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.08)}
+.ss-meta b{display:block;font-size:20px;font-weight:600;line-height:26px}
+.ss-meta small{display:block;font-size:15px;color:rgba(60,60,67,.6);margin-top:2px}
+.ss-apps,.ss-acts{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none}
+.ss-apps{padding:22px 0;border-bottom:.5px solid rgba(60,60,67,.29)}
+.ss-acts{padding-top:22px}
+.ss-app,.ss-act{display:flex;flex-direction:column;align-items:center;gap:8px;width:92px;flex:0 0 92px;font-size:13px;color:#1e1b1b;background:none;padding:0}
+.ss-app i{width:76px;height:76px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-style:normal;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ss-app i svg{width:40px;height:40px}
+.ss-act i{width:76px;height:76px;border-radius:999px;background:rgba(120,120,128,.14);display:flex;align-items:center;justify-content:center;color:#1e1b1b}
+.ss-act i svg{width:32px;height:32px}
+.sysshare.phone .ss-app,.sysshare.phone .ss-act{width:76px;flex:0 0 76px} .sysshare.phone .ss-app i,.sysshare.phone .ss-act i{width:64px;height:64px}
+.sysshare.android{left:0;top:auto;bottom:0;width:100%;max-width:none;transform:none;border-radius:28px 28px 0 0;background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;padding:8px 24px 28px}
+.sysshare.android:not(.phone){left:50%;transform:translateX(-50%);width:600px;border-radius:28px 28px 0 0}
+.ss-hdl{width:32px;height:4px;border-radius:2px;background:rgba(30,27,27,.2);margin:0 auto 12px}
+.ss-title{font-size:17px;font-weight:600;text-align:center;margin-bottom:12px}
+.sysshare.android .ss-head,.sysshare.android .ss-apps{border-color:rgba(30,27,27,.10)} .sysshare.android .ss-app i{border-radius:999px}
 
 </style>
 </head>
@@ -1685,7 +1733,7 @@ const pickTier=(t,a)=>(t.find(([k])=>k<=a)||t[t.length-1])[1];
 const COLORS=['#e35353','#53a2e3','#e353e1','#5a53e3','#f0a500','#2fa36b','#111213','#8a8a8f','#0f7d6b'];
 const TAPE_COLORS=['#6ecfe6','#f5943a','#f5cc2e','#9b5cf0','#5ed48a','PATTERN'];
 const TAPE_MM=[1.0,3.5,6.0,10.4,15.4];
-const STICKY=['#ffaeb2','#ffce9d','#fae778','#acf595','#a9efec','#cde5ff','#ebd8ff','#fdcce9','#e4e2dc']; /* Rodney's prototype (10051:263687): red · orange · yellow · green · teal · blue · purple · pink · gray */
+const STICKY=['#ffaeb2','#ffce9d','#fae778','#acf595','#a9efec','#cde5ff','#ebd8ff','#fdcce9']; /* Figma 3564-61367 activeToolMenu/StickyNotes: red · orange · yellow · green · teal · blue · purple · pink */
 const STICKY2=['#E8B4A0','#D9CDB4','#BFD8CF','#B9C6DE','#DED0E8','#EFD2D8'];
 const PALETTE=['#111213','#3f3f46','#52525b','#71717a','#a1a1aa','#d4d4d8','#e4e4e7','#ffffff',
  '#7f1d1d','#b91c1c','#dc2626','#e35353','#f87171','#fca5a5','#fecaca','#fee2e2',
@@ -2121,7 +2169,7 @@ function recDrawer(){
           `<i style="height:${6+Math.round(Math.abs(Math.sin(i*1.7))*16)}px"></i>`).join('')}</div>
         <div class="rd-btns"><button class="rd-pause" data-act="pauserec">${svg('pause')}</button>
           <button class="rd-stop" data-act="stoprec"><span></span></button></div>`
-       :`<div class="rd-bar"><i style="width:34%"></i><b style="left:34%"></b></div>
+       :`<div class="rd-bar"><i style="width:34%"></i><b style="left:34%;--p:34%"></b></div>
          <div class="rd-times"><span>${mmss(Math.round(r.dur*0.34))}</span><span>${mmss(r.dur||753)}</span></div>
          <div class="rd-play"><button class="rd-sp">1.0×</button>
            <button class="rd-ic">${svg('back15')}</button>
@@ -2137,7 +2185,7 @@ function widthCard(label,val,pct,slider,pos){
     <div class="wtrack" data-${slider}="1">
       <svg viewBox="0 0 100 14" preserveAspectRatio="none"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="#E2E2E4"/></svg>
       <svg class="fillsvg" viewBox="0 0 100 14" preserveAspectRatio="none" style="clip-path:inset(0 ${100-pct}% 0 0)"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="#0A66D0"/></svg>
-      <b style="left:${pct}%"></b></div></div>`;
+      <b style="left:${pct}%;--p:${pct}%"></b></div></div>`;
 }
 /* a small vector sticker set — enough to make the panel and the insert real */
 const STICKERS=[
@@ -2367,7 +2415,7 @@ function strokeWidthPop(pos,kind){
     <div class="wtrack" data-mmslider="${tape?'tape':'pen'}">
       <svg viewBox="0 0 100 14" preserveAspectRatio="none"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="#E2E2E4"/></svg>
       <svg class="fillsvg" viewBox="0 0 100 14" preserveAspectRatio="none" style="clip-path:inset(0 ${100-pct}% 0 0)"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="#0A66D0"/></svg>
-      <b style="left:${pct}%"></b></div></div>`;
+      <b style="left:${pct}%;--p:${pct}%"></b></div></div>`;
 }
 /* PresetColorPanel: 7 columns, 24pt swatches, 更多颜色 */
 /* Goodnotes iOS text colour panel: sliders · Change Color · Edit / Presets | Custom | History / 3 rows of swatches + add */
@@ -2447,7 +2495,7 @@ function railPopoverInner(){
       <div class="tg" style="padding:0"><span class="l">${l}</span><button class="sw" data-eo="${k}" aria-pressed="${S[k]}" aria-label="${l}"><i></i></button></div>
       <div class="d">${desc}</div>
       ${k==='ePressure'&&S.ePressure?`<div class="prow"><div class="pl">触发压力</div>
-        <div class="ptrack" data-pslider="1"><i style="width:${S.ePressureVal}%"></i><b style="left:${S.ePressureVal}%"></b></div>
+        <div class="ptrack" data-pslider="1"><i style="width:${S.ePressureVal}%"></i><b style="left:${S.ePressureVal}%;--p:${S.ePressureVal}%"></b></div>
         <div class="pends"><span>较轻</span><span>较重</span></div></div>`:''}</div>`).join('')}</div>`;
   if(S.st==='tapeMode') return `<div class="spanel" style="${panelStyle()};${pos};color:#1e1b1b;width:226px">
     <div class="st">胶带绘制</div>
@@ -2467,7 +2515,7 @@ function railPopoverInner(){
   if(S.st==='elements') return stickerPanel(pos);
   if(S.st==='laserSet'){
     const sl=(n,txt,pct,k)=>`<div class="slider"><div class="top"><span>${n}</span><em>${txt}</em></div>
-      <div class="track" data-lslider="${k}"><i style="width:${pct}%"></i><b style="left:${pct}%"></b></div>
+      <div class="track" data-lslider="${k}"><i style="width:${pct}%"></i><b style="left:${pct}%;--p:${pct}%"></b></div>
       <div class="ends"><span>最小</span><span>最大</span></div></div>`;
     return `<div class="pop" style="${panelStyle()};${pos};width:288px;color:#1e1b1b"><h4>激光笔设置</h4>
       ${sl('激光尺寸',S.laserSize+'%',S.laserSize,'size')}
@@ -2481,7 +2529,7 @@ function railPopoverInner(){
     <h4>预设颜色</h4><div class="grid">${PALETTE.map(c=>`<button data-pal="${c}" style="background:${c}" aria-label="${c}"></button>`).join('')}</div>
     <button class="popbtn" data-act="close">＋ 自定义颜色</button></div>`;
   if(S.st==='penset'){const tune=S.penTune[S.pen]||(S.penTune[S.pen]={...PEN_TUNE_DEF});
-    const sl=(k,n,unit,info)=>{const v=tune[k]; return `<div class="slider"><div class="top"><span>${n}${info?`<i class="info">i</i>`:''}</span><em>${unit==='deg'?Math.round(v*1.8)+'°':v+'%'}</em></div><div class="track ticks" data-gslider="${k}"><i style="width:${v}%"></i><b style="left:${v}%"></b></div></div>`;};
+    const sl=(k,n,unit,info)=>{const v=tune[k]; return `<div class="slider"><div class="top"><span>${n}${info?`<i class="info">i</i>`:''}</span><em>${unit==='deg'?Math.round(v*1.8)+'°':v+'%'}</em></div><div class="track ticks" data-gslider="${k}"><i style="width:${v}%"></i><b style="left:${v}%;--p:${v}%"></b></div></div>`;};
     /* the preview is the pen's own stroke: a thick–thin ribbon whose contrast follows 笔锋 / 扁平度 */
     const th=2+tune.sharp/16, tn=Math.max(.8,th*(0.25+tune.flat/100*.5));
     const rib=`M14 40C40 12 62 12 84 34s44 22 70 4 42-24 52-18`;
@@ -2506,7 +2554,7 @@ function duoPortStatus(ink){return `<div class="dt-status" style="color:${ink}">
 function duoTopBar(c){
   const {st,v1,noStrip,bandInk,tabsCard}=c, pill=`${surfStyle()};border-radius:999px`;
   const lead=`<div class="cap dt-lead" style="${pill};color:${bandInk}"><button class="tbtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"><span class="chip">${svg('panel')}</span></button><button class="tbtn" data-act="home" aria-label="主页"><span class="chip">${svg('home')}</span></button></div>`;
-  const trail=`<div class="cap dt-trail" style="${pill};color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export')}${tool('layers',st==='layers')}${noStrip?tabsCard('tbtn'):''}${tool('more',st==='more')}</div>`;
+  const trail=`<div class="cap dt-trail" style="${pill};color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}${noStrip?tabsCard('tbtn'):''}${tool('more',st==='more')}</div>`;
   const status=`<div class="dt-status" style="color:${inkOn(S.th.canvasBg)}"><b>9:41</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9.5a12 12 0 0 1 16 0"/><path d="M7.2 13a7.6 7.6 0 0 1 9.6 0"/><circle cx="12" cy="17.4" r="1.5" fill="currentColor" stroke="none"/></svg><span class="dt-batt"><i style="width:82%"></i></span></div>`;
   return `<div class="dtop">${lead}<div class="dt-title">${NB().n}</div>${trail}${status}</div>`;
 }
@@ -2719,7 +2767,7 @@ function flexDeck(kind,c){
       <div class="cap" style="${pill};color:${bandInk}"><button class="tbtn" aria-label="撤销"><span class="chip">${svg('undo')}</span></button>${tight?'':`<button class="tbtn" aria-label="重做"><span class="chip">${svg('redo')}</span></button>`}</div>
       <span class="grow"></span>
       <div class="cap" style="${pill};color:${bandInk}"><button class="tbtn" data-act="home" aria-label="主页"><span class="chip">${svg('home')}</span></button>${chip('more','data-tool="more"',st==='more','dotsV')}</div>
-      <div class="cap" style="${pill};color:${bandInk}">${tool('share',st==='export')}${tool('layers',st==='layers')}</div></div>`;
+      <div class="cap" style="${pill};color:${bandInk}">${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}</div></div>`;
   const tools=`<div class="deckrow center"><div class="cap" style="${pill};color:${bandInk};padding:0 2px;max-width:${w-32-60}px;min-width:0">
       <div class="fadewrap" style="--fadec:${fadeC}"><div class="toolmid hscroll" style="min-width:0">${L1.map((x,i)=>((i===5||i===8)?`<span class="divider"></span>`:'')+tool(x,active===x)).join('')}</div></div></div>
       <div class="cap" style="${pill};color:${bandInk};flex:0 0 auto">${tool('mic',st==='mic')}</div></div>`;
@@ -2786,7 +2834,7 @@ function templateSheet(c){const {W,H,phone,duo,duoSheet,duoPort,hClass}=c;
     <div class="vs-head"><button class="vs-x" data-act="tmplclose" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">${S.tmplFrom==='add'?'添加页面':'更改模板'}</div><span class="vs-sp"></span></div>
     <div class="vs-body"><div class="tpwrap">${body}<button class="sh-foot" data-act="tmplapply">确认</button></div></div></div>`;
   return `<div class="vsback" data-act="tmplclose"></div><div class="sharewrap"><div class="sharemodal card tpcard" style="${panelStyle()};width:${Math.min(936,W-64)}px;height:${Math.min(742,H-64)}px">
-    <div class="sh-head"><button class="sh-x" data-act="tmplclose" aria-label="关闭">${svg('xmark')}</button><div class="sh-t">${S.tmplFrom==='add'?'添加页面':'更改模板'}</div><div class="sh-trail"><button class="sh-copy primary sm" data-act="tmplapply">确认</button></div></div>
+    <div class="sh-head"><button class="sh-x" data-act="tmplclose" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="sh-t">${S.tmplFrom==='add'?'添加页面':'更改模板'}</div><div class="sh-trail"><button class="sh-copy primary sm" data-act="tmplapply">确认</button></div></div>
     <div class="sh-body">${body}</div></div></div>`;}
 function extraDialogs(c){let h=''; if(S.renaming) h+=renameDialog(); if(S.tmplOpen) h+=templateSheet(c); if(S.ctxMenu) h+=ctxMenuHTML(c); return h;}
 /* long-press on empty paper: paste / insert (Lite's canvas context menu) */
@@ -2828,7 +2876,7 @@ function layersPanel(pos){
       ${base?'':`<button class="ic ${l.v?'on':''}" data-lvis="${i}" aria-label="显示 ${l.n}">${svg(l.v?'eye':'eyeOff')}</button>`}
       <button class="ic ${l.l?'on':''}${base?' dim':''}" data-llock="${i}" aria-label="锁定 ${l.n}">${svg(l.l?'lock':'unlock')}</button></div>`;}).join('')}</div></div>`;
 }
-function dropdown(kind,pos){
+function dropdown(kind,pos){ const dropdownKind=kind;
   const items=kind==='export'?EXPORT_ITEMS:kind==='addpage'?ADD_ITEMS:[...(S.moreExtra||[]),...MORE_ITEMS];
   if(kind==='addpage'){const posv=S.npPos||'after', R=window.RULE_MAP||{}, RS=window.RULESZ_MAP||{};
     return `<div class="menu appanel" data-anchor='[data-tool="addPage"]' style="${panelStyle()};${pos};color:#1e1b1b">
@@ -2847,7 +2895,7 @@ function dropdown(kind,pos){
   const row=it=>{ if(it==='sep') return '<div class="sep"></div>';
     let [ic,label,extra,kind]=it; if(extra==='toggle'){kind='toggle';extra='';} const isMi=['share','layers','collab','tabmgr','addpage'].includes(extra); const isAct=typeof extra==='string'&&extra.startsWith('np-');
     const desc=(!isMi&&!isAct&&extra&&kind!=='toggle')?extra:'';
-    const attr=kind==='toggle'?'data-act="toggletabs"':kind==='switch'?'data-act="togglefinger"':isMi?`data-mi="${extra}"`:isAct?`data-act="${extra}"`:ic==='edit'?'data-act="rename"':ic==='tmpl'?'data-act="tmpl"':ic==='bookOpen'?'data-act="readmode"':'';
+    const attr=kind==='toggle'?'data-act="toggletabs"':kind==='switch'?'data-act="togglefinger"':isMi?`data-mi="${extra}"`:isAct?`data-act="${extra}"`:(dropdownKind==='export')?`data-mi="${ic}"`:ic==='edit'?'data-act="rename"':ic==='tmpl'?'data-act="tmpl"':ic==='bookOpen'?'data-act="readmode"':'';   /* export rows: 共享文档 → share modal · PDF rows → system share sheet */
     const trail=kind==='toggle'?`<span class="sw" aria-pressed="${!S.hideTabs}"><i></i></span>`:kind==='switch'?`<span class="sw" aria-pressed="${S.useFinger!==false}"><i></i></span>`:kind==='chev'?`<span class="chev">${svg('chevRight')}</span>`:'';
     return `<button class="${ic==='trash'?'danger':''}${desc?' two':''}" ${attr}>${ic==='tabs'?TABS_ICON:svg(ic)}<span class="col"><span>${label}</span>${desc?`<span class="desc">${desc}</span>`:''}</span>${trail}</button>`; };
   /* 规则文档: pure-list menus (export …) are the SYSTEM menu on iOS (UIMenu — drawn here as a look-alike) and Peru DropdownMenu Touch on Android; the "more" panel keeps switches + descriptions, so it stays a self-drawn Peru Popover on both platforms with system switches inside */
@@ -2882,6 +2930,20 @@ function shareBody(phone){const pw=S.sharePw;
     <div class="sh-sec">额外安全</div>
     <div class="sh-grp"><div class="sh-row"><span>需要密码</span><button class="sw" data-act="sharepw" aria-pressed="${pw}" aria-label="需要密码"><i></i></button></div>
       ${pw?`<div class="sh-row"><span>密码</span><span class="sh-val mono">nqD9TfrQ ${svg('copy')}</span></div>`:''}</div>`;}
+/* 9/30 · system share sheet mock: iOS UIActivityViewController (header · app row · action circles); Android share sheet */
+function sysShareSheet({W,H,phone,duo}){
+  const nb=NB(); const and=S.dev==='android';
+  const apps=and?[['微信','linear-gradient(#2BD46B,#07C160)','<svg viewBox="0 0 24 24" fill="#fff"><circle cx="9" cy="10" r="5.5"/><circle cx="15" cy="13" r="5"/></svg>'],['QQ','linear-gradient(#3FC3FF,#12B7F5)','<svg viewBox="0 0 24 24" fill="#fff"><ellipse cx="12" cy="12" rx="6" ry="7"/></svg>'],['邮件','linear-gradient(#5AA9FF,#1F6FEB)','<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2.5" fill="#fff"/><path d="M4 7.5l8 6 8-6" stroke="#1F6FEB" stroke-width="1.8"/></svg>'],['文件','linear-gradient(#FFC14D,#FF9F0A)','<svg viewBox="0 0 24 24" fill="#fff"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>']]:[['隔空投送','radial-gradient(circle at 50% 45%,#fff 0 18%,#2f7bf6 19% 40%,#1c64e6 41%)','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="11" r="3"/><path d="M6.5 16.5a7 7 0 0 1 11 0M4 19.5a10 10 0 0 1 16 0"/></svg>'],
+    ['邮件','linear-gradient(#5AA9FF,#1F6FEB)','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2.5" fill="#fff" stroke="none"/><path d="M4 7.5l8 6 8-6" stroke="#1F6FEB"/></svg>'],
+    ['备忘录','linear-gradient(#FFD60A 0 26%,#fff 26%)','<svg viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.4"><path d="M6 12h12M6 15.5h12M6 19h8"/></svg>'],
+    ['无边记','linear-gradient(135deg,#1FA9A0,#0E7C78)','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 14c3-8 6-8 8 0s5 8 8 0"/></svg>']];
+  const acts=and?[['复制链接','copy'],['保存到设备','imgPdf'],['打印','expPage'],['更多','more']]:[['拷贝','copy'],['标记','edit'],['打印','expPage'],['查看更多','chevDown']];
+  return `<div class="scrim" data-act="closesys"></div><div class="sysshare${phone?' phone':''}${and?' android':''}" role="dialog">
+    ${and?`<div class="ss-hdl"></div><div class="ss-title">分享</div>`:''}
+    <div class="ss-head"><span class="ss-thumb"></span><div class="ss-meta"><b>${nb.n}</b><small>PDF 文稿 · 3 KB</small></div></div>
+    <div class="ss-apps">${apps.map(([n,bg,ic])=>`<button class="ss-app" data-act="closesys"><i style="background:${bg}">${ic}</i><span>${n}</span></button>`).join('')}</div>
+    <div class="ss-acts">${acts.map(([n,ic])=>`<button class="ss-act" data-act="closesys"><i>${svg(ic)}</i><span>${n}</span></button>`).join('')}</div></div>`;
+}
 function shareModal(c){const {W,H,phone,duo,duoSheet,hClass,duoPort}=c, and=S.dev==='android';
   const closeBtn=`<button class="sh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>`;
   const sendBtn=`<button class="sh-send" data-act="closesheet" aria-label="分享"><i>${svg('share')}</i></button>`;
@@ -3100,7 +3162,7 @@ function render(){
   if(!noStrip&&S.view!=='library') inner+=`<div style="position:absolute;left:0;right:${duo&&t.duoBand!==false?DUO_STRIP:0}px;top:0;height:${navH+tabH}px;z-index:4;background:${fill(t.tabBg,t.tabBg2,t.tabGrad)}"></div>`;
   const statusInk=S.view==='library'?'#1e1b1b':(noStrip?inkOn(t.band?bandMix:t.canvasBg):navInk);   /* 9/29: on the library page the top band is white, so the status cluster turns dark (Tom: 回首页顶部对比度) */
   if(duoPort){ inner+=duoPortStatus(statusInk);   /* 104×48 at right 24 / top 24 — the hardware region that never hides */
-    if(false) inner+=`<div class="dt-trailwrap"><div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export')}${tool('layers',st==='layers')}</div>${(noStrip&&!duo)?`<div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:''}</div>`; }
+    if(false) inner+=`<div class="dt-trailwrap"><div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}</div>${(noStrip&&!duo)?`<div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:''}</div>`; }
   if(!duo&&!duoPort&&stShow) inner+=`<div class="statusbar" style="height:${navH}px;color:${statusInk}">
     <div>9:41${(compact||hClass==='compact')?'':'&nbsp;&nbsp;2月11日周四'}</div>
     <div class="sig"><i style="width:15px;height:10px"></i><i style="width:13px;height:10px"></i><i style="width:21px;height:10px"></i></div></div>`;
@@ -3137,7 +3199,7 @@ function render(){
     const groups=group(chip('data-act="home" aria-label="主页"','home')+chip(`data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="${on('more')}"`,'dotsV'))
       +((!v1&&showConfirm)?`<button class="ds-ai confirm" data-go="l1" aria-label="完成">${svg('check')}</button>`:'') /* 9/28: no separate page-sidebar entry — the dock pill is the entry */
       +(outerLand?'':group((v1&&!(noStrip&&outerPort)?`<button class="ds-av" data-tool="collab" aria-label="协作者"><span class="ds-avs"><i style="background:#ffd666">DF</i><i style="background:#9ec9ff;color:#0b3c6e">DR</i></span><b>${svg('chevDown')}</b></button>`:'')
-          +chip(`data-tool="share" aria-pressed="${st==='export'}" aria-label="导出" style="${on('export')}"`,'share')
+          +chip(`data-tool="share" aria-pressed="${st==='export'||st==='exportmenu'||st==='sysshare'}" aria-label="导出" style="${on('export')}"`,'share')
           +chip(`data-tool="layers" aria-pressed="${st==='layers'}" aria-label="图层" style="${on('layers')}"`,'layers')));
     /* rule: when the column is too short for a third group, its actions live in the ⋯ menu */
     S.moreExtra=outerLand?[...(noStrip?[['tabs','标签','tabmgr']]:[]),['share','导出','share'],['layers','图层','layers'],...(v1?[['collab','协作者','collab']]:[]),'sep']:[];
@@ -3185,7 +3247,7 @@ function render(){
           ${!R.redo?'':`<button class="tbtn" aria-label="重做" style="color:${bandInk}"><span class="chip">${svg('redo')}</span></button>`}</div>`);
     const rightHTML=((duo||!R.right)?'':`<div class="cap" style="${pill};color:${bandInk}">
           ${!R.av?'':`<button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>`}
-          ${R.addPage?tool('addPage',st==='addpage'):''}${tool('share',st==='export')}${R.layers?tool('layers',st==='layers'):''}</div>`)+(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${phone?'':tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:'');   /* hidden-tabs scheme: no strip, so the row carries tabs + ⋯ */
+          ${R.addPage?tool('addPage',st==='addpage'):''}${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${R.layers?tool('layers',st==='layers'):''}</div>`)+(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${phone?'':tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:'');   /* hidden-tabs scheme: no strip, so the row carries tabs + ⋯ */
     const cols=[leftHTML?'auto':'','minmax(0,1fr)',rightHTML?'auto':''].filter(Boolean).join(' ');
     const PADX=duo?20:BAR.PAD;   /* Duo layout margin: 20pt */
     inner+=`<div class="toolrow" style="top:${navH+tabH+barGap}px;height:${BAR.ROW}px;left:${canvasLeft+PADX}px;width:${canvasW-PADX-(duo?9:PADX)-statusReserve}px;gap:${BAR.GAP}px;grid-template-columns:${cols}">
@@ -3213,6 +3275,7 @@ function render(){
     if(active==='writing') body=penRowV1(avail);
     else if(active==='tape') body=tapeRowV1(avail);
     else if(active==='eraser') body=eraserRowV1();
+    else if(active==='stickyNote') body=stickyRowV1(avail);   /* 9/30: the v1 tablet row was missing the sticky-note colour row */
     else{const opt=compactOptions(active);
       if(opt&&(opt[0]||opt[1])) body=`${opt[0]||''}${opt[1]?`<span class="divider"></span>${opt[1]}`:''}`;
       else body=railSecondary(active);}
@@ -3319,7 +3382,8 @@ function render(){
     let men='';
     if(st==='more')   men+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+4}px`);
     if(st==='addpage') men+=dropdown('addpage',`right:${pr+96}px;top:${duo?70:cTopV+8}px`);
-    const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):'';   /* 第一版: sharing opens the share modal, not a menu */
+    const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):'');   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
+    if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='mic'&&S.rec) men+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTopV+8}px`);
     /* tool panels: popover ≥600 wide, sheet below (or in a compact-height posture); menus stay menus (UIMenu on iOS) */
     inner+=(v1phone?sheetWrap(pan+men):(duoSheet?duoSheetWrap(pan,W,H,hClass==='compact')+men:pan+men))+share+extraDialogs({W,H,phone,duo,duoSheet,duoPort,hClass});
@@ -3354,7 +3418,7 @@ function render(){
           <div class="cap" style="${surfStyle()};border-radius:999px;color:#1e1b1b;margin-left:0">
             <button class="tbtn" aria-label="撤销" style="color:#1e1b1b"><span class="chip">${svg('undo')}</span></button></div></div>
         <div style="display:flex;gap:8px">
-          ${duo?'':`<div class="cap" style="${surfStyle()};border-radius:999px;color:#1e1b1b">${tool('share',st==='export')}${tool('layers',st==='layers')}${noStrip?tabsCard('tbtn')+tool('more',st==='more'):''}</div>`}
+          ${duo?'':`<div class="cap" style="${surfStyle()};border-radius:999px;color:#1e1b1b">${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}${noStrip?tabsCard('tbtn')+tool('more',st==='more'):''}</div>`}
           ${!duo&&ios&&(SHEET_STATES.includes(active)||st==='pen2'||st==='pentypes')?`<button class="confirm" data-go="l1" aria-label="完成">${svg('check')}</button>`:''}</div></div>`;
     }
     if(st.startsWith('text-')){
@@ -3417,9 +3481,9 @@ function render(){
   S._dockAuto=false;
   /* the dock is ONE unit — page entry · zoom % · lock — bottom-left on every device and in both navigation branches;
      it only shows while the page scrolls or zooms (2.5s), on wide screens as a pill, on narrow ones as a column without the glyph */
-  const lockBtn=cls=>`<button class="${cls} lockbtn" data-act="lockzoom" aria-pressed="${!!S.zoomLock}" aria-label="锁定缩放"><i>${svg(S.zoomLock?'lockFill':'unlock')}</i></button>`;   /* active = filled glyph on the secondary tint */
+  const lockBtn=cls=>`<button class="${cls} lockbtn" data-act="lockzoom" aria-pressed="${!!S.zoomLock}" aria-label="锁定缩放"><i>${svg(S.zoomLock?'lock':'unlock')}</i></button>`;   /* 9/30 Tom: locked = outline lock on a grey disc · unlocked = open lock, no disc */
   const dockPill=(x,y)=>`<div class="pgpill${hid}" style="${surfStyle()};color:#1e1b1b;left:${x}px;bottom:${y}px">
-      <button class="seg pg" data-act="pgjump" aria-label="页面导航">${svg('pages')}<span>${NB().page+1}/ ${NB().pages}</span></button>
+      <button class="seg pg" data-act="pgjump" aria-label="页面导航">${svg('pages')}<span>${NB().page+1}/${NB().pages}</span></button>
       <span class="vs"></span><span class="seg pct">${S.zoomPct}%</span><span class="vs"></span>${lockBtn('seg')}</div>`;
   const dockCol=pos=>`<div class="pgcol vgroup${hid}" style="${surfStyle()};color:#1e1b1b;${pos}">
       <button class="pv" data-act="pgjump" aria-label="页面导航"><span class="stack"><span>${NB().page+1}</span><i></i><span>${NB().pages}</span></span></button>
@@ -3545,7 +3609,7 @@ function bindSliders(root){
       const em=tr.closest('.slider')?tr.closest('.slider').querySelector('.top em'):(tr.closest('.wcard')?tr.closest('.wcard').querySelector('.wlab em'):null);
       let last=null;
       const at=e=>{const r=tr.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)); last=f;
-        if(knob) knob.style.left=(f*100)+'%'; if(fill) fill.style.width=(f*100)+'%'; if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
+        if(knob){ knob.style.left=(f*100)+'%'; knob.style.setProperty('--p',(f*100)+'%'); } if(fill) fill.style.width=(f*100)+'%'; if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
         if(em&&tr.dataset.gslider) em.textContent=Math.round(f*100)+'%';};
       tr.classList.add('drag'); at(ev); try{tr.setPointerCapture(ev.pointerId);}catch(_){}
       const mv=e=>{e.preventDefault(); at(e);};
@@ -3966,8 +4030,9 @@ function bindCanvas(root){
   cv.addEventListener('dblclick',ev=>{
     if(ev.target.closest('.txtin,[data-obj],[data-objmenu],.objmenu')||S.zoomLock) return;
     const f=S._fit||{w:800,h:600}; const fitW=Math.round((f.w-32)/595*100), fitH=Math.round(((f.h-56)*3/4)/595*100);
-    if(f.phone){ if(S.zoomAuto){S.zoomAuto=false;S.zoomFit='h';S.zoomPct=Math.max(50,fitH);} else {S.zoomAuto=true;S.zoomFit='w';} }
-    else { S.zoomFit=S.zoomFit==='w'?'h':'w'; S.zoomAuto=false; S.zoomPct=Math.max(50,Math.min(200,S.zoomFit==='w'?fitW:fitH)); }
+    /* 9/30 Tom: double-tap toggles between fit-width and exactly 100% — no other values */
+    if(S.zoomFit==='w'||(S.zoomAuto&&f.phone)){ S.zoomAuto=false; S.zoomFit='100'; S.zoomPct=100; }
+    else { S.zoomAuto=false; S.zoomFit='w'; S.zoomPct=Math.max(50,Math.min(200,fitW)); }
     render(); });
 
   let cur=null,drag=null,marquee=null,page=null,shp=null;
@@ -4198,13 +4263,13 @@ function bindGrips(stage,zf){
 function reconcileState(){
   const compact=S.version!=='v1'&&S.w<BP.NARROW;
   if(S.version==='v1'&&COMPACT_STATES.includes(S.st)) S.st='writing';
-  if(compact&&!COMPACT_STATES.concat(SHEET_STATES,['layers','export','more','mic']).includes(S.st)) S.st='l1';
+  if(compact&&!COMPACT_STATES.concat(SHEET_STATES,['layers','export','exportmenu','sysshare','more','mic']).includes(S.st)) S.st='l1';
   if(!compact&&COMPACT_STATES.includes(S.st)) S.st='writing';
   syncState();
 }
 /* 规则文档: a popover never crosses the screen edge — after layout, anything floating is pushed back inside with a 12pt buffer (menus, panels, the object menu) */
 function fadeEdges(el){ const top=el.scrollTop>4, bot=el.scrollTop+el.clientHeight<el.scrollHeight-4; el.dataset.fade=(top?'t':'')+(bot?'b':''); }
-function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; if(h0>H-24-Math.max(12,t0)&&h0>H-24){ /* 9/29 Tom: too tall for the window → keep a 12pt buffer, scroll inside, fade the scroll edges */ el.style.maxHeight=(H-24)+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
+function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; const availH=H-12-Math.max(12,t0); if(h0>availH){ /* 9/30 Tom: too tall for the window → the panel keeps its anchor and SHRINKS to the 12pt bottom buffer, scrolls inside, fades its edges */ el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
 function bind(root,compact){
   /* Rodney's sticky drag (10051:263687): drag a colour swatch ≥8pt → an 88×88 ghost follows the finger; drop on a page → note placed there; drop off-page → colour armed */
   root.addEventListener('pointerdown',ev=>{ const sw=ev.target.closest('[data-sticky]'); if(!sw||ev.button>0) return; const idx=+sw.dataset.sticky, color=STICKY[idx]; const x0=ev.clientX,y0=ev.clientY; let ghost=null; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1;
@@ -4228,7 +4293,7 @@ function bind(root,compact){
         if(el.offsetTop<=mid) best=+el.dataset.pgidx;});
       if(best!==NB().page){NB().page=best;
         const seg=root.querySelector('.pgpill .seg.pg span');
-        if(seg) seg.textContent=`${best+1}/ ${NB().pages}`;
+        if(seg) seg.textContent=`${best+1}/${NB().pages}`;
         const st=root.querySelector('.pgcol .pv .stack span:first-child'); if(st) st.textContent=String(best+1);}
       if(S._dockAuto){
         S.scrolling=true;
@@ -4263,7 +4328,7 @@ function bind(root,compact){
     if(d.tmtab!==undefined){S.tab=+d.tmtab;S.tabMgr=false;S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
-    if(d.mi){S.st=d.mi==='share'?'export':d.mi;syncState();return render();}
+    if(d.mi){S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'sysshare':d.mi);syncState();return render();}
     if(d.act==='closelib'){S.lib=false;S.libDrawer=false;return render();}
     if(d.act==='libdrawer'){S.libDrawer=!S.libDrawer;return render();}
     if(d.libcreate){ if(!['notebook','quicknote','textdoc','whiteboard'].includes(d.libcreate)){S.libNew=false;return render();} const nm=(d.libcreate==='quicknote'?'速记 ':d.libcreate==='whiteboard'?'白板 ':d.libcreate==='textdoc'?'文本 ':'未命名笔记 ')+(S.tabs.length+1); S.tabs.push({...S.tabs[0],n:nm,cover:'#FFFFFF',paper:'#fff',rule:d.libcreate==='whiteboard'?'dot':'line',pages:1,page:0,scroll:0,kind:'plain'}); S.tab=S.tabs.length-1; S.view='doc'; S.libNew=false; if(S.version!=='v1'&&S.w<BP.NARROW) S.st=phoneDevice()?'ro':'l1'; else S.st='writing'; syncState(); return render(); }
@@ -4294,6 +4359,7 @@ function bind(root,compact){
     if(d.act==='lockzoom'){S.zoomLock=!S.zoomLock;return render();}
     if(d.act==='rename'){S.renaming=true;S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='renameok'){const inp=b.closest('.dlg').querySelector('input');if(inp&&inp.value.trim())NB().n=inp.value.trim();S.renaming=false;return render();}
+    if(d.act==='closesys'){S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='renamecancel'){S.renaming=false;return render();}
     if(d.act==='tmpl'){S.tmplOpen=true;S.tmplFrom='change';S.tmplSel=NB().rule;S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='tmplclose'){S.tmplOpen=false;return render();}
@@ -4432,9 +4498,9 @@ function bind(root,compact){
         if(k==='plus'){S.st=S.st==='insert'?'l1':'insert';syncState();return render();}
         if(k==='mic'){if(!S.rec){startRec();S.st='l1';}else S.st=S.st==='mic'?'l1':'mic';syncState();return render();}
         if(['layers','more','collab'].includes(k)){S.st=S.st===k?'l1':k;syncState();return render();}
-        if(k==='share'){S.st=S.st==='export'?'l1':'export';syncState();return render();}
+        if(k==='share'){const tgt=S.version==='v1'?'exportmenu':'export'; S.st=['export','exportmenu','sysshare'].includes(S.st)?'l1':tgt;syncState();return render();}
         return render();}
-      if(k==='share'){S.st=S.st==='export'?(S.lastTool||'writing'):'export';syncState();return render();}
+      if(k==='share'){const tgt=S.version==='v1'?'exportmenu':'export'; S.st=['export','exportmenu','sysshare'].includes(S.st)?(S.lastTool||'writing'):tgt;syncState();return render();}
       if(k==='mic'){if(!S.rec){startRec();S.st=S.lastTool||'writing';}else S.st=S.st==='mic'?(S.lastTool||'writing'):'mic';syncState();return render();}
       if(['layers','more','collab'].includes(k)){S.st=S.st===k?(S.lastTool||'writing'):k;syncState();return render();}
       if(k==='ai') return;
