@@ -1310,6 +1310,22 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .secpill.sticky .ddbtn.stkacc .stksw{display:none} .secpill.sticky .ddbtn.stkacc .dch svg{width:18px;height:18px;opacity:.75}
 .secpill.sticky .ddbtn.stkacc[aria-pressed="true"]{background:#F2F2F4!important}
 .tabstrip .addtab{color:inherit!important;opacity:.72!important}
+/* 9/29 · page-dock (Figma 3549-24660): 44 tall · 4 pad · page N/M · zoom % · lock in a 36 grey disc — ONE persistent unit bottom-left on every device (Joel: no scroll-driven show/hide, no vertical variant) */
+.pgpill{height:44px!important;padding:0 4px!important;box-sizing:border-box}
+.pgpill .seg{height:36px!important;min-width:0!important;padding:0 10px!important;margin:0 2px!important;font-size:17px!important;font-weight:500;line-height:22px}
+.pgpill .seg.pg svg{width:24px;height:24px;margin-right:6px}
+.pgpill .seg.pg span,.pgpill .seg.pct{color:#3d3a3a!important}
+.pgpill .vs{height:24px}
+.pgpill .lockbtn{width:36px!important;min-width:36px!important;height:36px!important;margin:0 0 0 2px!important}
+.pgpill .lockbtn i{width:36px!important;height:36px!important;background:rgba(30,27,27,.06)!important}
+.pgpill .lockbtn svg{width:22px!important;height:22px!important}
+.pgpill .lockbtn[aria-pressed="true"] i{background:rgba(30,27,27,.16)!important}
+.pgpill.hide{opacity:1!important;transform:none!important;pointer-events:auto!important}
+/* 9/29 · Duo unfolded portrait, library: once the page condenses, 主页 + 新建 rise into the 84pt status band (left of the status cluster), keeping the blurred backdrop */
+.libhome.duoport{overflow:visible}
+.libhome.duoport .lh-topbar{transition:background .2s,box-shadow .2s,top .22s,height .22s,right .22s}
+.libhome.duoport.condensed .lh-topbar{top:-84px;height:84px;right:144px;padding:12px 0 0 24px;box-sizing:border-box;border-radius:0 0 22px 0}   /* status cluster sits at top 24 + 48 tall → its centre is y=48; 12 top pad centres the row on the same line */
+
 </style>
 </head>
 <body>
@@ -2537,7 +2553,7 @@ function libraryView(c){const {W,H,phone,wide,top=0,overlay=false,right=0}=c; /*
   const menu=S.libNew?`<div class="scrim" data-act="libnew"></div>${(()=>{const items=LIB_CREATE.map(([k,l])=>`<button data-act="libnew"><img class="lh-mart" src="${window.ASSET[`create-${k}.svg`]||`create-${k}.svg`}" alt=""><span class="col"><span>${l}</span></span></button>`).join('');
       return phone?`<div class="vsheet ${S.dev==='android'?'android':'ios'} lh-newsheet" style="${panelStyle()}"><div class="vs-hdl"></div><div class="vs-head"><button class="vs-x" data-act="libnew" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">新建</div><span class="vs-sp"></span></div><div class="vs-body"><div class="menu lh-newmenu static">${items}</div></div></div>`
         :`<div class="menu nocaret lh-newmenu" style="${panelStyle()};right:24px;top:72px;color:#1e1b1b">${items}</div>`;})()}`:'';
-  return `<div class="libhome${wide?' wide':''}${phone?' phone':''}${overlay?' overlay':''}${S.libCondensed?' condensed':''}" style="left:0;top:${top}px;width:${W}px;height:${H}px">
+  return `<div class="libhome${wide?' wide':''}${phone?' phone':''}${overlay?' overlay':''}${c.duoPort?' duoport':''}${S.libCondensed?' condensed':''}" style="left:0;top:${top}px;width:${W}px;height:${H}px">
     ${side}
     <div class="lh-main" style="left:${sideW}px;right:${right}px">
       ${top_}
@@ -2974,7 +2990,7 @@ function render(){
   /* one continuous fill behind the whole nav block, so a gradient reads as one surface */
   /* 方案2 has no tab strip: no tab-bar colour on top; the band (if any) runs edge to edge behind status + toolbar */
   if(!noStrip&&S.view!=='library') inner+=`<div style="position:absolute;left:0;right:${duo&&t.duoBand!==false?DUO_STRIP:0}px;top:0;height:${navH+tabH}px;z-index:4;background:${fill(t.tabBg,t.tabBg2,t.tabGrad)}"></div>`;
-  const statusInk=noStrip?inkOn(t.band?bandMix:t.canvasBg):navInk;
+  const statusInk=S.view==='library'?'#1e1b1b':(noStrip?inkOn(t.band?bandMix:t.canvasBg):navInk);   /* 9/29: on the library page the top band is white, so the status cluster turns dark (Tom: 回首页顶部对比度) */
   if(duoPort){ inner+=duoPortStatus(statusInk);   /* 104×48 at right 24 / top 24 — the hardware region that never hides */
     if(false) inner+=`<div class="dt-trailwrap"><div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export')}${tool('layers',st==='layers')}</div>${(noStrip&&!duo)?`<div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:''}</div>`; }
   if(!duo&&!duoPort&&S.showStatus) inner+=`<div class="statusbar" style="height:${navH}px;color:${statusInk}">
@@ -2988,14 +3004,14 @@ function render(){
   if(!noStrip){
   inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP):(duoPort?DUO_STATUS_W:0)}px;height:${tabH}px;color:${navInk}">
     <div class="fixed" style="${duo?'padding-left:12px':''}">
-      ${((compact||phone||W<BP.SIDEBAR_PUSH))&&!duo?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
+      ${(phone&&!duo)?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
       ${duo?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
     <div class="scroller" id="tabscroll">
       ${S.tabs.map((tb,i)=>{const on=i===S.tab;
         return (i&&!on&&i-1!==S.tab?`<span class="tsep" style="color:${navInk}"></span>`:'')+
         `<div class="tab${on?' on':''}${(!on&&foldTabs)?' mini':''}" data-tab="${i}" style="width:${on?(foldTabs?Math.max(tabMin,160):tabMin):(foldTabs?44:Math.min(tabMin,132))}px;color:${on?inkOn(t.band?bandMix:t.canvasBg):navSub};${on?`--tabbg:${t.band?bandMix:t.canvasBg};background:${t.band?fill(t.toolbarBg,t.toolbarBg2,t.barGrad):t.canvasBg}`:''}">
         ${svg('notebook')}${(!on&&foldTabs)?'':`<span class="nm">${tb.n}</span>`}${(on||!foldTabs)?`<span class="x" data-closetab="${i}">×</span>`:''}</div>`;}).join('')}
-      <button class="addtab" data-act="addtab" aria-label="新建标签" style="color:${navSub}">${svg('plus')}</button></div>${duo?'':`<div class="fixed"><button class="tbtn" data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="color:${navInk}"><span class="chip" style="${st==='more'?`background:${hoverOn(navMix)}`:''}">${svg('dotsV')}</span></button></div>`}</div>`;
+      <button class="addtab" data-act="addtab" aria-label="新建标签" style="color:${navSub}">${svg('plus')}</button></div>${(duo||(phone&&!roV1))?'':`<div class="fixed"><button class="tbtn" data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="color:${navInk}"><span class="chip" style="${st==='more'?`background:${hoverOn(navMix)}`:''}">${svg('dotsV')}</span></button></div>`}</div>`;
   }
 
   if(duo){
@@ -3040,15 +3056,19 @@ function render(){
       :`<div style="position:absolute;top:${navH+tabH}px;height:${BAR.ROW}px;left:${duo?0:canvasLeft}px;width:${duo?W:canvasW}px;z-index:4;background:${fill(t.toolbarBg,t.toolbarBg2,t.barGrad)}"></div>`;   /* on Duo the band runs under the column too */
     /* what the row must hold, and the order it gives things up when the width runs out */
     const SLOTW=S.dev!=='android'?48:44, pillOf=n=>n*SLOTW+4;
-    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:!rightCollapsed&&!duo,right:!duo,mic:true,layers:!phone}; /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
+    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:!rightCollapsed&&!duo,right:!duo,mic:true,layers:!duo,addPage:!duo,moreRow:phone&&!duo}; /* 9/29 Tom: on a phone the ⋯ lives INSIDE the share pill (one ⋯ on screen) */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
     const need=(slots=10)=>(duo?0:((noStrip?pillOf(R.lib?2:1)+8:0)+(R.side?pillOf(1)+8:0)+pillOf(R.redo?2:1)))
       +BAR.GAP+(slots*SLOTW+18)+(R.mic?pillOf(1)+BAR.GAP:0)+BAR.GAP
-      +(duo?0:((R.right?pillOf(2)+(R.av?72:0)+8:0)+(noStrip?pillOf(2):0)));
+      +(duo?0:((R.right?pillOf(1+(R.layers?1:0)+(R.addPage?1:0)+(R.moreRow?1:0))+(R.av?72:0)+8:0)+((noStrip&&!R.moreRow)?pillOf(2):0)));
     const statusReserve=(duoPort&&noStrip)?DUO_STATUS_W-BAR.PAD:0;   /* hidden tabs: the row stops short of the status cluster */
     const availW=canvasW-2*BAR.PAD-statusReserve;
     /* recording is the last thing to go: it folds only when even eight tool slots would not fit beside it */
-    for(const k of ['redo','lib','side','av']){ if(need(8)<=availW) break; R[k]=false; }   /* tools may scroll (Lite does); share / layers / recording / undo stay */
-    if(!duo){ S.moreExtra=[...(R.right?[]:[['share','导出','share'],['layers','图层','layers'],...(R.av?[]:[['collab','协作者','collab']])]),...(R.right&&!R.layers?[['layers','图层','layers']]:[]),...((!phone&&W>=BP.SIDEBAR_PUSH)?[]:[['addPage','添加页面','addpage']]),...((noStrip&&phone)?[['tabs','标签栏','tabmgr']]:[]),...(R.mic?[]:[['mic','录音','mic']])]; if(S.moreExtra.length) S.moreExtra.push('sep'); }
+    if(need(8)>availW){R.redo=false;R.av=false;}   /* 9/29 Tom: redo and collaborators fold TOGETHER, one step */
+    for(const k of ['lib','side']){ if(need(8)<=availW) break; R[k]=false; }
+    const slotsVisible=()=>(availW-need(0))/SLOTW;   /* L1 tool slots the middle pill can show without scrolling */
+    if(slotsVisible()<4.5) R.layers=false;            /* 9/29 Tom: layers folds first… */
+    if(slotsVisible()<4.5) R.addPage=false;           /* …then add page — only once fewer than 4.5 tools would stay visible; share never folds */   /* tools may scroll (Lite does); share / layers / recording / undo stay */
+    if(!duo){ S.moreExtra=[...(R.right?[]:[['share','导出','share'],['layers','图层','layers']]),...(R.av?[]:[['collab','协作者','collab']]),...(R.right&&!R.layers?[['layers','图层','layers']]:[]),...(R.addPage?[]:[['addPage','添加页面','addpage']]),...((noStrip&&phone)?[['tabs','标签栏','tabmgr']]:[]),...(R.mic?[]:[['mic','录音','mic']])]; if(S.moreExtra.length) S.moreExtra.push('sep'); }
     const leftHTML=(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${R.lib?`<button class="tbtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库" style="color:${bandInk}"><span class="chip">${svg('panel')}</span></button>`:''}<button class="tbtn" data-act="home" aria-label="主页" style="color:${bandInk}"><span class="chip">${svg('home')}</span></button></div>`:'')
       +((duo||!R.side)?'':`<div class="cap" style="${pill};color:${bandInk}">
           <button class="tbtn" data-act="sidebar" aria-pressed="${S.sidebar}" aria-label="页面" style="color:${activeInk(S.sidebar)}"><span class="chip" style="${activeChip(S.sidebar)}">${svg('sidebar')}</span></button></div>`)
@@ -3057,7 +3077,7 @@ function render(){
           ${!R.redo?'':`<button class="tbtn" aria-label="重做" style="color:${bandInk}"><span class="chip">${svg('redo')}</span></button>`}</div>`);
     const rightHTML=((duo||!R.right)?'':`<div class="cap" style="${pill};color:${bandInk}">
           ${!R.av?'':`<button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i style="background:#ffd666">DF</i><span class="avwrap"><i style="background:#9ec9ff;color:#0b3c6e">DR</i><b>${svg('chevDown')}</b></span></button>`}
-          ${(!phone&&W>=BP.SIDEBAR_PUSH)?tool('addPage',st==='addpage'):''}${tool('share',st==='export')}${R.layers?tool('layers',st==='layers'):''}</div>`)+(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${phone?'':tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:(phone&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${tool('more',st==='more')}</div>`:''));
+          ${R.addPage?tool('addPage',st==='addpage'):''}${tool('share',st==='export')}${R.layers?tool('layers',st==='layers'):''}${R.moreRow?tool('more',st==='more'):''}</div>`)+((noStrip&&!duo&&!R.moreRow)?`<div class="cap" style="${pill};color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:'');
     const cols=[leftHTML?'auto':'','minmax(0,1fr)',rightHTML?'auto':''].filter(Boolean).join(' ');
     const PADX=duo?20:BAR.PAD;   /* Duo layout margin: 20pt */
     inner+=`<div class="toolrow" style="top:${navH+tabH+barGap}px;height:${BAR.ROW}px;left:${canvasLeft+PADX}px;width:${canvasW-PADX-(duo?9:PADX)-statusReserve}px;gap:${BAR.GAP}px;grid-template-columns:${cols}">
@@ -3284,8 +3304,8 @@ function render(){
   /* ── page-navigation entry (2302:26026): status pill bottom-left, scroll direction bottom-right.
        On compact both rest hidden and surface while the page is being scrolled. ── */
   /* on compact the dock is tied to scrolling alone — no other state reveals it */
-  const hid=(!S.scrolling&&!(floatNav&&S.sidebar))?' hide':'';   /* the dock is only there while the page moves or zooms (all devices); the WHOLE unit — lock included — fades 2.5s after the page settles (规则文档 9/28) */
-  S._dockAuto=true;
+  const hid='';   /* 9/29 Joel: the page dock is PERSISTENT — it no longer appears/disappears with scrolling */   /* the dock is only there while the page moves or zooms (all devices); the WHOLE unit — lock included — fades 2.5s after the page settles (规则文档 9/28) */
+  S._dockAuto=false;
   /* the dock is ONE unit — page entry · zoom % · lock — bottom-left on every device and in both navigation branches;
      it only shows while the page scrolls or zooms (2.5s), on wide screens as a pill, on narrow ones as a column without the glyph */
   const lockBtn=cls=>`<button class="${cls} lockbtn" data-act="lockzoom" aria-pressed="${!!S.zoomLock}" aria-label="锁定缩放"><i>${svg(S.zoomLock?'lock':'unlock')}</i></button>`;
@@ -3296,9 +3316,9 @@ function render(){
       <button class="pv" data-act="pgjump" aria-label="页面导航"><span class="stack"><span>${NB().page+1}</span><i></i><span>${NB().pages}</span></span></button>
       <span class="hr"></span><span class="zv pct">${S.zoomPct}%</span><span class="hr"></span>${lockBtn('zv')}</div>`;
   if(flexMode){ /* the deck carries the dock and AI */ }
-  else if(duo){ const db=compact?bottomRail+44+16:24; inner+=wClass==='regular'?dockPill(uiLeft+16,db):dockCol(`left:16px;bottom:${db}px`); }
+  else if(duo){ const db=compact?bottomRail+44+16:24; inner+=dockPill(wClass==='regular'?uiLeft+16:16,db);   /* 9/29 Joel: no vertical variant — the same pill on every device */ }
   else if(S.sidebar&&phone&&!floatNav){ /* phone: the overlaying page sidebar replaces the dock; its own × closes it */ }
-  else if(phone||compact){ inner+=dockCol(`left:${uiLeft+16}px;bottom:${(compact&&!v1)?bottomRail+44+16:24}px`); /* bottom-edge controls keep ≥24 above the edge */ }
+  else if(phone||compact){ inner+=dockPill(uiLeft+16,(compact&&!v1)?bottomRail+44+16:24); /* bottom-edge controls keep ≥24 above the edge */ }
   else inner+=dockPill(uiLeft+16+((floatNav&&S.sidebar&&!(phone||compact))?216+8:0),24);   /* beside the open page panel on wide screens */
   /* layers-dock 2302:26220 — exactly one AI dock, 44×44, right 16 / bottom 24 (规则文档: every button on the screen's bottom edge keeps a 24pt safe buffer) */
   if(!compact&&!duo&&!flexMode&&!roV1) inner+=`<button class="dirbtn" style="${surfStyle()};color:#1e1b1b;right:16px;bottom:24px" data-tool="ai" aria-label="Goodnotes AI">${svg('ai')}</button>`;
