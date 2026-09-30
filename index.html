@@ -1741,6 +1741,41 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .kbwrap .textbar.fmt.right{position:absolute;right:${'64px'}}
 .kbwrap .textbar.fmt.right{right:64px}
 
+/* ═══ 10/3 · round 13 ═══ */
+/* library tiles: aspect-ratio boxes with overflow visible grow to their content (natural image size) — pin the min size */
+.lh-tile{min-height:0!important;max-height:100%;overflow:hidden!important}
+.lh-tile .lh-cw{max-height:82%}
+/* pull-to-add (Lite PullToAddIndicator): 84 group · 56 ring with 3pt arc · 24 “+” · 20 label · ghost page 80% at 60% */
+.pulladd{position:relative!important;left:auto!important;transform:none!important;width:100%!important;height:auto!important;margin:0!important;padding:16px 0 0!important;border:0!important;background:none!important;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(30,27,27,.6)!important;font-size:13px;box-sizing:border-box;overflow:hidden;max-height:calc(24px + var(--p,0) * 220px)}
+.pulladd .pa-ring{position:relative;width:56px;height:56px;flex:0 0 auto}
+.pulladd .pa-ring svg{position:absolute;inset:0;width:56px;height:56px;transform:rotate(-90deg)}
+.pulladd .pa-bg{fill:rgba(255,255,255,.9);stroke:rgba(30,27,27,.10);stroke-width:3}
+.pulladd .pa-arc{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:166.5;stroke-dashoffset:calc(166.5 * (1 - var(--p,0)))}
+.pulladd .pa-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;color:rgba(30,27,27,.55);transform:rotate(calc(var(--p,0) * 90deg));transition:color .15s}
+.pulladd .pa-label{height:20px;line-height:20px;font-size:13px;font-weight:500}
+.pulladd .pa-ghost{flex:0 0 auto;border-radius:4px;opacity:.6;box-shadow:0 1px 4px rgba(0,0,0,.12);margin-top:8px}
+.pulladd.ready .pa-glyph{color:var(--accent)} .pulladd.ready .pa-label{color:var(--accent)}
+/* add-page (phase one): breathing room under the title */
+.appanel.v1 .ph{margin-bottom:12px;padding-top:6px}
+/* Lite slider ticks (ui-kit Slider stepped): 2×8, radius full, centred on the track */
+.device .slider .track::after{display:none!important}
+.slider .track .tks{position:absolute;inset:0;pointer-events:none;z-index:1}
+.slider .track .tks em{position:absolute;top:50%;width:2px;height:8px;margin-top:-4px;border-radius:999px;background:rgba(120,120,128,.28);display:block}
+.slider .track .tks em.on{background:var(--accent)}
+.slider .track .tks em.hide{opacity:0}
+.device .slider .track b{z-index:2}
+/* panel sticky header: opaque enough that scrolled content never shows through; full-bleed */
+.scrollfade>:is(h4,.tch,.pph,.ph,.st,.stk-head,.vs-head){background:rgba(250,250,250,.97)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.device.android .scrollfade>:is(h4,.tch,.pph,.ph,.st,.stk-head,.vs-head){background:#F5F5F5!important}
+.pop.penset .pph{margin:-8px -20px 8px!important;padding:0 12px!important;height:48px}
+.pop.penset.scrollfade .pph{position:sticky;top:-8px}
+/* one sheet component: iOS ground #F2F2F7 (glass when short), Android white; one white Peru-radius button */
+.device.ios .vsheet{background:rgba(242,242,247,.92)!important}
+.device.ios .vsheet.solid{background:#F2F2F7!important}
+.device.android .vsheet{background:#fff!important}
+.vsheet .morebtn,.vsheet .popbtn.adv,.pop .morebtn,.pop.penset .popbtn.adv{height:48px!important;border-radius:14px!important;background:#fff!important;border:0!important;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 1px 2px rgba(16,24,40,.06)!important;font-size:15px!important;font-weight:500;color:#1e1b1b!important}
+.device.android .vsheet .morebtn,.device.android .vsheet .popbtn.adv,.device.android .pop .morebtn,.device.android .pop.penset .popbtn.adv{background:#F5F5F5!important;box-shadow:none!important}
+
 </style>
 </head>
 <body>
@@ -2144,7 +2179,7 @@ const PRESET56=['#000000','#454545','#707070','#9A9A9A','#C0C0C0','#DEDEDE','#FF
 const PEN_RANGE={pen:[0.1,2],ballpen:[0.1,2],brush:[0.1,2],pencil:[0.1,2],highlighter:[1,7.7],tape:[1,15.4]};
 function mkPenCfg(){const o={};for(const k in PEN_DEF)o[k]={slots:[...PEN_DEF[k].slots],style:['solid','solid','solid'],sel:0,colors:[...PEN_DEF[k].colors],ci:0};return o;}
 function mkTapeCfg(){return {slots:[...TAPE_DEF.slots],sel:0,colors:[...TAPE_DEF.colors],ci:0};}
-const I18N={'协作者':'Collaborators','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
+const I18N={'下拉添加页面':'Pull to add page','释放以添加页面':'Release to add page','协作者':'Collaborators','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
 '当前模板':'Current template','当前页之前':'Before this page','当前页之后':'After this page',
 '全部项目':'All items','在我的资料库中查看全部':'See all in My library','1 周前打开':'Opened 1w ago','2 天前打开':'Opened 2d ago',
 '页面导航':'Page nav','侧栏':'Sidebar','浮层 · Claude 式':'Floating · Claude-style',
@@ -2638,8 +2673,8 @@ function colorSlotBtn(c,i,on,act,sq,attr){
   return `<button class="cslot${sq?' sq':''}${on?' on':''}${act?' act':''}" data-${attr}="${i}" aria-pressed="${on}" aria-label="颜色"><span class="cring"><span class="cwell" style="background:${c}">${on?`<span class="cchev">${svg('chevDown')}</span>`:''}</span></span></button>`;}
 /* tiers.ts: 600 → 3 slots + 240 window · 512 → 1 + 240 · 448 → 1 + 176 · 316 → 1 + 44 · else compact */
 function penTier(avail){
-  if(avail>=600)return{slots:3,win:240};if(avail>=512)return{slots:1,win:240};
-  if(avail>=448)return{slots:1,win:176};if(avail>=316)return{slots:1,win:44};return{slots:1,win:44,compact:true};}
+  /* 10/3 Tom: no mid-width steps — full row on tablets, one slot + full palette on compact tablets, compact on phones */
+  if(avail>=520)return{slots:3,win:240};if(avail>=380)return{slots:1,win:240};return{slots:1,win:44,compact:true};}
 function penRowV1(avail){
   const cfg=S.penCfg[S.pen], tier=penTier(avail);
   const pens=['pen','ballpen','brush','highlighter','pencil'].map(pn=>tool(pn,S.pen===pn,'pen')).join('');
@@ -2811,7 +2846,7 @@ function railPopoverInner(){
     /* the preview is the pen's own stroke: a thick–thin ribbon whose contrast follows 笔锋 / 扁平度 */
     const th=2+tune.sharp/16, tn=Math.max(.8,th*(0.25+tune.flat/100*.5));
     const rib=`M14 40C40 12 62 12 84 34s44 22 70 4 42-24 52-18`;
-    return `<div class="pop penset" style="${panelStyle()};${pos};width:320px;color:#1e1b1b"><div class="pph"><button class="tbtn" data-act="close" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>${(T[S.pen]||{}).zh||'钢笔'}</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
+    return `<div class="pop penset" style="${panelStyle()};${pos};width:320px;color:#1e1b1b"><div class="pph"><button class="tbtn" data-act="close" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>${(T[S.pen]||{}).zh||'钢笔'}</h4><span style="width:44px"></span></div>
       <div class="pspreview"><svg viewBox="0 0 220 60" style="width:200px;overflow:visible"><path d="${rib}" fill="none" stroke="#1e1b1b" stroke-width="${th.toFixed(1)}" stroke-linecap="round" stroke-dasharray="70 40 110" opacity=".95"/><path d="${rib}" fill="none" stroke="#1e1b1b" stroke-width="${tn.toFixed(1)}" stroke-linecap="round"/></svg></div>
       ${sl('sharp','笔锋锐度')}${sl('pressure','压力灵敏度')}${sl('flat','扁平度')}${S.pen==='pen'?sl('angle','笔尖角度','deg',true):''}${sl('stable','稳定性')}
       <button class="popbtn adv" data-act="close">高级设置</button></div>`;}
@@ -3420,7 +3455,7 @@ function render(){
   const v1phone=v1&&phone&&!duo;                  /* 2824:94112 — undo leads the second row */
   const _dm=S.docMode[S.tabs[S.tab].n]; const roV1=v1&&!duo&&!duoPort&&!flexMode&&S.view!=='library'&&(_dm==='ro'||(phoneDevice()&&_dm!=='edit'))   /* 9/29: phone-CLASS devices open read-only in BOTH orientations (iPhone landscape 874 is tablet-width but still has no stylus) */; /* 第一版手机只读态 (Figma 3507-62075): no tool row until the user taps edit */
   const stShow=S.showStatus||(S.view==='library'&&!duo&&!duoPort&&!flexMode);   /* 9/29 Tom: the library page always shows the system status bar (Figma tablet library) */
-  const navH=duo?8:duoPort?(noStrip?15:24):(phone?(stShow?(compact?54:32):0):(stShow?(hClass==='compact'?20:32):0)),   /* status bar hidden by default; phones keep the island clearance */ tabH=noStrip?0:((compact||hClass==='compact')?44:52), toolH=(compact||flexMode||roV1)?0:60;
+  const navH=duo?8:duoPort?(noStrip?15:24):(phone?(stShow?(compact?54:32):0):(stShow?(hClass==='compact'?20:32):0)),   /* status bar hidden by default; phones keep the island clearance */ tabH=noStrip?0:(compact?44:52), toolH=(compact||flexMode||roV1)?0:60;
   const barGap=roV1?0:((noStrip&&!duo&&!duoPort)?11:3);   /* pill sits 6 inside its 60 row → 16 from the edge without a tab bar, 8 below the tab bar with one */
   const cTop=navH+tabH+toolH+barGap;
   const floatNav=false; /* 9/28: the floating (Claude-style) navigation branch is dropped */   /* iOS branch: Claude-style floating page navigation */
@@ -3529,7 +3564,7 @@ function render(){
       :`<div style="position:absolute;top:${navH+tabH}px;height:${BAR.ROW}px;left:${duo?0:canvasLeft}px;width:${duo?W:canvasW}px;z-index:4;background:${fill(t.toolbarBg,t.toolbarBg2,t.barGrad)}"></div>`;   /* on Duo the band runs under the column too */
     /* what the row must hold, and the order it gives things up when the width runs out */
     const SLOTW=S.dev!=='android'?48:44, pillOf=n=>n*SLOTW+4;
-    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:!rightCollapsed&&!duo,right:!duo,mic:true,layers:!duo,addPage:!duo,moreRow:false}; /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
+    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:!rightCollapsed&&!duo,right:!duo,mic:true,layers:!duo&&!phone,addPage:!duo,moreRow:false};   /* 10/3 Tom: layers exists from 600 up, no slot-count rule */ /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
     const need=(slots=10)=>(duo?0:((noStrip?pillOf(R.lib?2:1)+8:0)+(R.side?pillOf(1)+8:0)+pillOf(R.redo?2:1)))
       +BAR.GAP+(slots*SLOTW+18)+(R.mic?pillOf(1)+BAR.GAP:0)+BAR.GAP
       +(duo?0:((R.right?pillOf(1+(R.layers?1:0)+(R.addPage?1:0)+(R.moreRow?1:0))+(R.av?72:0)+8:0)+((noStrip&&!R.moreRow)?pillOf(2):0)));
@@ -3539,7 +3574,6 @@ function render(){
     if(need(8)>availW){R.redo=false;R.av=false;}   /* 9/29 Tom: redo and collaborators fold TOGETHER, one step */
     for(const k of ['lib','side']){ if(need(8)<=availW) break; R[k]=false; }
     const slotsVisible=()=>(availW-need(0))/SLOTW;   /* L1 tool slots the middle pill can show without scrolling */
-    if(slotsVisible()<4.5) R.layers=false;            /* 9/29 Tom: layers folds first… */
     if(slotsVisible()<4.5) R.addPage=false;           /* …then add page — only once fewer than 4.5 tools would stay visible; share never folds */   /* tools may scroll (Lite does); share / layers / recording / undo stay */
     if(!duo){ S.moreExtra=[...(R.right?[]:[['share','导出','share'],['layers','图层','layers']]),...(R.av?[]:[['collab','协作者','collab']]),...(R.right&&!R.layers?[['layers','图层','layers']]:[]),...(R.addPage?[]:[['addPage','添加页面','addpage']]),...((noStrip&&phone)?[['tabs','标签栏','tabmgr']]:[]),...(R.mic?[]:[['mic','录音','mic']])]; if(S.moreExtra.length) S.moreExtra.push('sep'); }
     const leftHTML=(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${R.lib?`<button class="tbtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库" style="color:${bandInk}"><span class="chip">${svg('panel')}</span></button>`:''}<button class="tbtn" data-act="home" aria-label="主页" style="color:${bandInk}"><span class="chip">${svg('home')}</span></button></div>`:'')
@@ -3550,7 +3584,7 @@ function render(){
           ${!R.redo?'':`<button class="tbtn" aria-label="重做" style="color:${bandInk}"><span class="chip">${svg('redo')}</span></button>`}</div>`);
     const rightHTML=((duo||!R.right)?'':`<div class="cap" style="${pill};color:${bandInk}">
           ${!R.av?'':`<button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown16')}</b></span></button>`}
-          ${R.addPage?tool('addPage',st==='addpage'):''}${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${R.layers?tool('layers',st==='layers'):''}</div>`)+(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${phone?'':tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:'');   /* hidden-tabs scheme: no strip, so the row carries tabs + ⋯ */
+          ${R.addPage?tool('addPage',st==='addpage'):''}${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${R.layers?tool('layers',st==='layers'):''}</div>`)+(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${phone?'':tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more').split(svg('more')).join(svg('dotsV'))}</div>`:'');   /* hidden-tabs scheme: no strip, so the row carries tabs + ⋮ (same glyph as the strip) */
     const cols=[leftHTML?'auto':'','minmax(0,1fr)',rightHTML?'auto':''].filter(Boolean).join(' ');
     const PADX=duo?20:BAR.PAD;   /* Duo layout margin: 20pt */
     inner+=`<div class="toolrow" style="top:${navH+tabH+barGap}px;height:${BAR.ROW}px;left:${canvasLeft+PADX}px;width:${canvasW-PADX-(duo?9:PADX)-statusReserve}px;gap:${BAR.GAP}px;grid-template-columns:${cols}">
@@ -3584,7 +3618,7 @@ function render(){
       else body=railSecondary(active);}
     if(active==='ruler'||active==='mic'||active==='idle') body='';      /* the ruler has no secondary options; 'idle' (待编辑模式) has no tool */
     if(secHidden(active)) body='';                     /* collapsed only if THIS tool was collapsed by tapping it again */
-    const pillHTML=body?`<div class="cap secpill${active==='stickyNote'?' sticky':''}" style="${pill};color:${INK};max-width:${Math.min(LITE.SEC_MAX,Math.round(v1phone?canvasW-LITE.COMPACT_LEFT-12:canvasW-2*LITE.PAD))}px">
+    const pillHTML=body?`<div class="cap secpill${active==='stickyNote'?' sticky':''}" style="${pill};color:${INK};max-width:${Math.round(v1phone?canvasW-LITE.COMPACT_LEFT-12:canvasW-24)}px">
           <div class="fadewrap" style="--fadec:${fadeC}"><div class="cap hscroll" style="min-width:0">${body}</div></div></div>`:'';
     if(v1phone){
       /* 2824:94112: the undo circle leads the row at 12; the option pill starts at 68 (16+44+8) */
@@ -3688,7 +3722,8 @@ function render(){
     if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='mic'&&S.rec) men+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTopV+8}px`);
     /* tool panels: popover ≥600 wide, sheet below (or in a compact-height posture); menus stay menus (UIMenu on iOS) */
-    inner+=(v1phone?sheetWrap(pan+men):(duoSheet?duoSheetWrap(pan,W,H,hClass==='compact')+men:pan+men))+share+extraDialogs({W,H,phone,duo,duoSheet,duoPort,hClass});
+    const useSheet=v1phone||(v1&&!duo&&phoneDevice());   /* 10/3 Tom: a phone in landscape still gets sheets, not a menu taller than the window */
+    inner+=(useSheet?sheetWrap(pan+men):(duoSheet?duoSheetWrap(pan,W,H,hClass==='compact')+men:pan+men))+share+extraDialogs({W,H,phone,duo,duoSheet,duoPort,hClass});
   } else if(!compact){
     RAIL_POS=null;
     inner+=railFor(canvasW);
@@ -3876,7 +3911,7 @@ function render(){
     iPad and iPhone share one design driven by width; Duo is adapted separately; Android is identical with Framed raised capsules and solid panels, no translucency.
     Title cap ${titleMax}pt · page sidebar ${sidebarPush?'push':'overlay'} · drag the corner to resize.</span>`;
   const dev=stage.querySelector('.device');
-  bind(dev,compact); clampPopovers(dev,W,H); dev.querySelectorAll('.vsheet').forEach(v=>v.classList.toggle('solid',v.offsetHeight>H*0.6));   /* 10/2 Tom: tall sheets go solid, short ones stay glass (iOS print options vs share sheet) */
+  bind(dev,compact); clampPopovers(dev,W,H); paintTicks(dev); dev.querySelectorAll('.vsheet').forEach(v=>v.classList.toggle('solid',v.offsetHeight>H*0.6));   /* 10/2 Tom: tall sheets go solid, short ones stay glass (iOS print options vs share sheet) */
   bindZoom(dev); bindCanvas(dev); bindKeyboard(dev); bindTextRow(dev); bindPageMenu(dev); bindSliders(dev);
   bindTouchDot(dev);
 }
@@ -3916,7 +3951,7 @@ function bindSliders(root){
       const em=tr.closest('.slider')?tr.closest('.slider').querySelector('.top em'):(tr.closest('.wcard')?tr.closest('.wcard').querySelector('.wlab em'):null);
       let last=null;
       const at=e=>{const r=tr.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)); last=f;
-        if(knob){ knob.style.left=(f*100)+'%'; knob.style.setProperty('--p',(f*100)+'%'); } if(fill) fill.style.width=(f*100)+'%'; if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
+        if(knob){ knob.style.left=(f*100)+'%'; knob.style.setProperty('--p',(f*100)+'%'); } if(fill) fill.style.width=(f*100)+'%'; if(tr.classList.contains('track')) paintTicks(tr.closest('.slider').parentElement||tr.closest('.slider')); if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
         if(em&&tr.dataset.gslider) em.textContent=Math.round(f*100)+'%';};
       tr.classList.add('drag'); at(ev); try{tr.setPointerCapture(ev.pointerId);}catch(_){}
       const mv=e=>{e.preventDefault(); at(e);};
@@ -4297,12 +4332,15 @@ function bindZoom(root){
     raf=requestAnimationFrame(()=>{render();});};
   /* Lite: pulling past the end of the document adds a page. Here: wheel/trackpad overscroll at the bottom fills a hint, then adds */
   let pull=0, pullT=0;
-  const pullHint=()=>{let h=cv.querySelector('.pulladd'); if(!h){cv.insertAdjacentHTML('beforeend','<div class="pulladd"><i></i><span>下拉新建页面</span></div>');h=cv.querySelector('.pulladd');} return h;};
+  const pullHint=()=>{let h=cv.querySelector('.pulladd'); if(!h){ const nb=NB(); const pw=(cv.querySelector('.paper')||{}).offsetWidth||400; const gw=Math.round(pw*0.8), gh=Math.round(gw*4/3); cv.insertAdjacentHTML('beforeend',`<div class="pulladd"><div class="pa-ring"><svg viewBox="0 0 56 56"><circle class="pa-bg" cx="28" cy="28" r="26.5"/><circle class="pa-arc" cx="28" cy="28" r="26.5"/></svg><span class="pa-glyph">+</span></div><span class="pa-label">下拉添加页面</span><div class="pa-ghost" style="width:${gw}px;height:${gh}px;background-color:${nb.paper||'#fff'};background-image:${(window.RULE_MAP||{})[nb.rule]||'none'};background-size:${(window.RULESZ_MAP||{})[nb.rule]||'auto'}"></div></div>`); h=cv.querySelector('.pulladd'); } return h;};
+  const setPull=(f)=>{ const h=pullHint(); h.style.setProperty('--p',f.toFixed(3)); const ready=f>=1; h.classList.toggle('ready',ready); const lab=h.querySelector('.pa-label'); if(lab) lab.textContent=ready?'释放以添加页面':'下拉添加页面'; return h; };
+  cv.addEventListener('gnpull',ev=>{ pull=Math.min(160,ev.detail.over); setPull(pull/160); });
+  cv.addEventListener('gnpullend',ev=>{ if(pull>=160&&!readMode()){NB().pages++;NB().page=NB().pages-1;pull=0;render();scrollToPage();} else {pull=0;const h=cv.querySelector('.pulladd');if(h)h.remove();} });
   cv.addEventListener('wheel',ev=>{
     if(ev.ctrlKey||ev.metaKey) return;
     const hh=(cv.querySelector('.pulladd')||{}).offsetHeight||0; const atEnd=cv.scrollTop+cv.clientHeight>=cv.scrollHeight-2-(hh?hh+12:0);
     if(!atEnd||ev.deltaY<=0){pull=0;const h=cv.querySelector('.pulladd');if(h)h.remove();return;}
-    pull=Math.min(160,pull+ev.deltaY); const h=pullHint(); h.style.setProperty('--p',(pull/160).toFixed(2)); h.classList.toggle('ready',pull>=160);
+    pull=Math.min(160,pull+ev.deltaY); setPull(pull/160);
     clearTimeout(pullT); pullT=setTimeout(()=>{if(pull>=160&&!readMode()){NB().pages++;NB().page=NB().pages-1;pull=0;render();scrollToPage();} /* 阅读模式不新建页面 */ else {pull=0;const h2=cv.querySelector('.pulladd');if(h2)h2.remove();}},260);
   },{passive:true});
   cv.addEventListener('wheel',ev=>{
@@ -4576,6 +4614,8 @@ function reconcileState(){
 }
 /* 规则文档: a popover never crosses the screen edge — after layout, anything floating is pushed back inside with a 12pt buffer (menus, panels, the object menu) */
 function fadeEdges(el){ const top=el.scrollTop>4, bot=el.scrollTop+el.clientHeight<el.scrollHeight-4; el.dataset.fade=(top?'t':'')+(bot?'b':''); }
+/* Lite ui-kit Slider (stepped): 2×8 ticks at 0/25/50/75/100 centred on the 4pt track, accent when ≤ value, end tick hides under a parked thumb */
+function paintTicks(root){ root.querySelectorAll('.slider .track').forEach(tr=>{ let ticks=tr.querySelector('.tks'); if(!ticks){ ticks=document.createElement('span'); ticks.className='tks'; ticks.innerHTML=[0,25,50,75,100].map(v=>`<em style="left:clamp(0px,calc(${v}% - 1px),calc(100% - 2px))" data-v="${v}"></em>`).join(''); tr.appendChild(ticks); } const fill=tr.querySelector('i'); const f=fill?parseFloat(fill.style.width)||0:0; ticks.querySelectorAll('em').forEach(e=>{ const v=+e.dataset.v; e.classList.toggle('on',v<=f); e.classList.toggle('hide',(v===0&&f<=0)||(v===100&&f>=100)); }); }); }
 function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; const availH=H-12-Math.max(12,t0); el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; if(h0>availH){ /* 9/30 Tom: too tall for the window → the panel keeps its anchor and SHRINKS to the 12pt bottom buffer, scrolls inside, fades its edges */ el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
 function toHexColor(c){ if(!c) return null; if(c[0]==='#') return c.length===4?'#'+[...c.slice(1)].map(x=>x+x).join(''):c; const m=c.match(/\d+(\.\d+)?/g); if(!m||m.length<3) return null; return '#'+m.slice(0,3).map(v=>Math.round(+v).toString(16).padStart(2,'0')).join(''); }
 function bind(root,compact){
@@ -4586,8 +4626,8 @@ function bind(root,compact){
     const mv=e=>{ lastY=e.clientY; if(!active){ if(Math.hypot(e.clientX-x0,e.clientY-y0)>8) clearTimeout(tm); return; } e.preventDefault(); setP(e.clientY); };
     const up=()=>{ clearTimeout(tm); if(!active) return; active=false; const sl=sb.querySelector('.pgslide'); if(sl) sl.remove(); scrollToPage(); setTimeout(()=>{S._pgSlid=false;},50); };
     window.addEventListener('pointermove',mv,{passive:false}); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); } }
-  /* 待编辑模式 ('idle'): a finger on the canvas scrolls the page instead of drawing */
-  { const cv=root.querySelector('#cv'); if(cv){ cv.addEventListener('pointerdown',ev=>{ if(S.st!=='idle'||S.picking||ev.button>0) return; if(ev.target.closest('[data-act],[data-tool],.objmenu,.pgpill')) return; const y0=ev.clientY,x0=ev.clientX,st0=cv.scrollTop,sl0=cv.scrollLeft; const zf=(root.getBoundingClientRect().width/S.w)||1; const mv=e=>{cv.scrollTop=st0-(e.clientY-y0)/zf; cv.scrollLeft=sl0-(e.clientX-x0)/zf;}; const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);}; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); },true); } }
+  /* 待编辑模式 ('idle'): a finger on the canvas scrolls the page instead of drawing; pulling past the end opens the add-page gap (Lite pull-to-add) */
+  { const cv=root.querySelector('#cv'); if(cv){ cv.addEventListener('pointerdown',ev=>{ if(S.st!=='idle'||S.picking||ev.button>0) return; if(ev.target.closest('[data-act],[data-tool],.objmenu,.pgpill')) return; const y0=ev.clientY,x0=ev.clientX,st0=cv.scrollTop,sl0=cv.scrollLeft; const zf=(root.getBoundingClientRect().width/S.w)||1; let over=0; const mv=e=>{ const want=st0-(e.clientY-y0)/zf; const max=cv.scrollHeight-cv.clientHeight; cv.scrollTop=Math.min(want,max); cv.scrollLeft=sl0-(e.clientX-x0)/zf; over=Math.max(0,want-max); if(over>0&&!readMode()){ cv.dispatchEvent(new CustomEvent('gnpull',{detail:{over}})); } }; const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up); if(over>0) cv.dispatchEvent(new CustomEvent('gnpullend',{detail:{over}}));}; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); },true); } }
   /* eyedropper: while picking, the loupe follows the pointer and samples the element underneath (stroke → fill → background) */
   root.addEventListener('pointermove',e=>{ if(!S.picking) return; const lp=root.querySelector('.loupe'); if(!lp) return; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1; lp.style.left=((e.clientX-R0.left)/zf-44)+'px'; lp.style.top=((e.clientY-R0.top)/zf-44)+'px'; const el=document.elementFromPoint(e.clientX,e.clientY); if(!el) return; const st=el.getAttribute&&el.getAttribute('stroke'), fl=el.getAttribute&&el.getAttribute('fill'); let c=(st&&st!=='none'&&st!=='currentColor')?st:((fl&&fl!=='none'&&fl!=='currentColor')?fl:getComputedStyle(el).backgroundColor); if(c&&c!=='rgba(0, 0, 0, 0)'&&c!=='transparent'){ S._pickColor=toHexColor(c)||c; lp.style.setProperty('--pick',S._pickColor); } },true);
   root.addEventListener('pointerdown',e=>{ if(!S.picking) return; const lp=root.querySelector('.loupe'); if(!lp) return; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1; lp.style.left=((e.clientX-R0.left)/zf-44)+'px'; lp.style.top=((e.clientY-R0.top)/zf-44)+'px'; const el=document.elementFromPoint(e.clientX,e.clientY); if(!el) return; const st=el.getAttribute&&el.getAttribute('stroke'), fl=el.getAttribute&&el.getAttribute('fill'); let c=(st&&st!=='none'&&st!=='currentColor')?st:((fl&&fl!=='none'&&fl!=='currentColor')?fl:getComputedStyle(el).backgroundColor); if(c&&c!=='rgba(0, 0, 0, 0)'&&c!=='transparent'){ S._pickColor=toHexColor(c)||c; lp.style.setProperty('--pick',S._pickColor); } },true);
