@@ -1897,6 +1897,53 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .ptr2.l{width:10px;height:20px;clip-path:polygon(100% 0,0 50%,100% 100%)}
 .device.ios .ptr2.l::before{transform:translate(-50%,-50%) translateX(3px) rotate(45deg)}
 .menu.appanel.v1.fromside{width:344px!important;max-width:calc(100% - 16px)!important;min-width:0!important}
+
+/* ═══ 10/6 · round 19 ═══ */
+/* pull-to-add lives under every other UI; landing = indicator fades, the ghost grows into the real page */
+.pulladd{z-index:0!important}
+.pulladd .pa-ring,.pulladd .pa-label{transition:opacity .18s}
+.pulladd.landing .pa-ring,.pulladd.landing .pa-label{opacity:0}
+.pulladd .pa-ghost{transition:transform .22s ease-out,opacity .22s ease-out;transform-origin:top center}
+.pulladd.landing .pa-ghost{transform:scale(1.25);opacity:1!important}
+/* text tool L2: the capsule breathes around the chips */
+.secpill:has(.chipctl){height:48px!important;padding:0 6px!important}
+.textrail .chipctl{margin:2px 0!important}
+/* colour wheel (Lite AdvancedColorPicker · Peru ColorPicker Touch Custom): 266 ring · 34 band · 134 S-V plane · 42 / 24 handles */
+.cp-wheelwrap{display:flex;justify-content:center;margin:12px 0 20px}
+.cp-wheel{position:relative;width:266px;height:266px;touch-action:none}
+.cp-ring{position:absolute;inset:0;border-radius:999px;background:conic-gradient(from 0deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);-webkit-mask:radial-gradient(circle at 50% 50%,transparent 98.5px,#000 99.5px);mask:radial-gradient(circle at 50% 50%,transparent 98.5px,#000 99.5px)}
+.cp-rthumb{position:absolute;width:42px;height:42px;border-radius:999px;border:4px solid #fff;box-sizing:border-box;box-shadow:0 1px 6px rgba(0,0,0,.24);transform:translate(-50%,-50%);pointer-events:none}
+.cp-plane{position:absolute;left:66px;top:66px;width:134px;height:134px;border-radius:8px}
+.cp-pthumb{position:absolute;width:24px;height:24px;border-radius:999px;border:4px solid #fff;box-sizing:border-box;box-shadow:0 1px 6px rgba(0,0,0,.24);transform:translate(-50%,-50%);pointer-events:none}
+.cp-row{display:flex;align-items:center;gap:12px}
+.cp-addbtn{width:48px;height:48px;border-radius:999px;background:none;display:flex;align-items:center;justify-content:center;color:#1e1b1b;flex:0 0 auto} .cp-addbtn svg{width:24px;height:24px}
+.cp-hexin{flex:1;height:48px;border-radius:999px;background:#fff;box-shadow:0 0 0 1px #E4E4E7;display:flex;align-items:center;gap:10px;padding:0 16px 0 12px;box-sizing:border-box;cursor:text}
+.cp-hexin .cp-swatch{width:24px;height:24px;border-radius:999px;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.14);flex:0 0 auto}
+.cp-hexin i{font-style:normal;color:rgba(64,59,59,.6);font-size:16px}
+.cp-hexin input{flex:1;border:0;background:none;font:inherit;font-size:16px;color:#1e1b1b;outline:none;min-width:0;text-transform:uppercase;letter-spacing:.02em}
+/* keyboard accessory (Goodnotes iOS): one formatting pill left, round dismiss right */
+.kbwrap .textbar.fmt:not(.kbdone){position:relative!important;left:0;right:auto!important;width:max-content!important;max-width:calc(100% - 84px);display:inline-flex;padding:0 6px!important;gap:2px;margin:0 0 0 8px;overflow:hidden}
+.kbwrap .textbar.fmt.right{display:none!important}
+/* iOS 27 switch: 51×31 pill, glass knob (soft top light, deeper drop shadow), tint = accent */
+.device.ios .sw i{background:linear-gradient(180deg,#FFFFFF 0%,#F3F3F6 100%)!important;box-shadow:0 3px 8px rgba(0,0,0,.18),0 1px 1px rgba(0,0,0,.10),inset 0 1px 1px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,0,0,.05)!important}
+/* eraser 触发压力 = the pen-settings slider component, typography of the eraser rows */
+.spanel .slider.eprs{margin:14px 0 0} .spanel .slider.eprs .top{font-size:16px;margin-bottom:14px;align-items:center} .spanel .slider.eprs .top em{font-family:inherit;font-size:15px;color:rgba(64,59,59,.6)}
+/* shapes 线条样式 panel (Lite StrokeSettingsPanel): tiles · 线条粗细 slider · 端点 */
+.shapestroke .st.sub{margin-top:18px;text-align:left;font-size:14px;color:rgba(64,59,59,.7)}
+.shapestroke .eprow{display:flex;align-items:center;gap:8px;margin-top:8px}
+.shapestroke .epgrp{display:flex;gap:2px}
+.shapestroke .epc{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#1e1b1b;background:none}
+.shapestroke .epc[aria-pressed="true"]{background:rgba(120,120,128,.14)}
+.shapestroke .epc svg{width:24px;height:24px}
+.shapestroke .epline{flex:1;height:2px;background:rgba(30,27,27,.25);border-radius:1px}
+/* pen advanced settings page */
+.padv .padv-list{padding:4px 0 8px}
+.padv .orow2{padding:12px 0}
+.padv .orow2+.orow2{border-top:1px solid rgba(30,27,27,.08)}
+.padv .tg{display:flex;align-items:center;justify-content:space-between;min-height:32px}
+.padv .l{font-size:16px} .padv .d{font-size:13px;color:rgba(64,59,59,.6);margin-top:2px;padding-right:64px}
+.vsheet .pop.penset.padv>.pph{display:flex!important;height:44px;margin:0 0 4px!important;padding:0!important}
+.vsheet .pop.penset.padv>.pph h4{display:none}
 </style>
 </head>
 <body>
@@ -2252,14 +2299,14 @@ const secHidden=(a)=>{const k=a||ACTIVE_FOR[S.st]||S.st; return !!(S.secHideBy&&
 const readMode=()=>{const dm=S.docMode[(S.tabs[S.tab]||{}).n]; return S.version==='v1'&&S.view!=='library'&&(dm==='ro'||(S.w<600&&phoneDevice()&&dm!=='edit'));};
 const STATES=[['writing','笔'],['tape','胶带'],['tapeMode','胶带 · 绘制模式'],['tapeWidth','胶带 · 宽度'],
   ['penWidth','笔头粗细'],['eraser','橡皮'],['eraserType','橡皮 · 类型'],['eraserSet','橡皮擦设置'],
-  ['lasso','套索'],['lassoScope','套索 · 范围'],['textbox','文本'],['textColor','文本 · 颜色'],['tbStyle','文字样式'],['tbList','列表'],['stickyNote','便签'],['stickyColor','便签 · 颜色'],['image','图片'],
+  ['lasso','套索'],['lassoScope','套索 · 范围'],['shapeStroke','形状 · 线条样式'],['shapeColor','形状 · 颜色'],['textbox','文本'],['textColor','文本 · 颜色'],['tbStyle','文字样式'],['tbList','列表'],['stickyNote','便签'],['stickyColor','便签 · 颜色'],['image','图片'],
   ['shapes','形状'],['laser','激光笔'],['laserSet','激光笔 · 设置'],['laserColor','激光笔 · 颜色'],['colorpop','颜色面板'],['penset','笔设置'],['mic','录音'],['layers','图层'],
   ['pagedir','翻页方向'],
   ['export','导出'],['more','更多'],
   ['ro','只读态（compact）'],['l1','主工具栏（compact）'],['pen2','笔 L2（compact）'],['pentypes','笔型 L3（compact）'],
   ['insert','＋ 菜单（compact）'],['text-edit','文本 · 输入（compact）'],['text-sel','文本 · 选中（compact）'],['text-obj','文本 · 对象（compact）']];
 /* keeps the rail and the L1 highlight alive while an L3 menu is open */
-const ACTIVE_FOR={stickyColor:'stickyNote',textColor:'textbox',tbStyle:'textbox',tbList:'textbox',tapeColor:'tape',lassoScope:'lasso',eraserType:'eraser',eraserSet:'eraser',colorpop:'writing',
+const ACTIVE_FOR={stickyColor:'stickyNote',textColor:'textbox',tbStyle:'textbox',tbList:'textbox',tapeColor:'tape',lassoScope:'lasso',eraserType:'eraser',eraserSet:'eraser',colorpop:'writing',shapeStroke:'shapes',shapeColor:'shapes',
   penset:'writing',penWidth:'writing',tapeMode:'tape',tapeWidth:'tape',laserSet:'laser',laserColor:'laser',pen2:'writing',pentypes:'writing',insert:'plus',
   'text-edit':'textbox','text-sel':'textbox','text-obj':'textbox'};
 const COMPACT_STATES=['ro','l1','pen2','pentypes','insert','text-edit','text-sel','text-obj'];
@@ -2456,6 +2503,15 @@ function weightBtns(n){const idx=n===1?[S.weight]:[0,1,2];
 function strokeWidthIcon(w){const L=[[3.5,20.5,5,1],[4.25,19.76,10,2.5],[5.5,18.5,17,5]];
   return `<svg viewBox="0 0 24 24" fill="none">${L.map(([x1,x2,y,sw],i)=>
     `<path d="M${x1} ${y}L${x2} ${y}" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" opacity="${i===w?1:.26}"/>`).join('')}</svg>`;}
+/* shapes L2 (Lite StrokeSettingsPanel): its own stroke-style / colour states — the pen's panels are never borrowed */
+function shapeStrokeBtn(){ const on=S.st==='shapeStroke'; return `<button class="wbtn" data-act="shapeStroke" aria-pressed="${on}" aria-label="线条样式" style="color:${activeInk(on)}"><span class="wr" style="${activeChip(on)}">${strokeWidthIcon(S.weight)}</span></button>`; }
+function shapeColorBtn(){ const c=S.shapeColor||COLORS[S.color], on=S.st==='shapeColor'; return `<button class="swatch" data-act="shapeColor" aria-pressed="${on}" aria-label="颜色"><span class="ring" style="${activeChip(on)}"><span class="well" style="background:${c}">${svg('chevDown')}</span></span></button>`; }
+const EP_ICON={none:()=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12h16"/></svg>',arrow:s=>s==='start'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5"/><path d="M10 7l-5 5 5 5"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M14 7l5 5-5 5"/></svg>',filledArrow:s=>s==='start'?'<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 12H9" fill="none"/><path d="M10 7l-6 5 6 5z"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12h11" fill="none"/><path d="M14 7l6 5-6 5z"/></svg>'};
+function shapeStrokePop(pos){ const w=S.shapeW==null?40:S.shapeW, ls=S.shapeLine||'solid'; const ep=side=>['none','arrow','filledArrow'].map(k=>`<button class="epc" data-ep="${side}:${k}" aria-pressed="${(S[side==='start'?'shapeArrowS':'shapeArrowE']||'none')===k}" aria-label="${k}">${EP_ICON[k](side)}</button>`).join('');
+  return `<div class="spanel wcard shapestroke" data-anchor='[data-act="shapeStroke"]' style="${panelStyle()};${pos};color:#1e1b1b;width:320px"><div class="st">线条样式</div>
+    <div class="lstiles">${[['solid','实线','strokeSolid'],['dashed','虚线','strokeDashed'],['dotted','点线','strokeDotted']].map(([k,l,ic])=>`<button class="lst${ls===k?' on':''}" data-shapeline="${k}">${svg(ic)}<span>${l}</span></button>`).join('')}</div>
+    <div class="slider"><div class="top"><span>线条粗细</span><em>${(0.5+w/100*7.5).toFixed(1)}pt</em></div><div class="track ticks" data-sslider="shapeW"><i style="width:${w}%"></i><b style="left:${w}%;--p:${w}%"></b></div></div>
+    <div class="st sub">端点</div><div class="eprow"><div class="epgrp">${ep('start')}</div><span class="epline"></span><div class="epgrp">${ep('end')}</div></div></div>`; }
 function strokeWidthBtn(){
   return `<button class="wbtn" data-act="penWidth" aria-pressed="true" aria-label="笔头粗细" style="color:${activeInk(true)}"><span class="wr" style="${activeChip(true)}">${strokeWidthIcon(S.weight)}</span></button>`;}
 /* tape width — dark bars, rounded-square halo (1326:14513) */
@@ -2867,11 +2923,18 @@ function textColorPanel(pos){const cur=(S.tbColor||'#111213').toLowerCase();
       <button class="tcsw add" data-act="close" aria-label="添加颜色"><span>${svg('plus')}</span></button></div></div>`;
 }
 /* Peru ColorPicker Touch · Page=Custom (26880:18697): hue strip · saturation/brightness field · hex field · 添加 */
-function customColorPage(pos,kind){ const hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri; const hex=hslToHex(hue,sat,bri); return `<div class="pop presetp custom" ${kind==='sticky'?`data-anchor='[data-act="stickyColor"]'`:''} style="${panelStyle()};${pos};color:#1e1b1b;width:360px"> <div class="pph"><button class="tbtn" data-act="cpback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>自定颜色</h4><span></span></div> <div class="cp-field" data-cpfield="1" style="background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))"><b style="left:${sat}%;top:${100-bri}%;background:${hex}"></b></div> <div class="cp-hue" data-cphue="1"><b style="left:${hue/3.6}%;background:hsl(${hue} 100% 50%)"></b></div> <div class="cp-hexrow"><span class="cp-swatch" style="background:${hex}"></span><span class="cp-hex"><i>#</i>${hex.slice(1).toUpperCase()}</span></div> <button class="morebtn primary" data-cpadd="${hex}">${svg('plus')}<span>添加颜色</span></button></div>`; }
+function customColorPage(pos,kind){ const hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri; const hex=hslToHex(hue,sat,bri); const a=(hue-90)*Math.PI/180, cx=133+116*Math.cos(a), cy=133+116*Math.sin(a);
+  const anchor=kind==='sticky'?`data-anchor='[data-act="stickyColor"]'`:kind==='text'?`data-anchor='[data-tb="color"]'`:kind==='shape'?`data-anchor='[data-act="shapeColor"]'`:'';
+  return `<div class="pop presetp custom" ${anchor} style="${panelStyle()};${pos};color:#1e1b1b;width:360px">
+    <div class="pph"><button class="tbtn" data-act="cpback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>自定颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
+    <div class="cp-wheelwrap"><div class="cp-wheel"><div class="cp-ring"></div><b class="cp-rthumb" style="left:${cx.toFixed(1)}px;top:${cy.toFixed(1)}px;background:hsl(${hue} 100% 50%)"></b>
+      <div class="cp-plane" style="background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))"><b class="cp-pthumb" style="left:${sat}%;top:${100-bri}%;background:${hex}"></b></div></div></div>
+    <div class="cp-row"><button class="cp-addbtn" data-cpadd="${hex}" aria-label="添加到预设">${svg('plus')}</button><label class="cp-hexin"><span class="cp-swatch" style="background:${hex}"></span><i>#</i><input value="${hex.slice(1).toUpperCase()}" maxlength="6" data-cphex="1" spellcheck="false" autocomplete="off"></label></div></div>`; }
+function hexToHsl(hex){ const h=hex.replace('#',''); const r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255; const mx=Math.max(r,g,b),mn=Math.min(r,g,b); let hh=0,ss=0; const l=(mx+mn)/2; if(mx!==mn){ const d=mx-mn; ss=l>.5?d/(2-mx-mn):d/(mx+mn); hh=mx===r?((g-b)/d+(g<b?6:0)):mx===g?((b-r)/d+2):((r-g)/d+4); hh*=60; } return [Math.round(hh),Math.round(ss*100),Math.round(l*100)]; }
 function hslToHex(h,s,l){ s/=100; l/=100; const k=n=>(n+h/30)%12, a=s*Math.min(l,1-l), f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1))); return '#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join(''); }
 function presetPanel(pos,kind){
-  const tape=kind==='tape', cfg=tape?S.tapeCfg:S.penCfg[S.pen], cur=(cfg.colors[cfg.ci]||'').toLowerCase(), list=(tape?TAPE_PALETTE:PRESET56).slice(0,28); /* Peru ColorPicker Touch (26892:378) grid at 7 wide; 4 rows like 极速版 */ if(S.cpCustom) return customColorPage(pos,kind);
-  return `<div class="pop presetp" style="${panelStyle()};${pos};color:#1e1b1b;width:360px">
+  const tape=kind==='tape', text=kind==='text', shape=kind==='shape', cfg=tape?S.tapeCfg:S.penCfg[S.pen], cur=(text?(S.tbColor||'#111213'):shape?(S.shapeColor||COLORS[S.color]):(cfg.colors[cfg.ci]||'')).toLowerCase(), list=(tape?TAPE_PALETTE:PRESET56).slice(0,28); /* Peru ColorPicker Touch (26892:378) grid at 7 wide; 4 rows like 极速版 */ if(S.cpCustom) return customColorPage(pos,kind);
+  return `<div class="pop presetp${text?' textp':''}${shape?' shapep':''}" ${text?`data-anchor='[data-tb="color"]'`:shape?`data-anchor='[data-act="shapeColor"]'`:''} style="${panelStyle()};${pos};color:#1e1b1b;width:360px">
     <div class="pph"><span></span><h4>预设颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
     <div class="pgrid">${list.map(c=>`<button class="psw${tape?' sq':''}" data-preset="${c}" aria-label="${c}"><span style="background:${c}">${c.toLowerCase()===cur?`<span class="cchev">${svg('check')}</span>`:''}</span></button>`).join('')}</div>
     <button class="morebtn" data-act="cpmore">${svg('plus')}<span>${tape?'更多样式':'更多颜色'}</span></button></div>`;
@@ -2930,8 +2993,8 @@ function railPopoverInner(){
     ${ERASER_OPTS.map(([k,l,desc],i)=>`<div class="orow2${i?' div':''}">
       <div class="tg" style="padding:0"><span class="l">${l}</span><button class="sw" data-eo="${k}" aria-pressed="${S[k]}" aria-label="${l}"><i></i></button></div>
       <div class="d">${desc}</div>
-      ${k==='ePressure'&&S.ePressure?`<div class="prow"><div class="pl" style="display:flex;justify-content:space-between;align-items:center"><span>触发压力</span><em style="font-style:normal;color:rgba(64,59,59,.6)">${S.ePressureVal}%</em></div>
-        <div class="ptrack" data-pslider="1"><i style="width:${S.ePressureVal}%"></i><b style="left:${S.ePressureVal}%;--p:${S.ePressureVal}%"></b></div>
+      ${k==='ePressure'&&S.ePressure?`<div class="slider eprs"><div class="top"><span>触发压力</span><em>${S.ePressureVal}%</em></div>
+        <div class="track ticks" data-eslider="ePressure"><i style="width:${S.ePressureVal}%"></i><b style="left:${S.ePressureVal}%;--p:${S.ePressureVal}%"></b></div>
         <div class="pends"><span>较轻</span><span>较重</span></div></div>`:''}</div>`).join('')}</div>`;
   if(S.st==='tapeMode') return `<div class="spanel" style="${panelStyle()};${pos};color:#1e1b1b;width:226px">
     <div class="st">胶带绘制</div>
@@ -2945,7 +3008,9 @@ function railPopoverInner(){
     if(S.st==='colorpop')  return presetPanel(pos,'pen');
     if(S.st==='stickyColor') return stickyColorPanel(pos);
     if(S.st==='tbStyle') return tbMenu(pos,'style'); if(S.st==='tbList') return tbMenu(pos,'list');
-    if(S.st==='textColor') return textColorPanel(pos);
+    if(S.st==='textColor') return presetPanel(pos,'text');   /* 10/6 Tom: same colour picker as pen / tape / laser / sticky */
+    if(S.st==='shapeStroke') return shapeStrokePop(pos);
+    if(S.st==='shapeColor') return presetPanel(pos,'shape');
   }
   if(S.st==='tapeWidth') return widthCard('胶带宽度',TAPE_MM[S.tapeW].toFixed(2)+'mm',S.tapeW/4*100,'tslider',pos);
   if(S.st==='penWidth')  return widthCard('笔头粗细',PEN_MM[S.weight].toFixed(2)+'mm',S.weight/2*100,'wslider',pos);
@@ -2964,6 +3029,7 @@ function railPopoverInner(){
   if(S.st==='colorpop') return `<div class="pop" style="${panelStyle()};${pos};color:#1e1b1b">
     <h4>预设颜色</h4><div class="grid">${PALETTE.map(c=>`<button data-pal="${c}" style="background:${c}" aria-label="${c}"></button>`).join('')}</div>
     <button class="popbtn" data-act="close">＋ 自定义颜色</button></div>`;
+  if(S.st==='penset'&&S.penAdv) return penAdvPage(pos);
   if(S.st==='penset'){const tune=S.penTune[S.pen]||(S.penTune[S.pen]={...PEN_TUNE_DEF});
     const sl=(k,n,unit,info)=>{const v=tune[k]; return `<div class="slider"><div class="top"><span>${n}${info?`<i class="info">i</i>`:''}</span><em>${unit==='deg'?Math.round(v*1.8)+'°':v+'%'}</em></div><div class="track ticks" data-gslider="${k}"><i style="width:${v}%"></i><b style="left:${v}%;--p:${v}%"></b></div></div>`;};
     /* the preview is the pen's own stroke: a thick–thin ribbon whose contrast follows 笔锋 / 扁平度 */
@@ -2972,10 +3038,14 @@ function railPopoverInner(){
     return `<div class="pop penset" style="${panelStyle()};${pos};width:320px;color:#1e1b1b"><div class="pph"><button class="tbtn" data-act="close" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>${(T[S.pen]||{}).zh||'钢笔'}</h4><span style="width:44px"></span></div>
       <div class="pspreview"><svg viewBox="0 0 220 60" style="width:200px;overflow:visible"><path d="${rib}" fill="none" stroke="#1e1b1b" stroke-width="${th.toFixed(1)}" stroke-linecap="round" stroke-dasharray="70 40 110" opacity=".95"/><path d="${rib}" fill="none" stroke="#1e1b1b" stroke-width="${tn.toFixed(1)}" stroke-linecap="round"/></svg></div>
       ${sl('sharp','笔锋锐度')}${sl('pressure','压力灵敏度')}${sl('flat','扁平度')}${S.pen==='pen'?sl('angle','笔尖角度','deg',true):''}${sl('stable','稳定性')}
-      <button class="popbtn adv" data-act="close">高级设置</button></div>`;}
+      <button class="popbtn adv" data-act="padv">高级设置</button></div>`;}
   return '';
 }
 /* New Goodnotes library sidebar, so the library can open from inside a notebook */
+const PEN_ADV={pen:[['rotationSensitivity','旋转灵敏度','旋转笔杆改变笔锋方向'],['speedSensitivity','速度灵敏度','书写越快线条越细'],['strokeToShape','笔迹转形状','停顿后把手绘形状变为标准形状'],['shapeFillColor','形状填充颜色','闭合形状按当前颜色填充'],['snapToShapes','吸附到形状','形状端点自动吸附']],ballpen:[['strokeToShape','笔迹转形状','停顿后把手绘形状变为标准形状'],['shapeFillColor','形状填充颜色','闭合形状按当前颜色填充'],['snapToShapes','吸附到形状','形状端点自动吸附']],brush:[['speedSensitivity','速度灵敏度','书写越快线条越细'],['strokeToShape','笔迹转形状','停顿后把手绘形状变为标准形状'],['shapeFillColor','形状填充颜色','闭合形状按当前颜色填充'],['snapToShapes','吸附到形状','形状端点自动吸附']],highlighter:[['straightLine','直线荧光笔','荧光笔自动拉直']],pencil:[['strokeToShape','笔迹转形状','停顿后把手绘形状变为标准形状'],['snapToShapes','吸附到形状','形状端点自动吸附']]};   /* Lite toolSettingsTypes.ts · FountainPenAdvanced / BallPenAdvanced / BrushAdvanced / HighlighterAdvanced / PencilAdvanced */
+function penAdvPage(pos){ const rows=PEN_ADV[S.pen]||PEN_ADV.pen; const adv=(S.penAdvVal||{})[S.pen]||{};
+  return `<div class="pop penset padv" style="${panelStyle()};${pos};width:320px;color:#1e1b1b"><div class="pph"><button class="tbtn" data-act="padvback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>高级设置</h4><span style="width:44px"></span></div>
+    <div class="padv-list">${rows.map(([k,l,d])=>`<div class="orow2"><div class="tg"><span class="l">${l}</span><button class="sw" data-padv="${k}" aria-pressed="${!!adv[k]}" aria-label="${l}"><i></i></button></div><div class="d">${d}</div></div>`).join('')}</div></div>`; }
 const PEN_TUNE_DEF={sharp:75,pressure:25,flat:33,angle:41,stable:0};   /* Lite 钢笔 defaults: 75% · 25% · 33% · 74° · 0% */
 const LB_BELL=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2H4.5z"/><path d="M10 21h4"/></svg>`;
 const LB_FOLDER=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>`;
@@ -3020,14 +3090,13 @@ function kbLive(w,inset=0,short=false){
   const r3=key('⇧','fn',`width:${kw*1.4}px`)+'zxcvbnm'.split('').map(k=>key(k,'',`width:${kw}px`)).join('')+key('⌫','fn',`width:${kw*1.4}px`);
   const r4=key('123','fn',`width:${kw*1.25}px`)+key(ios?'🌐':'😊','fn',`width:${kw}px`)+key('space','space')+key(ios?'return':'↵','fn',`width:${kw*1.9}px`);
   const tb=`<div class="textbar fmt" style="${surfStyle()}">
-      <button class="plainic" data-tb="list" aria-label="无序列表">${svg('listBullet')}</button>
-      <button class="plainic" data-tb="olist" aria-label="数字列表">${svg('listNumber')}</button>
-      <button class="plainic" data-tb="align" aria-label="对齐">${svg('alignLeft')}</button></div>
-      <div class="textbar fmt right" style="${surfStyle()}">
       <button class="plainic" data-tb="bold" aria-label="加粗"><b>B</b></button>
       <button class="plainic" data-tb="italic" aria-label="斜体"><i style="font-family:Georgia,serif">I</i></button>
       <button class="plainic" data-tb="underline" aria-label="下划线"><u>U</u></button>
-      <button class="plainic" data-tb="strike" aria-label="删除线"><s>S</s></button></div>
+      <button class="plainic" data-tb="strike" aria-label="删除线"><s>S</s></button>
+      <button class="plainic" data-tb="align" aria-label="对齐">${svg('alignLeft')}</button>
+      <button class="plainic" data-tb="list" aria-label="无序列表">${svg('listBullet')}</button>
+      <button class="plainic" data-tb="olist" aria-label="数字列表">${svg('listNumber')}</button></div>
       <div class="textbar fmt kbdone" style="${surfStyle()};margin-right:${inset+8}px"><button class="plainic" data-tb="done" aria-label="收起键盘">${svg('kbDown')}</button></div>`;
   return `<div class="kbwrap ${ios?'ios':'android'}${S.kbShift?' shift':''}${short?' short':''}" style="width:${w}px" hidden>${tb}
     <div class="kb2">${ios?'':'<div class="kbsugg"><span>the</span><span>design</span><span>notes</span></div>'}
@@ -3067,11 +3136,11 @@ function bindKeyboard(dev){
     const r=el.getBoundingClientRect(), k=kb.getBoundingClientRect(), c=cv.getBoundingClientRect();
     const over=(r.bottom-(k.top-24))/sy; if(over>0) cv.scrollTop+=over;
     const under=((c.top+72)-r.top)/sy; if(under>0) cv.scrollTop-=under;};
-  const show=on=>{kb.hidden=!on; if(on) requestAnimationFrame(reveal);};
+  const show=on=>{S.kbOpen=on; kb.hidden=!on; if(on) requestAnimationFrame(reveal);};
   cv.addEventListener('focusin',e=>{if(e.target.closest('.txtin')) show(true);});
   cv.addEventListener('pointerup',e=>{if(e.target.closest('.txtin')) setTimeout(()=>show(true),0);});
   cv.addEventListener('pointerdown',e=>{if(!e.target.closest('.txtin')) show(false);});
-  cv.addEventListener('focusout',()=>{setTimeout(()=>{const a=document.activeElement;if(!(a&&a.closest&&a.closest('.txtin'))) show(false);},0);});
+  cv.addEventListener('focusout',()=>{setTimeout(()=>{ if(S._rendering) return; const a=document.activeElement;if(!(a&&a.closest&&a.closest('.txtin'))) show(false);},0);});
   kb.addEventListener('pointerdown',e=>{
     const b=e.target.closest('[data-kb],[data-tb]'); if(!b) {e.preventDefault();return;}
     e.preventDefault();                       /* keep the caret in the text box */
@@ -3496,7 +3565,7 @@ function compactOptions(st){
     + `<span class="divider"></span>`
     + SHAPE_EXACT.map(([k,ic,zh])=>{const on=S.shapeExactOn&&S.shapeExact===k;
       return `<button class="tbtn" data-se="${k}" data-insshape="${k}" aria-pressed="${on}" aria-label="${zh}" style="color:${activeInk(on)}"><span class="chip" style="${activeChip(on)}">${svg(ic)}</span></button>`;}).join(''),
-    strokeWidthBtn()+swatchBtn(COLORS[S.color],S.color,true,'color')];
+    shapeStrokeBtn()+shapeColorBtn()];
   if(st==='tape') return [
     TAPE_COLORS.map((c,i)=>swatchBtn(c,i,S.tapeColor===i,'tapecolor',true)).join(''),
     tapeWidthBtns(1)];
@@ -3537,7 +3606,7 @@ function keyboard(){
 }
 
 /* ══════════════════════ render ══════════════════════ */
-function render(){
+function render(){ S._rendering=true;
   const W=S.w,H=S.h,t=S.th;
   const v1=S.version==='v1';               /* 第一版: Lite's structure on every width */
   L1=v1?L1_V1:L1_FUTURE;
@@ -3575,7 +3644,7 @@ function render(){
   const sidebarPush=W>=BP.SIDEBAR_PUSH;            /* BP_SIDEBAR_PUSH */
   const titleMax=W<BP.NARROW?32:Math.min(160,Math.max(40,Math.round(40+(W-BP.NARROW)/4))); /* title grows with the leftover width, floor 40 — no title breakpoints */
   const rightCollapsed=W<BP.NARROW;               /* BP_RIGHT_COLLAPSE */
-  const tight=W<BP.MIN_SUPPORTED||(v1&&phone);   /* below MIN_SUPPORTED — or v1 on a phone — drop redo */
+  const tight=W<BP.SIDEBAR_PUSH||(v1&&phone);   /* 10/6 Tom: redo folds below 737 together with the collaborators — one breakpoint */
   const v1phone=v1&&phone&&!duo;                  /* 2824:94112 — undo leads the second row */
   const _dm=S.docMode[S.tabs[S.tab].n]; const roV1=v1&&!duo&&!duoPort&&!flexMode&&S.view!=='library'&&(_dm==='ro'||(phoneDevice()&&_dm!=='edit'))   /* 9/29: phone-CLASS devices open read-only in BOTH orientations (iPhone landscape 874 is tablet-width but still has no stylus) */; /* 第一版手机只读态 (Figma 3507-62075): no tool row until the user taps edit */
   const stShow=S.showStatus||(S.view==='library'&&!duo&&!duoPort&&!flexMode);   /* 9/29 Tom: the library page always shows the system status bar (Figma tablet library) */
@@ -3689,14 +3758,14 @@ function render(){
       :`<div style="position:absolute;top:${navH+tabH}px;height:${BAR.ROW}px;left:${duo?0:canvasLeft}px;width:${duo?W:canvasW}px;z-index:4;background:${fill(t.toolbarBg,t.toolbarBg2,t.barGrad)}"></div>`;   /* on Duo the band runs under the column too */
     /* what the row must hold, and the order it gives things up when the width runs out */
     const SLOTW=S.dev!=='android'?48:44, pillOf=n=>n*SLOTW+4;
-    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:!rightCollapsed&&!duo,right:!duo,mic:true,layers:!duo&&!phone,addPage:!duo,moreRow:false};   /* 10/3 Tom: layers exists from 600 up, no slot-count rule */ /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
+    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:W>=BP.SIDEBAR_PUSH&&!duo,right:!duo,mic:true,layers:!duo&&!phone,addPage:!duo,moreRow:false};   /* 10/3 Tom: layers exists from 600 up, no slot-count rule */ /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
     const need=(slots=10)=>(duo?0:((noStrip?pillOf(R.lib?2:1)+8:0)+(R.side?pillOf(1)+8:0)+pillOf(R.redo?2:1)))
       +BAR.GAP+(slots*SLOTW+18)+(R.mic?pillOf(1)+BAR.GAP:0)+BAR.GAP
       +(duo?0:((R.right?pillOf(1+(R.layers?1:0)+(R.addPage?1:0)+(R.moreRow?1:0))+(R.av?72:0)+8:0)+((noStrip&&!R.moreRow)?pillOf(2):0)));
     const statusReserve=(duoPort&&noStrip)?DUO_STATUS_W-BAR.PAD:0;   /* hidden tabs: the row stops short of the status cluster */
     const availW=canvasW-2*BAR.PAD-statusReserve;
     /* recording is the last thing to go: it folds only when even eight tool slots would not fit beside it */
-    if(need(8)>availW){R.redo=false;R.av=false;}   /* 9/29 Tom: redo and collaborators fold TOGETHER, one step */
+    /* 10/6 Tom: redo + collaborators no longer fold by available width — they follow the 737 breakpoint set in R (one rule, simpler); the tool pill scrolls if the row is tight (Lite does) */
     for(const k of ['lib','side']){ if(need(8)<=availW) break; R[k]=false; }
     const slotsVisible=()=>(availW-need(0))/SLOTW;   /* L1 tool slots the middle pill can show without scrolling */
     if(slotsVisible()<4.5) R.addPage=false;           /* …then add page — only once fewer than 4.5 tools would stay visible; share never folds */   /* tools may scroll (Lite does); share / layers / recording / undo stay */
@@ -4010,6 +4079,7 @@ function render(){
   { const pl=stage.querySelector('.psidebar .list'); if(pl){ const on=pl.querySelector('.pg.on'); const zf=(pl.getBoundingClientRect().height/(pl.clientHeight||1))||1; const follow=S._sbFollow||S._psPage!==NB().page||S._psScroll==null; if(on&&follow){ S._sbFollow=false; const top=(on.getBoundingClientRect().top-pl.getBoundingClientRect().top)/zf+pl.scrollTop; const inView=top>=pl.scrollTop&&top+on.offsetHeight<=pl.scrollTop+pl.clientHeight; pl.scrollTop=inView?(S._psScroll==null?pl.scrollTop:S._psScroll):Math.max(0,top-(pl.clientHeight-on.offsetHeight)/2); } else if(S._psScroll!=null) pl.scrollTop=S._psScroll; S._psPage=NB().page; S._psScroll=pl.scrollTop; pl.addEventListener('scroll',()=>{S._psScroll=pl.scrollTop;},{passive:true}); } }
   { const ls=stage.querySelector('#lhscroll'); if(ls){ ls.scrollTop=S._libScroll||0; ls.addEventListener('scroll',()=>{S._libScroll=ls.scrollTop; const c=ls.scrollTop>120; if(c!==!!S.libCondensed){S.libCondensed=c; ls.closest('.libhome').classList.toggle('condensed',c); const bd=stage.querySelector('.lh-duoband'); if(bd) bd.classList.toggle('condensed',c);} },{passive:true}); } }
   placeSelection(stage); centreToolMid(stage); placeFloatNav(stage); placePopovers(stage); placePageMenu(stage); placeSecRow(stage); bindRotate(stage); placeRulerMenu(stage); clampPopovers(stage.querySelector('.device'),S.w,S.h); translateDOM(document.body);
+  { if(S.kbOpen&&S.sel){ const el=stage.querySelector(`.device .txtin[data-txt="${S.sel}"]`), kb=stage.querySelector('.device .kbwrap'); if(el&&kb){ kb.hidden=false; el.focus(); } else S.kbOpen=false; } S._rendering=false; }   /* 10/6 Tom: the keyboard stays up while a text box is being edited, whatever re-renders */
   const ts=document.getElementById('tabscroll');
   if(ts){ if(S._tabFollow){ const on=ts.querySelector('.tab.on'); if(on) ts.scrollLeft=Math.max(0,on.offsetLeft-ts.offsetLeft-ts.clientWidth+on.offsetWidth+56); S._tabFollow=false; S._tabScroll=ts.scrollLeft; } else if(S._tabScroll!=null) ts.scrollLeft=S._tabScroll; else {const a=ts.querySelector('.tab:not(.dim)');if(a)ts.scrollLeft=Math.max(0,a.offsetLeft-ts.offsetLeft-6);} ts.addEventListener('scroll',()=>{S._tabScroll=ts.scrollLeft;},{passive:true}); }   /* 10/3 Tom: the strip keeps its scroll; creating a tab scrolls the new one into view */
   const DEVN={apple:'iPad / iPhone',duo:'iPhone Duo',android:'Android'};
@@ -4069,7 +4139,7 @@ function afterInsert(compact){
 /* one drag model for every slider: the track fills and the knob follows the finger live; the pressed
    knob is the iOS 27 glass capsule (Android: the M3 handle); the value commits on release */
 function bindSliders(root){
-  root.querySelectorAll('.slider .track[data-gslider],.slider .track[data-lslider],.wtrack,.ptrack[data-pslider]').forEach(tr=>{
+  root.querySelectorAll('.slider .track[data-gslider],.slider .track[data-lslider],.slider .track[data-eslider],.slider .track[data-sslider],.wtrack').forEach(tr=>{
     tr.addEventListener('pointerdown',ev=>{
       if(ev.button&&ev.button!==0) return;
       const knob=tr.querySelector('b'); const fill=tr.querySelector('i'); const fsvg=tr.querySelector('.fillsvg');
@@ -4077,13 +4147,14 @@ function bindSliders(root){
       let last=null;
       const at=e=>{const r=tr.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)); last=f;
         if(knob){ knob.style.left=(f*100)+'%'; knob.style.setProperty('--p',(f*100)+'%'); } if(fill) fill.style.width=(f*100)+'%'; if(tr.classList.contains('track')&&tr.closest('.slider')) paintTicks(tr.closest('.slider').parentElement||tr.closest('.slider')); if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
-        if(em&&(tr.dataset.gslider||tr.dataset.pslider)) em.textContent=Math.round(f*100)+'%';};
+        if(em&&(tr.dataset.gslider||tr.dataset.eslider)) em.textContent=Math.round(f*100)+'%'; if(em&&tr.dataset.sslider) em.textContent=(0.5+f*7.5).toFixed(1)+'pt';};
       tr.classList.add('drag'); at(ev); try{tr.setPointerCapture(ev.pointerId);}catch(_){}
       const mv=e=>{e.preventDefault(); at(e);};
       const up=e=>{tr.removeEventListener('pointermove',mv); tr.removeEventListener('pointerup',up); tr.removeEventListener('pointercancel',up); tr.classList.remove('drag');
         if(last==null) return;
         const k=tr.dataset.gslider; if(k){(S.penTune[S.pen]||(S.penTune[S.pen]={...PEN_TUNE_DEF}))[k]=Math.round(last*100); return render();}
-        if(tr.dataset.pslider){S.ePressureVal=Math.round(last*100);return render();}
+        if(tr.dataset.eslider){S.ePressureVal=Math.round(last*100);return render();}
+        if(tr.dataset.sslider){S.shapeW=Math.round(last*100);return render();}
         const l=tr.dataset.lslider; if(l){ if(l==='size') S.laserSize=Math.round(last*100); else S.laserFade=Math.round((0.5+last*9.5)*10)/10; return render();}
         /* width sliders: hand the release position to the existing click handlers */
         tr.dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:e.clientX,clientY:e.clientY}));};
@@ -4461,21 +4532,19 @@ function bindZoom(root){
   const pullHint=()=>{let h=cv.querySelector('.pulladd'); if(!h){ const nb=NB(); const pw=(cv.querySelector('.paper')||{}).offsetWidth||400; const gw=Math.round(pw*0.8), gh=Math.round(gw*4/3); cv.insertAdjacentHTML('beforeend',`<div class="pulladd"><div class="pa-ring"><svg viewBox="0 0 56 56"><circle class="pa-bg" cx="28" cy="28" r="26.5"/><circle class="pa-arc" cx="28" cy="28" r="26.5"/></svg><span class="pa-glyph">+</span></div><span class="pa-label">拉动新增页面</span><div class="pa-ghost" style="width:${gw}px;height:${gh}px;background-color:${nb.paper||'#fff'};background-image:${(window.RULE_MAP||{})[nb.rule]||'none'};background-size:${(window.RULESZ_MAP||{})[nb.rule]||'auto'}"></div></div>`); h=cv.querySelector('.pulladd'); } return h;};
   const setPull=(f)=>{ const h=pullHint(); h.style.setProperty('--p',f.toFixed(3)); const ready=f>=1; h.classList.toggle('ready',ready); const lab=h.querySelector('.pa-label'); if(lab) lab.textContent=ready?'松开新增页面':'拉动新增页面'; const g=h.querySelector('.pa-glyph'); if(g) g.innerHTML=ready?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':'+'; return h; };
   cv.addEventListener('gnpull',ev=>{ pull=Math.min(160,ev.detail.over); setPull(pull/160); });
-  cv.addEventListener('gnpullend',ev=>{ if(pull>=160&&!readMode()){NB().pages++;NB().page=NB().pages-1;pull=0;S._sbFollow=true;render(); { const c2=document.querySelector('.device #cv'); if(c2){ c2.scrollTop=c2.scrollHeight-c2.clientHeight; NB().scroll=c2.scrollTop; } } /* land on the new page where the ghost was — no jump */} else {pull=0;const h=cv.querySelector('.pulladd');if(h)h.remove();} });
+  cv.addEventListener('gnpullend',ev=>{ if(pull>=160&&!readMode()){pull=0; landNewPage(cv);} else {pull=0;const h=cv.querySelector('.pulladd');if(h)h.remove();} });
   cv.addEventListener('wheel',ev=>{
-    simFingers(cv,ev,false);   /* 10/5 Tom: trackpad two-finger scroll shows the two hotspots too */
     if(ev.ctrlKey||ev.metaKey) return;
     const hh=(cv.querySelector('.pulladd')||{}).offsetHeight||0; const atEnd=cv.scrollTop+cv.clientHeight>=cv.scrollHeight-2-(hh?hh+12:0);
     if(!atEnd||ev.deltaY<=0){pull=0;const h=cv.querySelector('.pulladd');if(h)h.remove();return;}
     pull=Math.min(160,pull+ev.deltaY); setPull(pull/160);
-    clearTimeout(pullT); pullT=setTimeout(()=>{if(pull>=160&&!readMode()){NB().pages++;NB().page=NB().pages-1;pull=0;S._sbFollow=true;render(); { const c2=document.querySelector('.device #cv'); if(c2){ c2.scrollTop=c2.scrollHeight-c2.clientHeight; NB().scroll=c2.scrollTop; } } /* land on the new page where the ghost was — no jump */} /* 阅读模式不新建页面 */ else {pull=0;const h2=cv.querySelector('.pulladd');if(h2)h2.remove();}},260);
+    clearTimeout(pullT); pullT=setTimeout(()=>{if(pull>=160&&!readMode()){pull=0; landNewPage(cv);} /* 阅读模式不新建页面 */ else {pull=0;const h2=cv.querySelector('.pulladd');if(h2)h2.remove();}},260);
   },{passive:true});
   cv.addEventListener('wheel',ev=>{
     if(!(ev.ctrlKey||ev.metaKey)) return;
     if(S.zoomLock){ev.preventDefault();return;}   /* dock lock: the page keeps its zoom */
     ev.preventDefault();
     S.zoomAuto=false; S.zoomPct=Math.round(Math.min(200,Math.max(50,S.zoomPct*Math.exp(-ev.deltaY*0.0025))));
-    { const dev=cv.closest('.device'); if(dev){ const R0=dev.getBoundingClientRect(), zf=(R0.width/S.w)||1; const cx=(ev.clientX-R0.left)/zf, cy=(ev.clientY-R0.top)/zf; const gap=Math.max(36,Math.min(160,S.zoomPct*0.9)); let a=dev.querySelector('.finger.simA'), b=dev.querySelector('.finger.simB'); if(!a){ a=document.createElement('i'); a.className='finger simA'; b=document.createElement('i'); b.className='finger simB'; dev.append(a,b); } a.style.left=(cx-gap/2)+'px'; a.style.top=(cy+gap/3)+'px'; b.style.left=(cx+gap/2)+'px'; b.style.top=(cy-gap/3)+'px'; clearTimeout(S._simFT); S._simFT=setTimeout(()=>{ dev.querySelectorAll('.finger.simA,.finger.simB').forEach(f=>f.remove()); },420); } }   /* 10/4 Tom: two-finger hotspots while pinching (trackpad pinch = ⌘/ctrl + wheel) */
     apply();
   },{passive:false});
   const pts=new Map(); let d0=0,z0=100;
@@ -4746,8 +4815,16 @@ function fadeEdges(el){ const top=el.scrollTop>4, bot=el.scrollTop+el.clientHeig
 function paintTicks(root){ root.querySelectorAll('.slider .track').forEach(tr=>{ let ticks=tr.querySelector('.tks'); if(!ticks){ ticks=document.createElement('span'); ticks.className='tks'; ticks.innerHTML=[0,25,50,75,100].map(v=>`<em style="left:clamp(0px,calc(${v}% - 1px),calc(100% - 2px))" data-v="${v}"></em>`).join(''); tr.appendChild(ticks); } const fill=tr.querySelector('i'); const f=fill?parseFloat(fill.style.width)||0:0; ticks.querySelectorAll('em').forEach(e=>{ const v=+e.dataset.v; e.classList.toggle('on',v<=f); e.classList.toggle('hide',(v===0&&f<=0)||(v===100&&f>=100)); }); }); }
 function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; const availH=H-12-Math.max(12,t0); el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; if(h0>availH){ /* 9/30 Tom: too tall for the window → the panel keeps its anchor and SHRINKS to the 12pt bottom buffer, scrolls inside, fades its edges */ el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
 function toHexColor(c){ if(!c) return null; if(c[0]==='#') return c.length===4?'#'+[...c.slice(1)].map(x=>x+x).join(''):c; const m=c.match(/\d+(\.\d+)?/g); if(!m||m.length<3) return null; return '#'+m.slice(0,3).map(v=>Math.round(+v).toString(16).padStart(2,'0')).join(''); }
-function simFingers(cv,ev,pinch){ const dev=cv.closest('.device'); if(!dev) return; const R0=dev.getBoundingClientRect(), zf=(R0.width/S.w)||1; const cx=(ev.clientX-R0.left)/zf, cy=(ev.clientY-R0.top)/zf; const gap=pinch?Math.max(36,Math.min(160,S.zoomPct*0.9)):52; let a=dev.querySelector('.finger.simA'), b=dev.querySelector('.finger.simB'); if(!a){ a=document.createElement('i'); a.className='finger simA'; b=document.createElement('i'); b.className='finger simB'; dev.append(a,b); } a.style.left=(cx-gap/2)+'px'; a.style.top=(cy+(pinch?gap/3:0))+'px'; b.style.left=(cx+gap/2)+'px'; b.style.top=(cy-(pinch?gap/3:0))+'px'; clearTimeout(S._simFT); S._simFT=setTimeout(()=>{ dev.querySelectorAll('.finger.simA,.finger.simB').forEach(f=>f.remove()); },420); }
+function landNewPage(cv){ const h=cv.querySelector('.pulladd'); const ghost=h&&h.querySelector('.pa-ghost'); const zf=(cv.getBoundingClientRect().width/(cv.clientWidth||1))||1; const gTop=ghost?(ghost.getBoundingClientRect().top-cv.getBoundingClientRect().top)/zf:null;
+  const go=()=>{ NB().pages++; NB().page=NB().pages-1; S._sbFollow=true; render(); const c2=document.querySelector('.device #cv'); if(!c2) return; const np=c2.querySelector(`[data-pgidx="${NB().page}"]`); if(np&&gTop!=null){ const zf2=(c2.getBoundingClientRect().width/(c2.clientWidth||1))||1; const curTop=(np.getBoundingClientRect().top-c2.getBoundingClientRect().top)/zf2; c2.scrollTop=Math.max(0,c2.scrollTop+curTop-gTop); } else c2.scrollTop=c2.scrollHeight-c2.clientHeight; NB().scroll=c2.scrollTop; };
+  if(h){ h.classList.add('landing'); setTimeout(go,220); } else go(); }   /* 10/6 Tom: the last frame — the ghost page grows into the real page where it stands, the indicator fades */
 function bind(root,compact){
+  /* 10/6 · colour wheel (Lite AdvancedColorPicker): drag on the ring = hue, drag on the plane = saturation / brightness; live thumbs, commit on release; hex field commits on change */
+  root.addEventListener('pointerdown',ev=>{ const wheel=ev.target.closest('.cp-wheel'); if(!wheel||ev.button>0) return; ev.preventDefault(); const wr=wheel.getBoundingClientRect(); const plane=wheel.querySelector('.cp-plane'), pr=plane.getBoundingClientRect(); const inPlane=ev.clientX>=pr.left&&ev.clientX<=pr.right&&ev.clientY>=pr.top&&ev.clientY<=pr.bottom; let hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri;
+    const paint=()=>{ const hex=hslToHex(hue,sat,bri); const rt=wheel.querySelector('.cp-rthumb'), pt=wheel.querySelector('.cp-pthumb'); const a=(hue-90)*Math.PI/180; rt.style.left=(133+116*Math.cos(a))+'px'; rt.style.top=(133+116*Math.sin(a))+'px'; rt.style.background=`hsl(${hue} 100% 50%)`; plane.style.background=`linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))`; pt.style.left=sat+'%'; pt.style.top=(100-bri)+'%'; pt.style.background=hex; const pop=wheel.closest('.pop'); if(pop){ const sw=pop.querySelector('.cp-hexin .cp-swatch'), inp=pop.querySelector('[data-cphex]'), add=pop.querySelector('[data-cpadd]'); if(sw) sw.style.background=hex; if(inp) inp.value=hex.slice(1).toUpperCase(); if(add) add.dataset.cpadd=hex; } };
+    const at=e=>{ if(inPlane){ sat=Math.round(Math.min(100,Math.max(0,(e.clientX-pr.left)/pr.width*100))); bri=Math.round(100-Math.min(100,Math.max(0,(e.clientY-pr.top)/pr.height*100))); } else { const cx=wr.left+wr.width/2, cy=wr.top+wr.height/2; hue=Math.round((Math.atan2(e.clientY-cy,e.clientX-cx)*180/Math.PI+90+360)%360); } paint(); };
+    at(ev); const mv=e=>{e.preventDefault(); at(e);}; const up=()=>{ window.removeEventListener('pointermove',mv); window.removeEventListener('pointerup',up); window.removeEventListener('pointercancel',up); S.cpHue=hue; S.cpSat=sat; S.cpBri=bri; }; window.addEventListener('pointermove',mv,{passive:false}); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); },true);
+  root.addEventListener('change',ev=>{ const inp=ev.target.closest&&ev.target.closest('[data-cphex]'); if(!inp) return; let v=inp.value.replace(/[^0-9a-f]/gi,''); if(v.length===3) v=[...v].map(c=>c+c).join(''); if(v.length!==6) return; const [h,sa,l]=hexToHsl('#'+v); S.cpHue=h; S.cpSat=sa; S.cpBri=l; render(); },true);
   /* 10/5 Tom: double-tap on either 添加页面 entry (toolbar or page sidebar) adds a page with the current template, no menu */
   root.addEventListener('dblclick',e=>{ const t=e.target.closest('[data-tool="addPage"],.psidebar .addp'); if(!t) return; e.preventDefault(); NB().pages++; NB().page=Math.min(NB().pages-1,NB().page+1); S._sbFollow=true; S.st=S.lastTool||'writing'; syncState(); render(); scrollToPage(); },true);
   /* 10/2 Tom · page sidebar: long-press (450ms) anywhere on the list shows a quick-jump slider; drag to any page, release to land */
@@ -4800,7 +4877,7 @@ function bind(root,compact){
     cv.addEventListener('scroll',onScroll,{passive:true});
   }
   root.onclick=e=>{
-    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-stickycustom],[data-tbact],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
+    const b=e.target.closest('[data-gslider],[data-shapeline],[data-ep],[data-padv],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-stickycustom],[data-tbact],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
     if(b&&(S.sel||S.selSet)&&!b.closest('.objmenu,.omsheet,.selbox')&&b.dataset.obj===undefined&&!(b.dataset.act||'').startsWith('om-')){S.sel=null;S.selSet=null;S.omMore=false;}   /* 10/2 Tom: any other control drops the selection + object menu */
     if(!b){
       /* canvas tap: an unpinned sheet is single-use and hands the toolbar straight back */
@@ -4846,6 +4923,16 @@ function bind(root,compact){
     if(d.tcol!==undefined){const cfg=S.tapeCfg;
       if(cfg.ci===+d.tcol&&S.st!=='tapeColor'){S.st='tapeColor';}else{cfg.ci=+d.tcol;S.st='tape';}syncState();return render();}
     if(d.lstyle){const cfg=S.penCfg[S.pen];cfg.style[cfg.sel]=d.lstyle;return render();}
+    if(d.cpadd&&S.st==='textColor'){S.tbColor=d.cpadd;S.cpCustom=false;S.st='textbox';syncState();return render();}
+    if(d.cpadd&&S.st==='shapeColor'){S.shapeColor=d.cpadd;S.cpCustom=false;S.st='shapes';syncState();return render();}
+    if(d.preset&&S.st==='textColor'){S.tbColor=d.preset; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=d.preset; S.st='textbox';syncState();return render();}
+    if(d.preset&&S.st==='shapeColor'){S.shapeColor=d.preset;S.st='shapes';syncState();return render();}
+    if(d.shapeline){S.shapeLine=d.shapeline;return render();}
+    if(d.ep){const [side,k]=d.ep.split(':'); S[side==='start'?'shapeArrowS':'shapeArrowE']=k; return render();}
+    if(d.act==='shapeStroke'){S.st=S.st==='shapeStroke'?'shapes':'shapeStroke';syncState();return render();}
+    if(d.act==='shapeColor'){S.st=S.st==='shapeColor'?'shapes':'shapeColor';syncState();return render();}
+    if(d.act==='padv'){S.penAdv=true;return render();} if(d.act==='padvback'){S.penAdv=false;return render();}
+    if(d.padv){S.penAdvVal=S.penAdvVal||{}; const a=S.penAdvVal[S.pen]||(S.penAdvVal[S.pen]={}); a[d.padv]=!a[d.padv]; return render();}
     if(d.preset){const tape=S.st==='tapeColor';const cfg=tape?S.tapeCfg:S.penCfg[S.pen];cfg.colors[cfg.ci]=d.preset;S.st=tape?'tape':'writing';syncState();return render();}
     if(d.mmslider!==undefined){const r=b.getBoundingClientRect();const tape=d.mmslider==='tape';const cfg=tape?S.tapeCfg:S.penCfg[S.pen];
       const [lo,hi]=PEN_RANGE[tape?'tape':S.pen];const v=lo+(hi-lo)*Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
@@ -4872,7 +4959,7 @@ function bind(root,compact){
       if(el){el.focus();document.execCommand('selectAll');document.execCommand('foreColor',false,S.tbColor);el.dispatchEvent(new Event('input',{bubbles:true}));}
       S.st='textbox';syncState();return render();}
     if(d.act==='togglefinger'){S.useFinger=S.useFinger===false;return render();}
-    if(d.act==='closesheet'){S.st=ACTIVE_FOR[S.st]||S.lastTool||'writing';S.omMore=false;syncState();return render();}
+    if(d.act==='closesheet'){ const k=ACTIVE_FOR[S.st]||S.st; if(k===S.st&&L1.includes(k)){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=true;} else S.st=k||S.lastTool||'writing'; S.omMore=false;S.penAdv=false;S.cpCustom=false;syncState();return render();}   /* 10/6 Tom: × and tap-outside always close the sheet */
     if(d.act==='om-more'){S.omMore=!S.omMore;return render();}
     if(d.act==='om-copy'){copySel();S.omMore=false;return render();}
     if(d.act==='om-paste'){pasteClip(NB().page);S.omMore=false;return render();}
@@ -4960,12 +5047,12 @@ function bind(root,compact){
     if(d.wslider!==undefined){const r=b.getBoundingClientRect();
       S.weight=Math.round(Math.min(2,Math.max(0,(e.clientX-r.left)/r.width*2)));return render();}
     if(d.lf){S.lassoFilter[d.lf]=!S.lassoFilter[d.lf];return render();}
-    if(d.et){S.eraserType=d.et;S.st='eraser';syncState();return render();}
+    if(d.et){S.eraserType=d.et;S.st='eraserType';syncState();return render();}   /* 10/6 Tom: stay open after switching */
     if(d.es){S.eraserSize=d.es;return render();}
     if(d.eo){S[d.eo]=!S[d.eo];return render();}
     if(d.go){ if(S.st==='ro'&&d.go==='l1') S.docMode[S.tabs[S.tab].n]='edit'; S.st=d.go;syncState();return render();} if(d.act==='enteredit'){S.docMode[S.tabs[S.tab].n]='edit';return render();} if(d.act==='cpmore'){S.cpCustom=true;return render();} if(d.stickycustom){S.stickyCustom=d.stickycustom;S.sticky=-1;return render();} if(d.cpadd&&S.st==='stickyColor'){S.stickyExtra=S.stickyExtra||[]; if(!S.stickyExtra.includes(d.cpadd)&&!STICKY.includes(d.cpadd)) S.stickyExtra.push(d.cpadd); S.stickyCustom=d.cpadd;S.sticky=-1;S.cpCustom=false;return render();} if(d.act==='dropper'){S.picking=true;S._pickColor=null;return render();} if(d.act==='stickyColor'){S.st=S.st==='stickyColor'?'stickyNote':'stickyColor';syncState();return render();} if(d.stickytab){S.stickyTab=d.stickytab;return render();} if(d.act==='cpback'){S.cpCustom=false;return render();} if(d.cpfield!==undefined){const r=b.getBoundingClientRect();S.cpSat=Math.round(Math.min(100,Math.max(0,(e.clientX-r.left)/r.width*100)));S.cpBri=Math.round(Math.min(100,Math.max(0,100-(e.clientY-r.top)/r.height*100)));return render();} if(d.cphue!==undefined){const r=b.getBoundingClientRect();S.cpHue=Math.round(Math.min(359,Math.max(0,(e.clientX-r.left)/r.width*360)));return render();} if(d.cpadd){S.cpCustom=false;S.st=ACTIVE_FOR[S.st]||'writing';syncState();return render();} if(d.act==='readmode'){S.docMode[S.tabs[S.tab].n]='ro';S.st=S.lastTool||'writing';syncState();return render();} if(d.roedit){S.docMode[S.tabs[S.tab].n]='edit'; S.st=d.roedit; syncState(); return render();}
     if(d.gopen){S.st='pen2';syncState();return render();}
-    if(d.act==='close'){S.st=ACTIVE_FOR[S.st]||'writing';syncState();return render();}
+    if(d.act==='close'){ const k=ACTIVE_FOR[S.st]; if(!k&&L1.includes(S.st)){S.secHideBy=S.secHideBy||{};S.secHideBy[S.st]=true;} else S.st=k||'writing'; S.penAdv=false;syncState();return render();}
     if(d.act==='dismisskb'){S.st='text-obj';syncState();return render();}
     if(d.pal!==undefined){COLORS[S.color]=d.pal;S.st='writing';syncState();return render();}
     if(d.w!==undefined){S.weight=+d.w;return render();}
