@@ -1944,6 +1944,32 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .padv .l{font-size:16px} .padv .d{font-size:13px;color:rgba(64,59,59,.6);margin-top:2px;padding-right:64px}
 .vsheet .pop.penset.padv>.pph{display:flex!important;height:44px;margin:0 0 4px!important;padding:0!important}
 .vsheet .pop.penset.padv>.pph h4{display:none}
+
+/* ═══ 10/7 · round 20 ═══ */
+/* column sheet (iOS 27 Duo, 12886-17616): card at bottom-left of the content area, × as a 48 round button in the side column, iPad / iPhone content unchanged; landscape = 560 card centred */
+.vsheet.colsheet{left:8px!important;right:8px!important;bottom:8px!important;top:auto!important;width:auto!important;max-height:calc(100% - 16px)!important;background:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important;display:flex!important;flex-direction:row!important;align-items:stretch!important;overflow:visible!important}
+.vsheet.colsheet .dsh-mid{flex:1 1 auto;min-width:0;min-height:0;display:flex;justify-content:center;align-items:flex-end}
+.vsheet.colsheet .dsh-card{flex:1 1 auto;min-width:0;max-height:100%;display:flex;flex-direction:column;border-radius:34px;background:#F2F2F7!important;box-shadow:0 12px 36px rgba(16,24,40,.18);overflow:hidden;padding:0 0 8px;box-sizing:border-box}
+.vsheet.colsheet.land .dsh-card{flex:0 1 560px}
+.vsheet.colsheet .dsh-col{position:static!important;flex:0 0 var(--colw,84px);width:auto!important;display:flex;justify-content:center;align-items:flex-start;padding:16px 0 0!important;gap:0;bottom:auto}
+.vsheet.colsheet .dsh-x,.vsheet.colsheet .dsh-x i{width:48px;height:48px}
+.device.ios .vsheet.colsheet .dsh-x i{background:rgba(255,255,255,.78);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 0 0 .5px rgba(0,0,0,.10),0 2px 10px rgba(0,0,0,.10)}
+.vsheet.colsheet .vs-head{margin:12px 0 4px!important;flex:0 0 auto}
+.vsheet.colsheet .vs-head .vs-sp.trail{justify-content:flex-end;padding-right:16px;box-sizing:border-box}
+.vsheet.colsheet .vs-body{overflow-y:auto;min-height:0;flex:1 1 auto}
+.vsheet .pagemenu .mh{display:none}
+/* export: × (Secondary round) left, confirm (Primary round, check) right — no text buttons */
+.ex-x{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#1e1b1b}
+.ex-x i{width:44px;height:44px;border-radius:999px;background:rgba(120,120,128,.16);display:flex;align-items:center;justify-content:center}
+.ex-x svg{width:22px;height:22px}
+.device.ios .ex-x i{background:rgba(255,255,255,.78);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 0 0 .5px rgba(0,0,0,.10),0 2px 10px rgba(0,0,0,.08)}
+.ex-go{width:44px!important;height:44px!important;padding:0!important;border-radius:999px!important;display:flex;align-items:center;justify-content:center;background:var(--accent)!important;color:var(--on-accent)!important}
+.ex-go svg{width:22px;height:22px}
+.expdlg.duoin{position:static!important;width:auto!important;max-width:none!important;transform:none!important;background:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;border-radius:0!important;padding:0!important;left:auto!important;top:auto!important}
+/* a menu turned into a sheet: no inner card, rows fill the sheet (Tom: 两侧留白太多 / 包了两层) */
+.vsheet:has(> .vs-body > .menu) .vs-body,.vsheet:has(> .dsh-mid .menu) .vs-body{padding-left:8px!important;padding-right:8px!important}
+.vsheet .menu{width:100%!important;max-width:none!important}
+.vsheet .menu button{padding:0 10px}
 </style>
 </head>
 <body>
@@ -2763,7 +2789,7 @@ function bindRotate(scope){
     knob.addEventListener('pointermove',mv); knob.addEventListener('pointerup',up);
   });
 }
-function placePageMenu(scope){const dev=scope.querySelector('.device'); const m=dev&&dev.querySelector('.pagemenu'); if(!m) return;
+function placePageMenu(scope){const dev=scope.querySelector('.device'); const m=dev&&dev.querySelector('.pagemenu'); if(!m||m.closest('.vsheet')) return;
   const th=dev.querySelector(`.psidebar .pg[data-page="${m.dataset.pmfor}"] .th`); if(!th){m.style.display='none';return;}
   const dr=dev.getBoundingClientRect(), r=th.getBoundingClientRect(), sx=dr.width/dev.offsetWidth||1;
   let left=(r.right-dr.left)/sx+8; if(left+m.offsetWidth>dev.offsetWidth-16) left=Math.max(16,(r.left-dr.left)/sx-8-m.offsetWidth);
@@ -3366,19 +3392,14 @@ function pasteClip(pg,x,y){ if(!S.clip) return; const all=[...S.clip.strokes.fla
   const xs=[...S.ink.filter(k=>ns.includes(k.id)).flatMap(k=>k.pts.map(p=>p[0])),...S.objs.filter(o=>no.includes(o.id)).flatMap(o=>[o.x,o.x+o.w])];
   const ys=[...S.ink.filter(k=>ns.includes(k.id)).flatMap(k=>k.pts.map(p=>p[1])),...S.objs.filter(o=>no.includes(o.id)).flatMap(o=>[o.y,o.y+(o.h||o.w)])];
   S.selSet={pg,strokes:ns,objs:no,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]}; S.sel=no[0]||null; }
-function sheetWrap(html){ if(!html) return '';
+function colSheet(html,opts={}){ const t=opts.title||panelTitle(html)||(ownsTitle(html)?'':sheetTitle()); const trail=opts.trail||'';
+  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}" style="--colw:${DUO_STRIP}px"><div class="dsh-mid"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="vs-head"><span class="vs-sp"></span><div class="vs-t">${t}</div><span class="vs-sp trail">${trail}</span></div><div class="vs-body">${html}</div></div></div><div class="dsh-col"><button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button></div></div>`; }   /* 10/7 Tom · iOS 27 Duo sheets (12886-17616): with the navigation column at the side, the sheet's primary button (×) lives in that column; the card keeps the iPad / iPhone layout */
+function sheetWrap(html){ if(!html) return ''; if(S._duoCol) return colSheet(html,{land:S._duoLand});
   const t=panelTitle(html)||(ownsTitle(html)?'':sheetTitle());
   return `<div class="vsback" data-act="closesheet"></div><div class="vsheet ${S.dev==='android'?'android':'ios'}" style="${panelStyle()}"><div class="vs-hdl"></div>
     <div class="vs-head"><button class="vs-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">${t}</div><span class="vs-sp"></span></div>
     <div class="vs-body">${html}</div></div>`;}
-function duoSheetWrap(html,W,H,land,opts={}){ if(!html) return '';
-  const t=opts.title||(ownsTitle(html)?'':sheetTitle()), full=opts.full?' full':'';
-  const x=`<button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>`;
-  if(land) return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo land${full}" style="${panelStyle()}">
-      <div class="dsh-head land"><div class="dsh-t">${t}</div></div><div class="dsh-col land">${x}</div><div class="vs-body">${html}</div></div>`;
-  const w=Math.min(W-16,653);
-  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo${full}" style="${panelStyle()};width:${w}px;left:${Math.round((W-w)/2)}px">
-      <div class="vs-hdl"></div><div class="dsh-head">${x}<div class="dsh-t">${t}</div></div><div class="dsh-col"></div><div class="vs-body">${html}</div></div>`;}
+function duoSheetWrap(html,W,H,land,opts={}){ if(!html) return ''; return colSheet(html,{title:opts.title,full:opts.full,land,trail:opts.trail}); }
 function layersPanel(pos){
   return `<div class="lpanel" data-anchor='[data-tool="layers"]' style="${panelStyle()};${pos};color:#1e1b1b">
     <div class="ph">图层</div>
@@ -3453,14 +3474,16 @@ function shareBody(phone){const pw=S.sharePw;
     <div class="sh-grp"><div class="sh-row"><span>需要密码</span><button class="sw" data-act="sharepw" aria-pressed="${pw}" aria-label="需要密码"><i></i></button></div>
       ${pw?`<div class="sh-row"><span>密码</span><span class="sh-val mono">nqD9TfrQ ${svg('copy')}</span></div>`:''}</div>`;}
 /* 9/30 · export options (Freenotes / Goodnotes export sheet, phase-one scope): format PDF | 图片 · file name · include page background → 导出 opens the system share sheet */
-function exportDialog({W,H,phone,duo}){
-  const and=S.dev==='android'; const fmt=S.expFmt||'pdf'; const bg=S.expBg!==false; const name=S.expName||NB().n;
+function exportDialog({W,H,phone,duo,duoSheet,hClass}){
+  const and=S.dev==='android'; const fmt=S.expFmt||'pdf'; const bg=S.expBg!==false; const name=S.expName||NB().n; const title=S.expScope==='all'?'导出整本':'导出本页';
   const fcard=(k,l,sub,ic)=>`<button class="ex-fmt" data-expfmt="${k}" aria-pressed="${fmt===k}"><span class="ex-ft">${l}</span><span class="ex-fs">${sub}</span><i>${svg(ic)}</i></button>`;
-  return `<div class="scrim" data-act="closesys"></div><div class="expdlg${phone?' phone':''}${and?' android':''}" role="dialog">
-    <div class="ex-head"><button class="ex-cancel" data-act="closesys">取消</button><div class="ex-title">${S.expScope==='all'?'导出整本':'导出本页'}</div><button class="ex-go" data-act="expgo">导出</button></div>
-    <div class="ex-fmts">${fcard('pdf','PDF','可在其他 PDF 软件中编辑','imgPdf')}${fcard('img','图片','PNG · 每页一张','image')}</div>
+  const go=`<button class="ex-go" data-act="expgo" aria-label="导出">${svg('check')}</button>`;   /* 10/7 Tom: text buttons → icons, the system two-round-buttons form (12886-17629) */
+  const body=`<div class="ex-fmts">${fcard('pdf','PDF','可在其他 PDF 软件中编辑','imgPdf')}${fcard('img','图片','PNG · 每页一张','image')}</div>
     <div class="ex-lab">文件名</div><div class="ex-field">${name}</div>
-    <div class="ex-lab">导出选项</div><div class="ex-list"><div class="ex-row"><span>包含页面背景</span><span class="sw" data-act="expbg" aria-pressed="${bg}"><i></i></span></div></div></div>`;
+    <div class="ex-lab">导出选项</div><div class="ex-list"><div class="ex-row"><span>包含页面背景</span><span class="sw" data-act="expbg" aria-pressed="${bg}"><i></i></span></div></div>`;
+  if(duoSheet||S._duoCol) return colSheet(`<div class="expdlg duoin${and?' android':''}">${body}</div>`,{title,trail:go,land:hClass==='compact'});
+  return `<div class="scrim" data-act="closesys"></div><div class="expdlg${phone?' phone':''}${and?' android':''}" role="dialog">
+    <div class="ex-head"><button class="ex-x" data-act="closesys" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="ex-title">${title}</div>${go}</div>${body}</div>`;
 }
 /* 9/30 · system share sheet mock: iOS UIActivityViewController (header · app row · action circles); Android share sheet */
 function sysShareSheet({W,H,phone,duo}){
@@ -3637,6 +3660,7 @@ function render(){ S._rendering=true;
      outer landscape = wC·hC · outer portrait = wC·hR · inner screens = wR·hR */
   const wClass=cw>=BP.NARROW?'regular':'compact', hClass=H>=480?'regular':'compact';
   const duoSheet=duo&&(wClass==='compact'||hClass==='compact');   /* folded Duo: tool panels become the Duo sheet */
+  S._duoCol=duo; S._duoLand=hClass==='compact';   /* 10/7: every sheet on a posture with the side column puts its × in that column */
   /* 方案2: no tab strip at all — one card entry (Duo: in the column · others: in the toolbar) opens the manager */
   const noStrip=S.tabScheme==='manager'||S.hideTabs;   /* hidden tabs behave like 方案 2: the tabs entry moves into the tool row */
   const tabsCard=(cls,extra='')=>`<button class="${cls}" data-act="tabmgr" aria-pressed="${!!S.tabMgr}" aria-label="标签" ${extra}>${cls.includes('tbtn')?`<span class="chip">${TABS_ICON}</span>`:TABS_ICON}</button>`;                /* v1 still needs to know it is on a narrow screen */
@@ -3892,7 +3916,8 @@ function render(){ S._rendering=true;
   const pageThumb=(i)=>`<div class="thin" style="width:${pw}px;height:${ph}px;transform:scale(${(144/pw).toFixed(4)});${i===0?`background:${NB().cover}`:`background-image:${RULE[NB().rule]};background-size:${RULESZ[NB().rule]}`}">${(i===0?coverArt():artFor(i))+objFor(i).join('')+inkFor(i)}</div>`.replace(/ data-obj="\d+"| data-txt="\d+"| contenteditable="true"/g,'');
   window.PAGE_THUMB=pageThumb;
   if(S.sidebar&&S.pageMenu!=null){const PM=[['dup','复制页面','pm-dup'],['rotate','旋转页面','pm-rotate'],['tmpl','更改模板','pm-tmpl'],['clearPage','清空页面内容','pm-clear'],['addPageAfter','在此后添加页面','pm-add'],'sep',['trash','删除页面','pm-del']];
-    inner+=`<div class="menu nocaret pagemenu" data-pmfor="${S.pageMenu}" style="${panelStyle()};left:248px;top:120px;color:#1e1b1b;min-width:232px">${S.dev!=='android'?`<div class="mh pmh"><div class="t2">第 ${S.pageMenu+1} 页</div></div>`:''}${PM.map(it=>it==='sep'?'<div class="sep"></div>':`<button class="${it[0]==='trash'?'danger':''}" data-act="${it[2]}">${svg(it[0])}<span class="col"><span>${it[1]}</span></span></button>`).join('')}</div>`;}
+    const pmHtml=`<div class="menu nocaret pagemenu" data-pmfor="${S.pageMenu}" style="${panelStyle()};left:248px;top:120px;color:#1e1b1b;min-width:232px">${S.dev!=='android'?`<div class="mh pmh"><div class="t2">第 ${S.pageMenu+1} 页</div></div>`:''}${PM.map(it=>it==='sep'?'<div class="sep"></div>':`<button class="${it[0]==='trash'?'danger':''}" data-act="${it[2]}">${svg(it[0])}<span class="col"><span>${it[1]}</span></span></button>`).join('')}</div>`;
+    inner+=(typeof duoSheet!=='undefined'&&duoSheet)?duoSheetWrap(pmHtml,W,H,hClass==='compact',{title:`第 ${S.pageMenu+1} 页 / 共 ${NB().pages} 页`}):pmHtml;}
   if(S.sidebar&&floatNav) inner+=`<div class="navscrim" data-act="sidebar"></div>`;
   const floatWide=floatNav&&!(phone||compact);   /* wide: the panel runs to the bottom and the dock moves beside it */
   if(S.sidebar) inner+=`<div class="psidebar${floatNav?' float':''}${(!floatNav&&!sidebarPush)?' over':''}" style="${floatNav?`${panelStyle()};top:${cTop+2}px;bottom:${floatWide?16:16+((phone||compact)?176:44)+8}px;left:${uiLeft+16}px`:`background:#F9F9F9;top:${navH+tabH}px;${sidebarPush?'box-shadow:1px 0 0 rgba(0,0,0,.07)':''}`}">   ${''/* 10/4 Tom: below 737 the page sidebar overlays the whole left side right under the tab strip (above the toolbars), no scrim */}
@@ -3912,7 +3937,7 @@ function render(){ S._rendering=true;
     let men='';
     if(st==='more')   men+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
     if(st==='addpage') men+=dropdown('addpage',`right:${pr+96}px;top:${duo?70:cTopV+8}px`);
-    const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):(st==='exportopts'?exportDialog({W,H,phone,duo}):''));   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
+    const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):(st==='exportopts'?exportDialog({W,H,phone,duo,duoSheet,hClass}):''));   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
     if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='mic'&&S.rec) men+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTopV+8}px`);
     /* tool panels: popover ≥600 wide, sheet below (or in a compact-height posture); menus stay menus (UIMenu on iOS) */
@@ -3927,7 +3952,7 @@ function render(){ S._rendering=true;
     if(st==='collab') pan+=collabPanel(`right:${duo?pr:pr+96}px;top:${duo?70:cTop+8}px`);
     inner+=duoSheet?duoSheetWrap(pan,W,H,hClass==='compact'):pan;
     if(st==='export') inner+=dropdown('export',`right:${pr}px;top:${duo?70:cTop+8}px`);
-    if(st==='exportopts') inner+=exportDialog({W,H,phone,duo}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
+    if(st==='exportopts') inner+=exportDialog({W,H,phone,duo,duoSheet,hClass}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
     if(st==='more')   inner+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
     if(st==='mic'&&S.rec) inner+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTop+8}px`);
     if(S.anno){
@@ -4002,7 +4027,7 @@ function render(){ S._rendering=true;
         `<button data-sheet="${ic}">${svg(ic)}<span>${l}</span></button>`).join('')}</div>`;
     if(st==='layers') inner+=layersPanel(`right:10px;top:${cTop+58}px`);
     if(st==='export') inner+=dropdown('export',`right:10px;top:${cTop+58}px`);
-    if(st==='exportopts') inner+=exportDialog({W,H,phone,duo}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
+    if(st==='exportopts') inner+=exportDialog({W,H,phone,duo,duoSheet,hClass}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
     if(st==='more')   inner+=dropdown('more',`right:10px;top:${navH+tabH+barGap}px`);
     if(st==='mic'&&S.rec) inner+=recDrawer();   /* phone tier (<600) → bottom drawer */
   }
@@ -4959,7 +4984,7 @@ function bind(root,compact){
       if(el){el.focus();document.execCommand('selectAll');document.execCommand('foreColor',false,S.tbColor);el.dispatchEvent(new Event('input',{bubbles:true}));}
       S.st='textbox';syncState();return render();}
     if(d.act==='togglefinger'){S.useFinger=S.useFinger===false;return render();}
-    if(d.act==='closesheet'){ const k=ACTIVE_FOR[S.st]||S.st; if(k===S.st&&L1.includes(k)){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=true;} else S.st=k||S.lastTool||'writing'; S.omMore=false;S.penAdv=false;S.cpCustom=false;syncState();return render();}   /* 10/6 Tom: × and tap-outside always close the sheet */
+    if(d.act==='closesheet'){ if(S.tmplOpen){S.tmplOpen=false;return render();} if(['export','exportopts','exportmenu','sysshare'].includes(S.st)){S.st=S.lastTool||'writing';S.omMore=false;syncState();return render();} const k=ACTIVE_FOR[S.st]||S.st; if(k===S.st&&L1.includes(k)){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=true;} else S.st=k||S.lastTool||'writing'; S.omMore=false;S.penAdv=false;S.cpCustom=false;syncState();return render();}   /* 10/6 Tom: × and tap-outside always close the sheet */
     if(d.act==='om-more'){S.omMore=!S.omMore;return render();}
     if(d.act==='om-copy'){copySel();S.omMore=false;return render();}
     if(d.act==='om-paste'){pasteClip(NB().page);S.omMore=false;return render();}
