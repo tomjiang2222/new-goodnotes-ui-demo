@@ -1402,12 +1402,6 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device.ios .dlg .dlg-btns button+button{border-left:0!important}
 .device.ios .dlg .dlg-btns .ghost{background:rgba(120,120,128,.16)!important;color:#1e1b1b!important;font-weight:400!important}
 .device.ios .dlg .dlg-btns .primary{background:#3478F6!important;color:#fff!important;font-weight:600!important}
-/* Edit menu on canvas objects (UIEditMenuInteraction): text actions in a glass capsule, no glyphs */
-.device.ios .objmenu .omg button svg{display:none}
-.device.ios .objmenu .omg button::after{content:attr(aria-label);font-size:17px;white-space:nowrap;color:#1e1b1b}
-.device.ios .objmenu .omg button{width:auto!important;min-width:0!important;padding:0 14px!important;height:44px}
-.device.ios .objmenu .omg button[data-act="om-more"]::after{content:"›";font-size:22px;line-height:1}
-.device.ios .objmenu .omg button.del::after{color:#E5484D}
 /* Sliders: system list slider proportions — 4pt track under the pill knob */
 .device.ios .slider .track{height:4px!important;border-radius:2px!important}
 .device.ios .slider .track::after{top:10px!important}
@@ -1664,6 +1658,23 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .libhome.wide .lh-main{overflow:hidden}
 .libhome.wide .lh-topbar{border-radius:16px 0 0 0}
 
+/* ═══ 10/2 · round 10 ═══ */
+/* keyboard accessory: two pills — formatting left, dismiss right */
+.kbwrap .textbar.fmt{width:auto!important;max-width:none;display:inline-flex}
+.kbwrap .textbar.kbdone{position:absolute;right:0;width:52px!important;justify-content:center;padding:0!important}
+/* width slider knob: pill on both platforms (no thin bar, no circle) */
+.device.android .wtrack b,.device.ios .wtrack b{width:32px!important;height:22px!important;border-radius:11px!important;top:50%!important;transform:translate(calc(-1 * var(--p,50%)),-50%)!important;background:#fff!important;box-shadow:0 2px 6px rgba(0,0,0,.16),0 0 0 .5px rgba(0,0,0,.08)!important}
+/* slider tick dots (iOS Charging / Lite): clear 3pt dots under the track */
+.device .slider .track::after{top:12px!important;height:6px!important;background-image:radial-gradient(circle,rgba(60,60,67,.38) 1.5px,transparent 2.2px)!important;background-size:25% 6px!important;background-position:0 50%!important;opacity:1!important}
+/* popover caret: solid (no backdrop-filter — Chrome paints the blur over the whole box, ignoring the clip) */
+.device.ios .ptr2{background:rgba(250,250,250,.97)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* sticky custom slot: no ring in any state */
+.secpill.sticky .ddbtn.stkacc[aria-pressed="true"] .stksw{box-shadow:inset 0 1px 2px rgba(0,0,0,.24)!important}
+/* bottom sheets: every panel stretches to the sheet (flex items in vs-body were shrinking to content) */
+.device .vsheet .vs-body{align-items:stretch!important}
+.device .vsheet .vs-body>*,.device .vsheet :is(.lpanel,.spanel,.pop,.wcard,.tcpanel,.appanel,.collab,.menu.static,.stkpanel){width:100%!important;max-width:none!important;align-self:stretch;box-sizing:border-box}
+.device .vsheet .lpanel .lrow,.device .vsheet .lpanel .ls>*{width:100%!important;box-sizing:border-box}
+
 </style>
 </head>
 <body>
@@ -1740,6 +1751,7 @@ const I=window.GN_ICONS;
 const svg=n=>{const m=IDIOM[(typeof S!=='undefined'&&S.dev==='android')?'android':'ios'];const d=I[(m&&m[n])||n];return d?`<svg viewBox="${d.vb}" fill="none" aria-hidden="true">${d.p}</svg>`:'';};
 /* the four most generic actions follow the platform vocabulary (iOS: SF-style share / chevron back; Android: share nodes / ⋮ / arrow back); everything else is the shared Goodnotes set */
 I.xmark={vb:'0 0 24 24',p:'<path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'};
+I.collab={vb:'0 0 24 24',p:'<path d="M16 3.46776C17.4817 4.20411 18.5 5.73314 18.5 7.5C18.5 9.26686 17.4817 10.7959 16 11.5322M18 16.7664C19.5115 17.4503 20.8725 18.565 22 20M2 20C3.94649 17.5226 6.58918 16 9.5 16C12.4108 16 15.0535 17.5226 17 20M14 7.5C14 9.98528 11.9853 12 9.5 12C7.01472 12 5 9.98528 5 7.5C5 5.01472 7.01472 3 9.5 3C11.9853 3 14 5.01472 14 7.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'};
 I.upload={vb:'0 0 24 24',p:'<path d="M12 15.5V4M7.5 8.5 12 4l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M4.5 15v2.5a2.5 2.5 0 0 0 2.5 2.5h10a2.5 2.5 0 0 0 2.5-2.5V15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>'};
 I.shareIOS={vb:'0 0 24 24',p:'<path d="M12 3.5v11M8.5 7 12 3.5 15.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 10.5H7a2 2 0 0 0-2 2v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V12.5a2 2 0 0 0-2-2h-1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'};
 I.shareAnd={vb:'0 0 24 24',p:'<circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.3 10.8 15.7 6.4M8.3 13.2l7.4 4.4" stroke="currentColor" stroke-width="1.8"/>'};
@@ -2789,8 +2801,7 @@ function kbLive(w,inset=0,short=false){
       <button class="plainic" data-tb="align" aria-label="对齐">${svg('alignLeft')}</button>
       <button class="plainic" data-tb="list" aria-label="项目列表">${svg('listBullet')}</button>
       <button class="plainic" data-tb="olist" aria-label="编号列表">${svg('listNumber')}</button>
-      <span style="flex:1"></span>
-      <button class="plainic" data-tb="done" aria-label="收起键盘">${svg('kbDown')}</button></div>`;
+      </div><div class="textbar fmt kbdone" style="${surfStyle()};margin-right:${inset+8}px"><button class="plainic" data-tb="done" aria-label="收起键盘">${svg('kbDown')}</button></div>`;
   return `<div class="kbwrap ${ios?'ios':'android'}${S.kbShift?' shift':''}${short?' short':''}" style="width:${w}px" hidden>${tb}
     <div class="kb2">${ios?'':'<div class="kbsugg"><span>the</span><span>design</span><span>notes</span></div>'}
       <div class="kbrow">${r1}</div><div class="kbrow">${r2}</div><div class="kbrow">${r3}</div><div class="kbrow">${r4}</div>
