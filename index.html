@@ -1618,6 +1618,28 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .tbtn .l2ind{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);width:10px;height:10px;display:flex;align-items:center;justify-content:center;opacity:.75;pointer-events:none}
 .tbtn .l2ind svg{width:10px;height:10px}
 
+/* ═══ 10/1 · round 8 ═══ */
+/* library: the condensed header is white translucent everywhere — blue belongs to the sidebar and the system band only */
+.libhome.wide.condensed .lh-topbar{background:rgba(255,255,255,.72)!important}
+.device.android .libhome.wide.condensed .lh-topbar{background:rgba(255,255,255,.94)!important}
+/* Duo band: sidebar entry left · search right (next to the status cluster) */
+.lh-duoband{padding-right:152px}
+.lh-duoband .lh-sp{flex:1}
+.libhome.duoport:not(.condensed) .lh-topbar .lh-ib[aria-label="搜索"]{opacity:0;pointer-events:none}
+/* sticky L2 row: no white block behind the swatches, the swatch window hugs its content */
+.secpill.sticky .cwin{width:auto!important}
+.secpill.sticky .fadewrap,.secpill.sticky .cwin,.secpill.sticky .cap.hscroll,.secpill.sticky .swatch,.secpill.sticky .swatch .ring{background:none!important;box-shadow:none!important}
+.secpill.sticky .swatch[aria-pressed="true"] .ring{background:rgba(24,24,27,.10)!important}
+.secpill.sticky .ddbtn.stkacc[aria-pressed="true"]{background:rgba(24,24,27,.10)!important;border-radius:999px}
+/* eyedropper loupe */
+.loupe{position:absolute;z-index:95;width:88px;height:88px;border-radius:999px;border:7px solid var(--pick,#fff);box-sizing:border-box;pointer-events:none;box-shadow:0 0 0 1.5px rgba(0,0,0,.28),0 10px 28px rgba(0,0,0,.28);background:repeating-linear-gradient(0deg,rgba(255,255,255,.28) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(255,255,255,.28) 0 1px,transparent 1px 9px),var(--pick,#fff)}
+.loupe::after{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;transform:translate(-50%,-50%);border:1.5px solid rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+/* iOS switches (eraser settings, more menu, export dialog): system geometry 51×31, 27 knob with the system shadow */
+.device.ios :is(.spanel,.sharemodal,.menu,.expdlg) .sw{width:51px!important;height:31px!important;background:#E9E9EB}
+.device.ios :is(.spanel,.sharemodal,.menu,.expdlg) .sw[aria-pressed="true"]{background:var(--accent)}
+.device.ios :is(.spanel,.sharemodal,.menu,.expdlg) .sw i{width:27px!important;height:27px!important;top:2px;left:2px;box-shadow:0 3px 8px rgba(0,0,0,.15),0 3px 1px rgba(0,0,0,.06)}
+.device.ios :is(.spanel,.sharemodal,.menu,.expdlg) .sw[aria-pressed="true"] i{left:22px!important}
+
 </style>
 </head>
 <body>
@@ -1873,6 +1895,7 @@ const TAPE_COLORS=['#6ecfe6','#f5943a','#f5cc2e','#9b5cf0','#5ed48a','PATTERN'];
 const TAPE_MM=[1.0,3.5,6.0,10.4,15.4];
 const STICKY=['#ffaeb2','#ffce9d','#fae778','#acf595','#a9efec','#cde5ff','#ebd8ff','#fdcce9', '#ff6b70','#ffa64d','#f1c40f','#5fd35a','#2fc9c1','#5aa6ff','#b787ff']; /* Figma 3564-61367 (8 pastels in the L2 row) + a saturated second row for the colour panel (极速版 胶带样式 layout) */
 const STICKY_L2=STICKY.slice(0,8);
+const stickyColor=()=>S.sticky===-1?(S.stickyCustom||'#ffffff'):(STICKY[S.sticky]||STICKY[0]);   /* -1 = the custom slot at the end of the L2 row */
 const STICKY2=['#E8B4A0','#D9CDB4','#BFD8CF','#B9C6DE','#DED0E8','#EFD2D8'];
 const PALETTE=['#111213','#3f3f46','#52525b','#71717a','#a1a1aa','#d4d4d8','#e4e4e7','#ffffff',
  '#7f1d1d','#b91c1c','#dc2626','#e35353','#f87171','#fca5a5','#fecaca','#fee2e2',
@@ -2481,6 +2504,7 @@ function placePopovers(scope){
       return;}
     const left=Math.max(8,Math.min(cx-w/2,dev.offsetWidth-w-8));
     pop.style.left=left+'px'; pop.style.top=(tb+4+(nc?4:10))+'px'; pop.style.right='auto'; pop.style.transform='none';
+    { const op=pop.offsetParent; if(op&&op!==dev&&dev.contains(op)){ const orr=op.getBoundingClientRect(); pop.style.left=(left-(orr.left-dr.left)/sx)+'px'; pop.style.top=(tb+4+(nc?4:10)-(orr.top-dr.top)/sx)+'px'; } }   /* 10/1: menus rendered inside the library page keep device coordinates */
     if(nc) return;
     /* the caret lives outside the panel so scrolling panels cannot clip it */
     const ptr=document.createElement('i'); ptr.className='ptr2';
@@ -2530,7 +2554,7 @@ function tapeRowV1(avail){
     +`<div class="cwin hscroll" style="width:${win}px">${cfg.colors.map((c,i)=>colorSlotBtn(c,i,i===cfg.ci,S.st==='tapeColor'&&i===cfg.ci,true,'tcol')).join('')}</div>`;
 }
 /* 便签 L2 (9/29 screenshot): rounded-square pastel chips + a ▾ that opens the first-level colour panel */
-function stickyRowV1(avail){ const cols=STICKY_L2; const win=avail>=520?9:avail>=420?7:5; return `<div class="cwin hscroll" style="width:${win*44}px">${cols.map((c,i)=>swatchBtn(c,i,S.sticky===i,'sticky',true,true)).join('')}</div><span class="divider"></span><button class="ddbtn sq stkacc" data-act="stickyColor" aria-pressed="${S.st==='stickyColor'}" aria-label="更多颜色"><span class="stksw"></span><span class="dch">${svg('chevDown')}</span></button>`; }
+function stickyRowV1(avail){ const cols=STICKY_L2; const win=avail>=520?9:avail>=420?7:5; return `<div class="cwin hscroll" style="width:${win*44}px">${cols.map((c,i)=>swatchBtn(c,i,S.sticky===i,'sticky',true,true)).join('')}</div><span class="divider"></span><button class="ddbtn sq stkacc" data-act="stickyColor" aria-pressed="${S.sticky===-1||S.st==='stickyColor'}" aria-label="自定义颜色"><span class="stksw" style="background:${S.stickyCustom||'#fff'}"></span><span class="dch">${svg('chevDown')}</span></button>`; }
 /* Sticky Note Color (first level only — the feature itself is not yet committed): leading settings · title · Edit; Presets / Custom / History; 8-wide circle grid + dashed add */
 function stickyColorPanel(pos){ const tab=S.stickyTab||'presets'; const cols=STICKY;
   const hues=[0,20,35,50,60,75,100,140,170,200,220,250,280,320]; const shades=[[100,12],[85,22],[75,32],[65,45],[55,55],[50,65],[45,75],[40,85],[35,93]];
@@ -2540,11 +2564,10 @@ function stickyColorPanel(pos){ const tab=S.stickyTab||'presets'; const cols=STI
     :`<div class="tp-empty">暂无历史</div>`;
   /* 10/1 Tom: same component as the tape style panel (极速版 胶带样式) — title · dropper · preview bar · 7×2 square swatches · 更多样式 → custom colour page */
   if(S.cpCustom) return customColorPage(pos,'sticky');
-  const curC=STICKY[S.sticky]||STICKY[0];
+  const curC=stickyColor();
   return `<div class="pop presetp stickypop2" data-anchor='[data-act="stickyColor"]' style="${panelStyle()};${pos};width:360px;color:#1e1b1b">
-    <div class="pph"><span></span><h4>便签颜色</h4><button class="tbtn" data-act="close" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
-    <div class="cp-preview" style="background:${curC}"></div>
-    <div class="pgrid">${STICKY.map((c,i)=>`<button class="psw sq" data-sticky="${i}" aria-pressed="${S.sticky===i}" aria-label="${c}"><span style="background:${c}">${S.sticky===i?`<span class="cchev">${svg('check')}</span>`:''}</span></button>`).join('')}</div>
+    <div class="pph"><span></span><h4>便签颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
+    <div class="pgrid">${STICKY.map((c,i)=>`<button class="psw sq" data-stickycustom="${c}" aria-pressed="${curC.toLowerCase()===c.toLowerCase()&&S.sticky===-1}" aria-label="${c}"><span style="background:${c}">${(curC.toLowerCase()===c.toLowerCase()&&S.sticky===-1)?`<span class="cchev">${svg('check')}</span>`:''}</span></button>`).join('')}</div>
     <button class="morebtn" data-act="cpmore">${svg('plus')}<span>更多样式</span></button></div>`; }
 function eraserRowV1(){
   const et=ERASER_TYPES.find(e=>e[0]===S.eraserType);
@@ -2581,12 +2604,12 @@ function textColorPanel(pos){const cur=(S.tbColor||'#111213').toLowerCase();
       <button class="tcsw add" data-act="close" aria-label="添加颜色"><span>${svg('plus')}</span></button></div></div>`;
 }
 /* Peru ColorPicker Touch · Page=Custom (26880:18697): hue strip · saturation/brightness field · hex field · 添加 */
-function customColorPage(pos,kind){ const hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri; const hex=hslToHex(hue,sat,bri); return `<div class="pop presetp custom" style="${panelStyle()};${pos};color:#1e1b1b;width:360px"> <div class="pph"><button class="tbtn" data-act="cpback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>自定颜色</h4><span></span></div> <div class="cp-field" data-cpfield="1" style="background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))"><b style="left:${sat}%;top:${100-bri}%;background:${hex}"></b></div> <div class="cp-hue" data-cphue="1"><b style="left:${hue/3.6}%;background:hsl(${hue} 100% 50%)"></b></div> <div class="cp-hexrow"><span class="cp-swatch" style="background:${hex}"></span><span class="cp-hex"><i>#</i>${hex.slice(1).toUpperCase()}</span></div> <button class="morebtn primary" data-cpadd="${hex}">${svg('plus')}<span>添加颜色</span></button></div>`; }
+function customColorPage(pos,kind){ const hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri; const hex=hslToHex(hue,sat,bri); return `<div class="pop presetp custom" ${kind==='sticky'?`data-anchor='[data-act="stickyColor"]'`:''} style="${panelStyle()};${pos};color:#1e1b1b;width:360px"> <div class="pph"><button class="tbtn" data-act="cpback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>自定颜色</h4><span></span></div> <div class="cp-field" data-cpfield="1" style="background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))"><b style="left:${sat}%;top:${100-bri}%;background:${hex}"></b></div> <div class="cp-hue" data-cphue="1"><b style="left:${hue/3.6}%;background:hsl(${hue} 100% 50%)"></b></div> <div class="cp-hexrow"><span class="cp-swatch" style="background:${hex}"></span><span class="cp-hex"><i>#</i>${hex.slice(1).toUpperCase()}</span></div> <button class="morebtn primary" data-cpadd="${hex}">${svg('plus')}<span>添加颜色</span></button></div>`; }
 function hslToHex(h,s,l){ s/=100; l/=100; const k=n=>(n+h/30)%12, a=s*Math.min(l,1-l), f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1))); return '#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join(''); }
 function presetPanel(pos,kind){
   const tape=kind==='tape', cfg=tape?S.tapeCfg:S.penCfg[S.pen], cur=(cfg.colors[cfg.ci]||'').toLowerCase(), list=(tape?TAPE_PALETTE:PRESET56).slice(0,28); /* Peru ColorPicker Touch (26892:378) grid at 7 wide; 4 rows like 极速版 */ if(S.cpCustom) return customColorPage(pos,kind);
   return `<div class="pop presetp" style="${panelStyle()};${pos};color:#1e1b1b;width:360px">
-    <div class="pph"><span></span><h4>预设颜色</h4><button class="tbtn" data-act="close" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
+    <div class="pph"><span></span><h4>预设颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
     <div class="pgrid">${list.map(c=>`<button class="psw${tape?' sq':''}" data-preset="${c}" aria-label="${c}"><span style="background:${c}">${c.toLowerCase()===cur?`<span class="cchev">${svg('check')}</span>`:''}</span></button>`).join('')}</div>
     <button class="morebtn" data-act="cpmore">${svg('plus')}<span>${tape?'更多样式':'更多颜色'}</span></button></div>`;
 }
@@ -2851,16 +2874,16 @@ function libraryView(c){const {W,H,phone,wide,top=0,overlay=false,right=0}=c; /*
       <span class="lh-filterwrap"><button class="lh-filter" data-act="libfilter" aria-pressed="${!!S.libFilterOpen}">${LIB_FILTER_ICON}<span>筛选</span>${svg('chevDown')}</button>
       ${S.libFilterOpen?`<div class="menu nocaret lh-filtermenu" style="${panelStyle()};color:#1e1b1b">${LIB_KINDS.map(([k,l])=>`<button data-libkind="${k}"><span class="col"><span>${l}</span></span>${kind===k?`<span class="chev">${svg('check')}</span>`:''}</button>`).join('')}</div>`:''}</span>`;
   const cats=`<div class="lh-cats hscroll">${LIB_CATS.map(([k,l])=>`<button class="lh-chip" data-libcat="${k}" aria-pressed="${cat===k}">${l}</button>`).join('')}</div>`;
-  const newBtn=`<button class="lh-new" data-act="libnew">${svg('plus')}<span>新建</span></button>`;
+  const newBtn=`<button class="lh-new" data-act="libnew" data-newbtn="1">${svg('plus')}<span>新建</span></button>`;
   /* the top bar is empty until the create row scrolls away — then the page name and New appear (concept `home-condensed`) */
   const sideBtn=`<button class="lh-ib lh-sidebtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库">${svg('sidebar2')}</button>`;   /* 9/30 Tom: the library sidebar entry is ALWAYS shown when the sidebar is not docked */
   const searchBtn=`<button class="lh-ib" aria-label="搜索">${svg('search')}</button>`;
   const top_=phone?`<div class="lh-phonebar">${sideBtn}<span class="lh-title">主页</span><span class="lh-sp"></span>${searchBtn}${newBtn}</div>`
     :`<div class="lh-topbar">${docked?'':sideBtn}<span class="lh-title">主页</span><span class="lh-sp"></span>${docked?'':searchBtn}${newBtn}</div>`;   /* docked sidebar already carries search */
   const side=docked?`<div class="lh-side">${libSidebar()}</div>`:(S.lib?libSidebar():''); /* pulled out from the left edge on narrow widths */
-  const menu=S.libNew?`<div class="scrim" data-act="libnew"></div>${(()=>{const items=LIB_CREATE.map(([k,l])=>`<button data-act="libnew"><img class="lh-mart" src="${window.ASSET[`create-${k}.svg`]||`create-${k}.svg`}" alt=""><span class="col"><span>${l}</span></span></button>`).join('');
+  const menu=S.libNew?`<div class="scrim" data-act="libnew"></div>${(()=>{const items=LIB_CREATE.map(([k,l])=>`<button data-libcreate="${k}"><img class="lh-mart" src="${window.ASSET[`create-${k}.svg`]||`create-${k}.svg`}" alt=""><span class="col"><span>${l}</span></span></button>`).join('');
       return phone?`<div class="vsheet ${S.dev==='android'?'android':'ios'} lh-newsheet" style="${panelStyle()}"><div class="vs-hdl"></div><div class="vs-head"><button class="vs-x" data-act="libnew" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">新建</div><span class="vs-sp"></span></div><div class="vs-body"><div class="menu lh-newmenu static">${items}</div></div></div>`
-        :`<div class="menu nocaret lh-newmenu" style="${panelStyle()};right:24px;top:72px;color:#1e1b1b">${items}</div>`;})()}`:'';
+        :`<div class="menu lh-newmenu" data-anchor='[data-newbtn]' style="${panelStyle()};right:24px;top:72px;color:#1e1b1b">${items}</div>`;})()}`:'';
   return `<div class="libhome${docked?' wide':''}${phone?' phone':''}${overlay?' overlay':''}${c.duoPort?' duoport':''}${S.libCondensed?' condensed':''}" style="left:0;top:${top}px;width:${W}px;height:${H}px">
     ${side}
     <div class="lh-main" style="left:${sideW}px;right:${right}px">
@@ -3053,7 +3076,7 @@ function dropdown(kind,pos){ const dropdownKind=kind;
     return `<button class="${ic==='trash'?'danger':''}${desc?' two':''}" ${attr}>${ic==='tabs'?TABS_ICON:svg(ic)}<span class="col"><span>${label}</span>${desc?`<span class="desc">${desc}</span>`:''}</span>${trail}</button>`; };
   /* 规则文档: pure-list menus (export …) are the SYSTEM menu on iOS (UIMenu — drawn here as a look-alike) and Peru DropdownMenu Touch on Android; the "more" panel keeps switches + descriptions, so it stays a self-drawn Peru Popover on both platforms with system switches inside */
   const sysMenu=false;   /* 10/1 Tom: export / more menus use the same custom dropdown on both platforms (glass on iOS) */ const tag=S.anno?`<div class="lab sys" style="position:absolute;right:8px;top:-22px">${sysMenu?'系统 UIMenu（模拟）':kind==='more'?'自绘面板 · Peru Popover':'Peru DropdownMenu Touch'}</div>`:'';
-  return `<div class="menu nocaret${sysMenu?' sysmenu':''}" data-anchor='[data-tool="${kind==='export'?'share':kind==='addpage'?'addPage':'more'}"]' style="${panelStyle()};${pos};color:#1e1b1b;${S.anno?'overflow:visible;':''}">${tag}${head}
+  return `<div class="menu" data-anchor='[data-tool="${kind==='export'?'share':kind==='addpage'?'addPage':'more'}"]' style="${panelStyle()};${pos};color:#1e1b1b;${S.anno?'overflow:visible;':''}">${tag}${head}
     ${items.map(row).join('')}</div>`;
 }
 /* the OS photo picker: a centred dialog where there is room, a sheet on a phone */
@@ -3667,6 +3690,7 @@ function render(){
   /* 第一版 · 手机只读态 — Figma 3507-62075 (New Goodnotes Library · Doc Concept): the tab bar stays, the tool row is gone; a raised edit button sits top-right of the canvas; nothing else floats — tapping the edit button enters edit mode (remembered per document); 阅读模式 in the more menu returns to it. Phone-class devices open in read mode by default. */
   if(roV1){ inner+=`<button class="dirbtn" style="${surfStyle()};color:#1e1b1b;right:12px;top:${cTop+4}px;bottom:auto" data-act="enteredit" aria-label="编辑">${svg('edit')}</button>`;
     if(S.anno) anno.push(`<div class="lab sys" style="left:50%;transform:translateX(-50%);top:${cTop+56}px">阅读模式 · 只有右上角的编辑按钮（Figma 3507-62075）</div>`); }
+  if(S.picking) inner+=`<div class="loupe" style="left:${Math.round(W/2-44)}px;top:${Math.round(H/2-44)}px;--pick:${S._pickColor||'#ffffff'}"></div>`;   /* 10/1 · eyedropper (极速版 style): follows the finger, ring shows the sampled colour, release to pick */
   if(S.lib) inner+=libSidebar();
   if(S.tabMgr) inner+=tabSwitcher(W,H);
   if(!compact) inner+=kbLive(W,duo?DUO_STRIP:0,hClass==='compact');
@@ -3679,7 +3703,7 @@ function render(){
   if(flexMode) inner+=flexDeck(flex,{W,H,navH,tabH,v1,active,st,bandInk,fadeC,nb,pw,tight});
   if(S.anno) inner+=`<div class="anno">${anno.filter(Boolean).join('')}</div>`;
   if(S.view==='library'){ const lt=duoPort?84:0, lw=duo?W-DUO_STRIP:W;
-    if(duoPort) inner+=`<div class="lh-duoband${S.libCondensed?' condensed':''}" style="height:${lt}px">${'<button class="lh-ib" data-act="library" aria-label="资料库">'+svg('sidebar2')+'</button>'}</div>`;   /* 9/30 Tom: on the library page the Duo top band is plain white — status cluster right, sidebar entry left */
+    if(duoPort) inner+=`<div class="lh-duoband${S.libCondensed?' condensed':''}" style="height:${lt}px">${'<button class="lh-ib" data-act="library" aria-label="资料库">'+svg('sidebar2')+'</button><span class="lh-sp"></span><button class="lh-ib" aria-label="搜索">'+svg('search')+'</button>'}</div>`;   /* 9/30 Tom: on the library page the Duo top band is plain white — status cluster right, sidebar entry left */
     if(duo||duoPort) inner+=libraryView({W,H:H-lt,top:lt,right:duo?DUO_STRIP:0,phone,compact:lw<BP.SIDEBAR_PUSH,wide:lw>=BP.SIDEBAR_PUSH,v1,duo,duoPort,overlay:true});
     else { const sb=inner.match(/<div class="statusbar"[\s\S]*?<\/div>\s*<\/div>/); inner=(sb?sb[0]:'')+libraryView({W,H:H-navH,top:navH,phone,compact:cw<BP.SIDEBAR_PUSH,wide:cw>=BP.SIDEBAR_PUSH,v1,duo,duoPort}); anno=[]; } }
   const stage=document.getElementById('stage');
@@ -3757,7 +3781,7 @@ function insertAt(kind,extra,size){
   S.sel=id;
   return id;
 }
-function placeSticky(pg,x,y){ const w=20; const id=++OBJ_ID; S.objs.push({id,tab:S.tab,pg,kind:'note',x:Math.round(Math.min(94-w,Math.max(2,x-w/2))),y:Math.round(Math.min(90-w,Math.max(2,y-w/2))),w,fill:STICKY[S.sticky]}); S.sel=id; render(); }
+function placeSticky(pg,x,y){ const w=20; const id=++OBJ_ID; S.objs.push({id,tab:S.tab,pg,kind:'note',x:Math.round(Math.min(94-w,Math.max(2,x-w/2))),y:Math.round(Math.min(90-w,Math.max(2,y-w/2))),w,fill:stickyColor()}); S.sel=id; render(); }
 function insertPhoto(i){ insertAt('image',{bg:`url(${PHOTO_SRC(i)}) center/cover`},24); }
 function afterInsert(compact){
   /* the tool stays active and its menu stays open — inserting is not a reason to
@@ -4210,7 +4234,7 @@ function bindCanvas(root){
   /* long-press on empty paper (select / lasso / text / shape tools): paste · insert */
   let lpT=0, lp0=null;
   const lpCancel=()=>{clearTimeout(lpT);lpT=0;};
-  cv.addEventListener('pointerdown',ev=>{ if(mode==='pan') return;
+  cv.addEventListener('pointerdown',ev=>{ if(mode==='pan'||S.picking) return;
     if(mode==='ink'||mode==='erase'||mode==='laser') return;
     if(ev.target.closest('[data-obj],.txtin,[data-objmenu],.objmenu')) return;
     const pg0=pageOf(ev.target); if(!pg0||S.selSet) return;
@@ -4221,7 +4245,7 @@ function bindCanvas(root){
   cv.addEventListener('pointermove',ev=>{ if(lpT&&lp0&&(Math.abs(ev.clientX-lp0.x)+Math.abs(ev.clientY-lp0.y))>6) lpCancel(); },true);
   ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,lpCancel,true));
 
-  cv.addEventListener('pointerdown',ev=>{ if(mode==='pan') return;
+  cv.addEventListener('pointerdown',ev=>{ if(mode==='pan'||S.picking) return;
     /* a tap on a control inside the canvas layer is not a canvas gesture */
     if(ev.target.closest('[data-objmenu],.objmenu')) return;
     page=pageOf(ev.target); if(!page) return;
@@ -4436,7 +4460,11 @@ function reconcileState(){
 /* 规则文档: a popover never crosses the screen edge — after layout, anything floating is pushed back inside with a 12pt buffer (menus, panels, the object menu) */
 function fadeEdges(el){ const top=el.scrollTop>4, bot=el.scrollTop+el.clientHeight<el.scrollHeight-4; el.dataset.fade=(top?'t':'')+(bot?'b':''); }
 function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; const availH=H-12-Math.max(12,t0); if(h0>availH){ /* 9/30 Tom: too tall for the window → the panel keeps its anchor and SHRINKS to the 12pt bottom buffer, scrolls inside, fades its edges */ el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
+function toHexColor(c){ if(!c) return null; if(c[0]==='#') return c.length===4?'#'+[...c.slice(1)].map(x=>x+x).join(''):c; const m=c.match(/\d+(\.\d+)?/g); if(!m||m.length<3) return null; return '#'+m.slice(0,3).map(v=>Math.round(+v).toString(16).padStart(2,'0')).join(''); }
 function bind(root,compact){
+  /* eyedropper: while picking, the loupe follows the pointer and samples the element underneath (stroke → fill → background) */
+  root.addEventListener('pointermove',e=>{ if(!S.picking) return; const lp=root.querySelector('.loupe'); if(!lp) return; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1; lp.style.left=((e.clientX-R0.left)/zf-44)+'px'; lp.style.top=((e.clientY-R0.top)/zf-44)+'px'; const el=document.elementFromPoint(e.clientX,e.clientY); if(!el) return; const st=el.getAttribute&&el.getAttribute('stroke'), fl=el.getAttribute&&el.getAttribute('fill'); let c=(st&&st!=='none'&&st!=='currentColor')?st:((fl&&fl!=='none'&&fl!=='currentColor')?fl:getComputedStyle(el).backgroundColor); if(c&&c!=='rgba(0, 0, 0, 0)'&&c!=='transparent'){ S._pickColor=toHexColor(c)||c; lp.style.setProperty('--pick',S._pickColor); } },true);
+  root.addEventListener('pointerup',e=>{ if(!S.picking) return; const c=S._pickColor; S.picking=false; if(c){ if(S.st==='stickyColor'){S.stickyCustom=c;S.sticky=-1;} else if(S.st==='tapeColor'){S.tapeCfg.colors[S.tapeCfg.ci]=c;} else if(S.st==='colorpop'||S.st==='penset'){const cfg=S.penCfg[S.pen]; if(cfg&&cfg.colors) cfg.colors[cfg.ci]=c;} } setTimeout(()=>render(),0); },true);
   /* Rodney's sticky drag (10051:263687): drag a colour swatch ≥8pt → an 88×88 ghost follows the finger; drop on a page → note placed there; drop off-page → colour armed */
   root.addEventListener('pointerdown',ev=>{ const sw=ev.target.closest('[data-sticky]'); if(!sw||ev.button>0) return; const idx=+sw.dataset.sticky, color=STICKY[idx]; const x0=ev.clientX,y0=ev.clientY; let ghost=null; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1;
     const mv=e=>{ if(!ghost&&Math.hypot(e.clientX-x0,e.clientY-y0)<8) return; if(!ghost){ ghost=document.createElement('div'); ghost.className='stkghost'; ghost.style.background=color; root.appendChild(ghost); } ghost.style.left=((e.clientX-R0.left)/zf-44)+'px'; ghost.style.top=((e.clientY-R0.top)/zf-44)+'px'; };
@@ -4472,7 +4500,7 @@ function bind(root,compact){
     cv.addEventListener('scroll',onScroll,{passive:true});
   }
   root.onclick=e=>{
-    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
+    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-stickycustom],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
     if(!b){
       /* canvas tap: an unpinned sheet is single-use and hands the toolbar straight back */
       if(S.pageMenu!=null&&!e.target.closest('.pagemenu')){if(S.swallowClick){S.swallowClick=false;return;}S.pageMenu=null;return render();}
@@ -4632,7 +4660,7 @@ function bind(root,compact){
     if(d.et){S.eraserType=d.et;S.st='eraser';syncState();return render();}
     if(d.es){S.eraserSize=d.es;return render();}
     if(d.eo){S[d.eo]=!S[d.eo];return render();}
-    if(d.go){ if(S.st==='ro'&&d.go==='l1') S.docMode[S.tabs[S.tab].n]='edit'; S.st=d.go;syncState();return render();} if(d.act==='enteredit'){S.docMode[S.tabs[S.tab].n]='edit';return render();} if(d.act==='cpmore'){S.cpCustom=true;return render();} if(d.act==='stickyColor'){S.st=S.st==='stickyColor'?'stickyNote':'stickyColor';syncState();return render();} if(d.stickytab){S.stickyTab=d.stickytab;return render();} if(d.act==='cpback'){S.cpCustom=false;return render();} if(d.cpfield!==undefined){const r=b.getBoundingClientRect();S.cpSat=Math.round(Math.min(100,Math.max(0,(e.clientX-r.left)/r.width*100)));S.cpBri=Math.round(Math.min(100,Math.max(0,100-(e.clientY-r.top)/r.height*100)));return render();} if(d.cphue!==undefined){const r=b.getBoundingClientRect();S.cpHue=Math.round(Math.min(359,Math.max(0,(e.clientX-r.left)/r.width*360)));return render();} if(d.cpadd){S.cpCustom=false;S.st=ACTIVE_FOR[S.st]||'writing';syncState();return render();} if(d.act==='readmode'){S.docMode[S.tabs[S.tab].n]='ro';S.st=S.lastTool||'writing';syncState();return render();} if(d.roedit){S.docMode[S.tabs[S.tab].n]='edit'; S.st=d.roedit; syncState(); return render();}
+    if(d.go){ if(S.st==='ro'&&d.go==='l1') S.docMode[S.tabs[S.tab].n]='edit'; S.st=d.go;syncState();return render();} if(d.act==='enteredit'){S.docMode[S.tabs[S.tab].n]='edit';return render();} if(d.act==='cpmore'){S.cpCustom=true;return render();} if(d.stickycustom){S.stickyCustom=d.stickycustom;S.sticky=-1;return render();} if(d.cpadd&&S.st==='stickyColor'){S.stickyCustom=d.cpadd;S.sticky=-1;S.cpCustom=false;return render();} if(d.act==='dropper'){S.picking=true;S._pickColor=null;return render();} if(d.act==='stickyColor'){S.st=S.st==='stickyColor'?'stickyNote':'stickyColor';syncState();return render();} if(d.stickytab){S.stickyTab=d.stickytab;return render();} if(d.act==='cpback'){S.cpCustom=false;return render();} if(d.cpfield!==undefined){const r=b.getBoundingClientRect();S.cpSat=Math.round(Math.min(100,Math.max(0,(e.clientX-r.left)/r.width*100)));S.cpBri=Math.round(Math.min(100,Math.max(0,100-(e.clientY-r.top)/r.height*100)));return render();} if(d.cphue!==undefined){const r=b.getBoundingClientRect();S.cpHue=Math.round(Math.min(359,Math.max(0,(e.clientX-r.left)/r.width*360)));return render();} if(d.cpadd){S.cpCustom=false;S.st=ACTIVE_FOR[S.st]||'writing';syncState();return render();} if(d.act==='readmode'){S.docMode[S.tabs[S.tab].n]='ro';S.st=S.lastTool||'writing';syncState();return render();} if(d.roedit){S.docMode[S.tabs[S.tab].n]='edit'; S.st=d.roedit; syncState(); return render();}
     if(d.gopen){S.st='pen2';syncState();return render();}
     if(d.act==='close'){S.st=ACTIVE_FOR[S.st]||'writing';syncState();return render();}
     if(d.act==='dismisskb'){S.st='text-obj';syncState();return render();}
@@ -4643,7 +4671,7 @@ function bind(root,compact){
       else{S.tapeW=+d.tw;S.st='tape';}
       syncState();return render();}
     if(d.tapecolor!==undefined){S.tapeColor=+d.tapecolor;return render();}
-    if(d.sticky!==undefined){ S.sticky=+d.sticky; if(S._stkDragged){S._stkDragged=false;return render();} if((ACTIVE_FOR[S.st]||S.st)==='stickyNote'){ insertAt('note',{fill:STICKY[S.sticky]},20); afterInsert(compact); } return render();}
+    if(d.sticky!==undefined){ S.sticky=+d.sticky; if(S._stkDragged){S._stkDragged=false;return render();} if((ACTIVE_FOR[S.st]||S.st)==='stickyNote'){ insertAt('note',{fill:stickyColor()},20); afterInsert(compact); } return render();}
     if(d.color!==undefined){
       if(!compact&&S.color===+d.color&&S.st!=='colorpop'){S.st='colorpop';syncState();}else S.color=+d.color;return render();}
     if(d.pen){
