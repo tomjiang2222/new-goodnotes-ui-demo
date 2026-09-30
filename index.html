@@ -1776,6 +1776,28 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .vsheet .morebtn,.vsheet .popbtn.adv,.pop .morebtn,.pop.penset .popbtn.adv{height:48px!important;border-radius:14px!important;background:#fff!important;border:0!important;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 1px 2px rgba(16,24,40,.06)!important;font-size:15px!important;font-weight:500;color:#1e1b1b!important}
 .device.android .vsheet .morebtn,.device.android .vsheet .popbtn.adv,.device.android .pop .morebtn,.device.android .pop.penset .popbtn.adv{background:#F5F5F5!important;box-shadow:none!important}
 
+/* ═══ 10/3 · round 14 ═══ */
+/* collaborators pill (Figma 3214-80427): SL 0–32 · pill from 24 (DR 32, −4 overlap, 24 chevron) = 76; add-page cell follows directly */
+.avatars .avwrap{left:24px!important;width:auto!important}
+.avatars .avwrap .av-dr{margin-right:-4px!important}
+.avatars .avwrap b{width:24px!important;margin:0!important}
+/* system share sheet: rows centred */
+.sysshare .ss-apps,.sysshare .ss-acts{justify-content:center}
+.sysshare .ss-head{justify-content:center}
+/* scrolling panels go solid so the pinned header matches the body exactly; header flush with the panel top (no gap) */
+.pop.scrollfade,.spanel.scrollfade,.stickypop2.scrollfade,.presetp.scrollfade{background:#F5F5F7!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.device.android :is(.pop,.spanel).scrollfade{background:#F5F5F5!important}
+.scrollfade>:is(h4,.tch,.pph,.ph,.st,.stk-head,.vs-head){background:#F5F5F7!important;top:0!important}
+.device.android .scrollfade>:is(h4,.tch,.pph,.ph,.st,.stk-head,.vs-head){background:#F5F5F5!important}
+.pop.penset .pph{margin:-14px -20px 8px!important;padding:0 12px!important;height:48px}
+.pop.penset.scrollfade .pph{top:-14px!important}
+.pop.penset.scrollfade{padding-top:14px!important}
+/* pull-to-add (Goodnotes CN 9066-101682): 56 ring, static “+”, accent arc, accent label, ghost page below */
+.pulladd .pa-glyph{transform:none!important;color:var(--accent)!important;font-weight:300}
+.pulladd .pa-bg{fill:rgba(255,255,255,.96);stroke:rgba(30,27,27,.08)}
+.pulladd .pa-label{color:var(--accent)!important}
+.pulladd .pa-ghost{opacity:.9;background-color:#F7F7F8!important;border-radius:2px;box-shadow:0 0 0 .5px rgba(30,27,27,.08)}
+
 </style>
 </head>
 <body>
@@ -2123,7 +2145,7 @@ const SIZES=[
 
 /* 默认模式看设备，不看宽度 (规则文档 · 默认模式判定): phone-class devices (iPhone in either orientation — no stylus; folded foldables; Android phones) open read-only first; tablets and unfolded foldables open in edit. Custom sizes fall back to the shorter side < 600. The last mode used on a document wins over the default (S.docMode). */
 const PHONE_PRESETS=new Set(['p16','p16l','imini','iminil','duoFold','duoFoldL','a_s24','a_s24l','a_pixel','a_pixell']);
-const phoneDevice=()=>S.custom?Math.max(S.w,S.h)<=932:PHONE_PRESETS.has(S.size);   /* 9/30 Tom: a resized window is phone-class only if it fits inside the largest iPhone (932) — a short iPad window must NOT flip to read-only */
+const phoneDevice=()=>S.custom?(Math.min(S.w,S.h)<600&&Math.max(S.w,S.h)<=932):PHONE_PRESETS.has(S.size);   /* 10/3 Tom: a resized window is phone-class only when its SHORT side is compact (<600) and it still fits inside the largest iPhone — 874×700 is a tablet window */   /* 9/30 Tom: a resized window is phone-class only if it fits inside the largest iPhone (932) — a short iPad window must NOT flip to read-only */
 /* 9/30 Tom · L2 hard rule: tapping an L1 tool opens its L2; tapping the ACTIVE tool again collapses it; each tool remembers its own state (default expanded); switching tools restores that tool's state */
 const secHidden=(a)=>{const k=a||ACTIVE_FOR[S.st]||S.st; return !!(S.secHideBy&&S.secHideBy[k]);};
 const readMode=()=>{const dm=S.docMode[(S.tabs[S.tab]||{}).n]; return S.version==='v1'&&S.view!=='library'&&(dm==='ro'||(S.w<600&&phoneDevice()&&dm!=='edit'));};
@@ -2179,7 +2201,7 @@ const PRESET56=['#000000','#454545','#707070','#9A9A9A','#C0C0C0','#DEDEDE','#FF
 const PEN_RANGE={pen:[0.1,2],ballpen:[0.1,2],brush:[0.1,2],pencil:[0.1,2],highlighter:[1,7.7],tape:[1,15.4]};
 function mkPenCfg(){const o={};for(const k in PEN_DEF)o[k]={slots:[...PEN_DEF[k].slots],style:['solid','solid','solid'],sel:0,colors:[...PEN_DEF[k].colors],ci:0};return o;}
 function mkTapeCfg(){return {slots:[...TAPE_DEF.slots],sel:0,colors:[...TAPE_DEF.colors],ci:0};}
-const I18N={'下拉添加页面':'Pull to add page','释放以添加页面':'Release to add page','协作者':'Collaborators','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
+const I18N={'拉动新增页面':'Pull to add page','释放以新增页面':'Release to add page','协作者':'Collaborators','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
 '当前模板':'Current template','当前页之前':'Before this page','当前页之后':'After this page',
 '全部项目':'All items','在我的资料库中查看全部':'See all in My library','1 周前打开':'Opened 1w ago','2 天前打开':'Opened 2d ago',
 '页面导航':'Page nav','侧栏':'Sidebar','浮层 · Claude 式':'Floating · Claude-style',
@@ -3510,7 +3532,7 @@ function render(){
   const tabMin=compact?Math.min(176,Math.max(132,Math.round(canvasW*0.44))):Math.min(231,Math.max(148,titleMax+71));
   const foldTabs=compact||phone||(duo&&W<BP.NARROW);   /* 9/29: Duo unfolded reads like an iPad — every tab shows its name; folded reads like an iPhone */   /* small screens: the selected tab must stay readable */
   if(!noStrip){
-  inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP)+16:(duoPort?DUO_STATUS_W:0)}px;height:${tabH+1}px;color:${navInk}">   ${''/* 9/29: +16 on Duo so the “+” never touches the fold-column status region */}   ${''/* 9/29: strip is 1pt taller and the selected tab 45 tall, so it overlaps the surface below by 1pt — kills the anti-aliasing hairline between tab and canvas (Duo mock reference) */}
+  inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP)+16:(duoPort?DUO_STATUS_W-24:0)}px;height:${tabH+1}px;color:${navInk}">   ${''/* 9/29: +16 on Duo so the “+” never touches the fold-column status region */}   ${''/* 9/29: strip is 1pt taller and the selected tab 45 tall, so it overlaps the surface below by 1pt — kills the anti-aliasing hairline between tab and canvas (Duo mock reference) */}
     <div class="fixed" style="${duo?'padding-left:12px':''}">
       ${(phone&&!duo)?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
       ${false?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
@@ -3722,7 +3744,7 @@ function render(){
     if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='mic'&&S.rec) men+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTopV+8}px`);
     /* tool panels: popover ≥600 wide, sheet below (or in a compact-height posture); menus stay menus (UIMenu on iOS) */
-    const useSheet=v1phone||(v1&&!duo&&phoneDevice());   /* 10/3 Tom: a phone in landscape still gets sheets, not a menu taller than the window */
+    const useSheet=v1phone||(v1&&!duo&&phoneDevice()&&H<600);   /* 10/3 Tom: sheets below 600 wide (compact width class), plus a phone in landscape (compact HEIGHT class on iOS) — never by device class alone */
     inner+=(useSheet?sheetWrap(pan+men):(duoSheet?duoSheetWrap(pan,W,H,hClass==='compact')+men:pan+men))+share+extraDialogs({W,H,phone,duo,duoSheet,duoPort,hClass});
   } else if(!compact){
     RAIL_POS=null;
@@ -3886,7 +3908,7 @@ function render(){
   { const ls=stage.querySelector('#lhscroll'); if(ls){ ls.scrollTop=S._libScroll||0; ls.addEventListener('scroll',()=>{S._libScroll=ls.scrollTop; const c=ls.scrollTop>120; if(c!==!!S.libCondensed){S.libCondensed=c; ls.closest('.libhome').classList.toggle('condensed',c); const bd=stage.querySelector('.lh-duoband'); if(bd) bd.classList.toggle('condensed',c);} },{passive:true}); } }
   placeSelection(stage); centreToolMid(stage); placeFloatNav(stage); placePopovers(stage); placePageMenu(stage); placeSecRow(stage); bindRotate(stage); placeRulerMenu(stage); clampPopovers(stage.querySelector('.device'),S.w,S.h); translateDOM(document.body);
   const ts=document.getElementById('tabscroll');
-  if(ts){const a=ts.querySelector('.tab:not(.dim)');if(a)ts.scrollLeft=Math.max(0,a.offsetLeft-ts.offsetLeft-6);}
+  if(ts){ if(S._tabFollow){ const on=ts.querySelector('.tab.on'); if(on) ts.scrollLeft=Math.max(0,on.offsetLeft-ts.offsetLeft-ts.clientWidth+on.offsetWidth+56); S._tabFollow=false; S._tabScroll=ts.scrollLeft; } else if(S._tabScroll!=null) ts.scrollLeft=S._tabScroll; else {const a=ts.querySelector('.tab:not(.dim)');if(a)ts.scrollLeft=Math.max(0,a.offsetLeft-ts.offsetLeft-6);} ts.addEventListener('scroll',()=>{S._tabScroll=ts.scrollLeft;},{passive:true}); }   /* 10/3 Tom: the strip keeps its scroll; creating a tab scrolls the new one into view */
   const DEVN={apple:'iPad / iPhone',duo:'iPhone Duo',android:'Android'};
   const RANGES=[ [0, BP.NARROW-1,'< 600','手机档 · 第一版顶部工具栏 · 只读优先'], [BP.NARROW, BP.SIDEBAR_PUSH-1,'600–736','平板 · 紧凑 · 侧栏不出现'], [BP.SIDEBAR_PUSH, BP.SIDEBAR_WIDE-1,'737–920','平板 · 停靠 · 侧栏 256'], [BP.SIDEBAR_WIDE, 9999,'> 920','平板 · 宽 · 侧栏 296']];
   const range=RANGES.find(r=>W>=r[0]&&W<=r[1])||RANGES[RANGES.length-1];
@@ -4332,8 +4354,8 @@ function bindZoom(root){
     raf=requestAnimationFrame(()=>{render();});};
   /* Lite: pulling past the end of the document adds a page. Here: wheel/trackpad overscroll at the bottom fills a hint, then adds */
   let pull=0, pullT=0;
-  const pullHint=()=>{let h=cv.querySelector('.pulladd'); if(!h){ const nb=NB(); const pw=(cv.querySelector('.paper')||{}).offsetWidth||400; const gw=Math.round(pw*0.8), gh=Math.round(gw*4/3); cv.insertAdjacentHTML('beforeend',`<div class="pulladd"><div class="pa-ring"><svg viewBox="0 0 56 56"><circle class="pa-bg" cx="28" cy="28" r="26.5"/><circle class="pa-arc" cx="28" cy="28" r="26.5"/></svg><span class="pa-glyph">+</span></div><span class="pa-label">下拉添加页面</span><div class="pa-ghost" style="width:${gw}px;height:${gh}px;background-color:${nb.paper||'#fff'};background-image:${(window.RULE_MAP||{})[nb.rule]||'none'};background-size:${(window.RULESZ_MAP||{})[nb.rule]||'auto'}"></div></div>`); h=cv.querySelector('.pulladd'); } return h;};
-  const setPull=(f)=>{ const h=pullHint(); h.style.setProperty('--p',f.toFixed(3)); const ready=f>=1; h.classList.toggle('ready',ready); const lab=h.querySelector('.pa-label'); if(lab) lab.textContent=ready?'释放以添加页面':'下拉添加页面'; return h; };
+  const pullHint=()=>{let h=cv.querySelector('.pulladd'); if(!h){ const nb=NB(); const pw=(cv.querySelector('.paper')||{}).offsetWidth||400; const gw=Math.round(pw*0.8), gh=Math.round(gw*4/3); cv.insertAdjacentHTML('beforeend',`<div class="pulladd"><div class="pa-ring"><svg viewBox="0 0 56 56"><circle class="pa-bg" cx="28" cy="28" r="26.5"/><circle class="pa-arc" cx="28" cy="28" r="26.5"/></svg><span class="pa-glyph">+</span></div><span class="pa-label">拉动新增页面</span><div class="pa-ghost" style="width:${gw}px;height:${gh}px;background-color:${nb.paper||'#fff'};background-image:${(window.RULE_MAP||{})[nb.rule]||'none'};background-size:${(window.RULESZ_MAP||{})[nb.rule]||'auto'}"></div></div>`); h=cv.querySelector('.pulladd'); } return h;};
+  const setPull=(f)=>{ const h=pullHint(); h.style.setProperty('--p',f.toFixed(3)); const ready=f>=1; h.classList.toggle('ready',ready); const lab=h.querySelector('.pa-label'); if(lab) lab.textContent=ready?'释放以新增页面':'拉动新增页面'; return h; };
   cv.addEventListener('gnpull',ev=>{ pull=Math.min(160,ev.detail.over); setPull(pull/160); });
   cv.addEventListener('gnpullend',ev=>{ if(pull>=160&&!readMode()){NB().pages++;NB().page=NB().pages-1;pull=0;render();scrollToPage();} else {pull=0;const h=cv.querySelector('.pulladd');if(h)h.remove();} });
   cv.addEventListener('wheel',ev=>{
@@ -4686,7 +4708,7 @@ function bind(root,compact){
     if(d.act==='library'){ if(S.view==='library'&&S.libCollapsed){S.libCollapsed=false;return render();} S.lib=!S.lib;return render();}
     if(d.act==='tabmgr'){S.tabMgr=!S.tabMgr;return render();}
     if(d.act==='tabmgr-done'){S.tabMgr=false;return render();}
-    if(d.act==='tabmgr-add'){const nm='未命名笔记 '+(S.tabs.length+1);S.tabs.push({n:nm,cover:'#FFFFFF',rule:'line',pages:1,page:0,scroll:0,kind:'plain'});S.tab=S.tabs.length-1; if(phoneDevice()){S.docMode[nm]='edit';S.st='idle';} return render();}
+    if(d.act==='tabmgr-add'){const nm='未命名笔记 '+(S.tabs.length+1);S.tabs.push({n:nm,cover:'#FFFFFF',rule:'line',pages:1,page:0,scroll:0,kind:'plain'});S.tab=S.tabs.length-1; S._tabFollow=true; if(phoneDevice()){S.docMode[nm]='edit';S.st='idle';} return render();}
     if(d.tmtab!==undefined){S.tab=+d.tmtab;S.tabMgr=false;S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
@@ -4694,7 +4716,7 @@ function bind(root,compact){
     if(d.act==='lbtoggle'){S.libTree=S.libTree||{mylib:false,fav:true,personal:false,coursework:false}; S.libTree[d.key]=!S.libTree[d.key]; return render();}
     if(d.act==='closelib'){ if(S.lib||S.libDrawer){S.lib=false;S.libDrawer=false;} else S.libCollapsed=true; return render();}
     if(d.act==='libdrawer'){S.libDrawer=!S.libDrawer;return render();}
-    if(d.libcreate){ if(!['notebook','quicknote','textdoc','whiteboard'].includes(d.libcreate)){S.libNew=false;return render();} const nm=(d.libcreate==='quicknote'?'速记 ':d.libcreate==='whiteboard'?'白板 ':d.libcreate==='textdoc'?'文本 ':'未命名笔记 ')+(S.tabs.length+1); S.tabs.push({...S.tabs[0],n:nm,cover:'#FFFFFF',paper:'#fff',rule:d.libcreate==='whiteboard'?'dot':'line',pages:1,page:0,scroll:0,kind:'plain'}); S.tab=S.tabs.length-1; S.view='doc'; S.libNew=false; if(phoneDevice()){ S.docMode[nm]='edit'; S.st=(S.version!=='v1'&&S.w<BP.NARROW)?'l1':'idle'; } /* 9/30 Tom: creating on mobile → 待编辑模式 (edit UI, no tool armed, gestures only scroll/zoom) */ else if(S.version!=='v1'&&S.w<BP.NARROW) S.st='l1'; else S.st='writing'; syncState(); return render(); }
+    if(d.libcreate){ if(!['notebook','quicknote','textdoc','whiteboard'].includes(d.libcreate)){S.libNew=false;return render();} const nm=(d.libcreate==='quicknote'?'速记 ':d.libcreate==='whiteboard'?'白板 ':d.libcreate==='textdoc'?'文本 ':'未命名笔记 ')+(S.tabs.length+1); S.tabs.push({...S.tabs[0],n:nm,cover:'#FFFFFF',paper:'#fff',rule:d.libcreate==='whiteboard'?'dot':'line',pages:1,page:0,scroll:0,kind:'plain'}); S.tab=S.tabs.length-1; S._tabFollow=true; S.view='doc'; S.libNew=false; if(phoneDevice()){ S.docMode[nm]='edit'; S.st=(S.version!=='v1'&&S.w<BP.NARROW)?'l1':'idle'; } /* 9/30 Tom: creating on mobile → 待编辑模式 (edit UI, no tool armed, gestures only scroll/zoom) */ else if(S.version!=='v1'&&S.w<BP.NARROW) S.st='l1'; else S.st='writing'; syncState(); return render(); }
     if(d.act==='opendoc'||d.act==='sbdoc'){S.view='doc';S.libDrawer=false;S.libNew=false; /* 规则文档 9/28: opening or switching a notebook keeps the library sidebar open — only the sidebar icon or a tap outside closes it */
       let i=S.tabs.findIndex(t=>t.n===d.doc); if(i<0){S.tabs.push({...S.tabs[0],n:d.doc,pages:3,page:0,scroll:0});i=S.tabs.length-1;} S.tab=i; const dm=S.docMode[d.doc]; if(S.version!=='v1'&&S.w<BP.NARROW){S.st=dm==='edit'?'l1':(phoneDevice()?'ro':'l1');} else if(S.version!=='v1'&&S.st==='ro'){S.st='writing';} syncState(); return render();}
     if(d.libtab){S.libTab=d.libtab;return render();}
@@ -4789,7 +4811,7 @@ function bind(root,compact){
       const COVERS=['#E6DCCB','#CFE0DD','#DAD2E2','#E0E4EA','#EDE0D4'];
       S.tabs.push({n:'未命名笔记 '+(S.tabs.length+1),cover:COVERS[S.tabs.length%COVERS.length],
         rule:['line','grid','dot'][S.tabs.length%3],pages:1,page:0,scroll:0,art:'none'});
-      S.tab=S.tabs.length-1; if(phoneDevice()){S.docMode[S.tabs[S.tab].n]='edit';S.st=compact?'l1':'idle';} else S.st=compact?'l1':'writing'; syncState();return render();}   /* 10/2: creating from the strip → 待编辑模式 on phones */
+      S.tab=S.tabs.length-1; S._tabFollow=true; if(phoneDevice()){S.docMode[S.tabs[S.tab].n]='edit';S.st=compact?'l1':'idle';} else S.st=compact?'l1':'writing'; syncState();return render();}   /* 10/2: creating from the strip → 待编辑模式 on phones */
     if(d.gslider){const r=b.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
       (S.penTune[S.pen]||(S.penTune[S.pen]={...PEN_TUNE_DEF}))[d.gslider]=Math.round(f*100); return render();}
     if(d.act==='camera'){S.picker='camera';return render();}
