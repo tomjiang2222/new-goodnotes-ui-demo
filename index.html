@@ -1675,6 +1675,42 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device .vsheet .vs-body>*,.device .vsheet :is(.lpanel,.spanel,.pop,.wcard,.tcpanel,.appanel,.collab,.menu.static,.stkpanel){width:100%!important;max-width:none!important;align-self:stretch;box-sizing:border-box}
 .device .vsheet .lpanel .lrow,.device .vsheet .lpanel .ls>*{width:100%!important;box-sizing:border-box}
 
+/* ═══ 10/2 · round 11 ═══ */
+.avatars{width:76px!important;height:32px;margin:0 0 0 4px!important;padding:0!important}
+.avatars .avwrap{left:24px!important;height:32px}
+.avatars .avwrap b{width:24px!important;height:32px}
+.avatars .avwrap b svg{width:16px!important;height:16px!important}
+.device.ios .libhome.wide{background:#E0E9F5!important} .device.ios .libhome .libbar,.device.ios .libhome .lh-side .libbar{background:#E0E9F5!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.device.android .libhome.wide{background:#EEF2F8!important} .device.android .libhome .libbar{background:#EEF2F8!important}
+.lb-row.sub2{padding-left:44px}
+.lb-row[data-act="lbtoggle"] svg:last-child{margin-left:auto;opacity:.6}
+.lh-cw{z-index:0}
+.lh-cw.portrait::before,.lh-cw.land::before{content:"";position:absolute;top:4px;bottom:4px;left:8px;right:-7px;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.12),inset -1px 0 0 rgba(0,0,0,.06);z-index:-1}
+.lh-cw>.lh-star{left:6px!important;right:auto!important;top:6px!important}
+.duostrip .ds-avs{display:flex;flex-direction:column;align-items:center}
+.duostrip .ds-av .av{width:30px;height:30px;border-radius:999px;border:1.5px solid #fff;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-style:normal;margin:0}
+.duostrip .ds-av .av-sl{background:#FEE685;color:#7B3306} .duostrip .ds-av .av-dr{background:#BEDBFF;color:#1C398E;margin-top:-6px}
+.duostrip .ds-av b{display:flex;margin-top:2px;opacity:.75} .duostrip .ds-av b svg{width:14px;height:14px}
+.device.ios .duostrip .ds-chip[aria-pressed=true],.device.ios .duostrip .ds-tab.on{background:rgba(24,24,27,.10)!important;color:inherit!important;box-shadow:none!important}
+.pscrim{display:none!important}
+.psidebar.over{clip-path:none;box-shadow:8px 0 28px rgba(0,0,0,.14),1px 0 0 rgba(0,0,0,.06)}
+.pgslide{position:absolute;right:6px;top:60px;bottom:16px;width:28px;border-radius:14px;background:rgba(30,27,27,.10);z-index:5}
+.pgslide b{position:absolute;left:2px;width:24px;height:36px;border-radius:12px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.08)}
+.pgslide span{position:absolute;right:36px;height:36px;display:flex;align-items:center;padding:0 12px;border-radius:12px;background:#1e1b1b;color:#fff;font-size:15px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tabstrip .tbtn[data-tool="more"] .chip{background:none!important}
+.ptr2{width:16px!important;height:8px!important}
+.ptr2.r{width:8px!important;height:16px!important}
+.appanel.v1 .ap-opts{padding:0 12px!important;justify-content:center;overflow:visible}
+.appanel.v1{width:auto!important;padding:8px 12px 12px!important}
+.device .slider .track::after{top:-2px!important;height:8px!important;background-image:linear-gradient(90deg,rgba(60,60,67,.30) 0 2px,transparent 2px)!important;background-size:calc((100% - 2px)/4) 8px!important;background-repeat:repeat-x!important;background-position:0 0!important;border-right:2px solid rgba(60,60,67,.30);box-sizing:border-box;opacity:1!important}
+.device.ios .slider .track b,.device.android .slider .track b,.spanel .ptrack b,.device.ios .wtrack b,.device.android .wtrack b{width:32px!important;height:20px!important;border-radius:10px!important}
+.device.ios .slider .track.drag b,.device.ios .wtrack.drag b{width:36px!important;height:24px!important;border-radius:12px!important}
+.pop.penset .pph{display:flex;align-items:center;justify-content:space-between;height:44px;margin:-6px -8px 4px}
+.pop.penset .pph h4{margin:0;flex:1;text-align:center}
+.pop.penset .popbtn.adv{height:48px!important;border-radius:14px!important}
+.omg{padding:0!important}
+.vsheet{max-height:calc(100% - 56px)!important}
+
 </style>
 </head>
 <body>
@@ -1751,6 +1787,7 @@ const I=window.GN_ICONS;
 const svg=n=>{const m=IDIOM[(typeof S!=='undefined'&&S.dev==='android')?'android':'ios'];const d=I[(m&&m[n])||n];return d?`<svg viewBox="${d.vb}" fill="none" aria-hidden="true">${d.p}</svg>`:'';};
 /* the four most generic actions follow the platform vocabulary (iOS: SF-style share / chevron back; Android: share nodes / ⋮ / arrow back); everything else is the shared Goodnotes set */
 I.xmark={vb:'0 0 24 24',p:'<path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'};
+I.addPage={vb:'0 0 24 24',p:'<path d="M14 2.26953V6.40007C14 6.96012 14 7.24015 14.109 7.45406C14.2049 7.64222 14.3578 7.7952 14.546 7.89108C14.7599 8.00007 15.0399 8.00007 15.6 8.00007H19.7305M12 18V12M9 15H15M14 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H15.2C16.8802 22 17.7202 22 18.362 21.673C18.9265 21.3854 19.3854 20.9265 19.673 20.362C20 19.7202 20 18.8802 20 17.2V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'}; I.share={vb:'0 0 24 24',p:'<path d="M21 12V16.2C21 17.8802 21 18.7202 20.673 19.362C20.3854 19.9265 19.9265 20.3854 19.362 20.673C18.7202 21 17.8802 21 16.2 21H7.8C6.11984 21 5.27976 21 4.63803 20.673C4.07354 20.3854 3.6146 19.9265 3.32698 19.362C3 18.7202 3 17.8802 3 16.2V12M8 7L12 3L16 7M12 3V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'}; I.layers={vb:'0 0 24 24',p:'<path d="M2 12L11.6422 16.8211C11.7734 16.8867 11.839 16.9195 11.9078 16.9324C11.9687 16.9438 12.0313 16.9438 12.0922 16.9324C12.161 16.9195 12.2266 16.8867 12.3578 16.8211L22 12M2 17L11.6422 21.8211C11.7734 21.8867 11.839 21.9195 11.9078 21.9324C11.9687 21.9438 12.0313 21.9438 12.0922 21.9324C12.161 21.9195 12.2266 21.8867 12.3578 21.8211L22 17M2 7L11.6422 2.17889C11.7734 2.11329 11.839 2.0805 11.9078 2.06759C11.9687 2.05616 12.0313 2.05616 12.0922 2.06759C12.161 2.0805 12.2266 2.11329 12.3578 2.17889L22 7L12.3578 11.8211C12.2266 11.8867 12.161 11.9195 12.0922 11.9324C12.0313 11.9438 11.9687 11.9438 11.9078 11.9324C11.839 11.9195 11.7734 11.8867 11.6422 11.8211L2 7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'}; I.chevDown16={vb:'0 0 16 16',p:'<path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'};
 I.collab={vb:'0 0 24 24',p:'<path d="M16 3.46776C17.4817 4.20411 18.5 5.73314 18.5 7.5C18.5 9.26686 17.4817 10.7959 16 11.5322M18 16.7664C19.5115 17.4503 20.8725 18.565 22 20M2 20C3.94649 17.5226 6.58918 16 9.5 16C12.4108 16 15.0535 17.5226 17 20M14 7.5C14 9.98528 11.9853 12 9.5 12C7.01472 12 5 9.98528 5 7.5C5 5.01472 7.01472 3 9.5 3C11.9853 3 14 5.01472 14 7.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'};
 I.upload={vb:'0 0 24 24',p:'<path d="M12 15.5V4M7.5 8.5 12 4l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M4.5 15v2.5a2.5 2.5 0 0 0 2.5 2.5h10a2.5 2.5 0 0 0 2.5-2.5V15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>'};
 I.shareIOS={vb:'0 0 24 24',p:'<path d="M12 3.5v11M8.5 7 12 3.5 15.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 10.5H7a2 2 0 0 0-2 2v6.5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V12.5a2 2 0 0 0-2-2h-1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'};
@@ -2539,12 +2576,13 @@ function placePopovers(scope){
       if(!pop.classList.contains('morph')) pop.classList.add('morph');
       return;}
     const left=Math.max(8,Math.min(cx-w/2,dev.offsetWidth-w-8));
-    pop.style.left=left+'px'; pop.style.top=(tb+4+(nc?4:10))+'px'; pop.style.right='auto'; pop.style.transform='none';
-    { const op=pop.offsetParent; if(op&&op!==dev&&dev.contains(op)){ const orr=op.getBoundingClientRect(); pop.style.left=(left-(orr.left-dr.left)/sx)+'px'; pop.style.top=(tb+4+(nc?4:10)-(orr.top-dr.top)/sx)+'px'; } }   /* 10/1: menus rendered inside the library page keep device coordinates */
+    const ptop=pop.dataset.keeptop?parseFloat(pop.style.top):(tb+4+(nc?4:8));   /* 10/2: 4pt gap + 8pt caret; ⋯ keeps its given top (aligned with the toolbar row) */
+    pop.style.left=left+'px'; pop.style.top=ptop+'px'; pop.style.right='auto'; pop.style.transform='none';
+    { const op=pop.offsetParent; if(op&&op!==dev&&dev.contains(op)){ const orr=op.getBoundingClientRect(); pop.style.left=(left-(orr.left-dr.left)/sx)+'px'; pop.style.top=(ptop-(orr.top-dr.top)/sx)+'px'; } }   /* 10/1: menus rendered inside the library page keep device coordinates */
     if(nc) return;
     /* the caret lives outside the panel so scrolling panels cannot clip it */
     const ptr=document.createElement('i'); ptr.className='ptr2';
-    ptr.style.left=(cx-10)+'px'; ptr.style.top=(tb+4)+'px'; ptr.style.zIndex=(parseInt(getComputedStyle(pop).zIndex)||44)+1;
+    ptr.style.left=(cx-8)+'px'; ptr.style.top=(ptop-8)+'px'; ptr.style.zIndex=(parseInt(getComputedStyle(pop).zIndex)||44)+1;
     dev.appendChild(ptr);
   });
 }
@@ -2650,8 +2688,8 @@ function presetPanel(pos,kind){
     <button class="morebtn" data-act="cpmore">${svg('plus')}<span>${tape?'更多样式':'更多颜色'}</span></button></div>`;
 }
 /* ObjectMenuContainer: property group · separator · action group · ⋯ ; sheet 240 below */
-const OM_FRONT=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l8 4 8-4M4 17l8 4 8-4"/><path d="M12 3v9M8.5 6.5L12 3l3.5 3.5"/></svg>`;
-const OM_BACK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8-4 8 4M4 11l8 4 8-4"/><path d="M12 12v9M8.5 17.5L12 21l3.5-3.5"/></svg>`;
+const OM_FRONT=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.5l8 4 8-4"/><path d="M4 10.5l8 4 8-4"/><path d="M12 9.5V3"/><path d="M9 6l3-3 3 3"/></svg>`;
+const OM_BACK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5l8-4 8 4"/><path d="M4 13.5l8-4 8 4"/><path d="M12 14.5V21"/><path d="M9 18l3 3 3-3"/></svg>`;
 const OM_BEZIER=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17c2-8 12-8 14 0"/><rect x="3" y="15" width="4" height="4" rx="1"/><rect x="17" y="15" width="4" height="4" rx="1"/><circle cx="12" cy="8.5" r="1.6"/><path d="M12 10v3"/></svg>`;
 const OM_PASTE=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="12" height="16" rx="2"/><path d="M9 5V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M9 12h6M9 16h4"/></svg>`;
 function selKind(){
@@ -2742,7 +2780,7 @@ function railPopoverInner(){
     /* the preview is the pen's own stroke: a thick–thin ribbon whose contrast follows 笔锋 / 扁平度 */
     const th=2+tune.sharp/16, tn=Math.max(.8,th*(0.25+tune.flat/100*.5));
     const rib=`M14 40C40 12 62 12 84 34s44 22 70 4 42-24 52-18`;
-    return `<div class="pop penset" style="${panelStyle()};${pos};width:320px;color:#1e1b1b"><h4>${(T[S.pen]||{}).zh||'钢笔'}</h4>
+    return `<div class="pop penset" style="${panelStyle()};${pos};width:320px;color:#1e1b1b"><div class="pph"><button class="tbtn" data-act="close" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>${(T[S.pen]||{}).zh||'钢笔'}</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
       <div class="pspreview"><svg viewBox="0 0 220 60" style="width:200px;overflow:visible"><path d="${rib}" fill="none" stroke="#1e1b1b" stroke-width="${th.toFixed(1)}" stroke-linecap="round" stroke-dasharray="70 40 110" opacity=".95"/><path d="${rib}" fill="none" stroke="#1e1b1b" stroke-width="${tn.toFixed(1)}" stroke-linecap="round"/></svg></div>
       ${sl('sharp','笔锋锐度')}${sl('pressure','压力灵敏度')}${sl('flat','扁平度')}${S.pen==='pen'?sl('angle','笔尖角度','deg',true):''}${sl('stable','稳定性')}
       <button class="popbtn adv" data-act="close">高级设置</button></div>`;}
@@ -2763,7 +2801,7 @@ function duoPortStatus(ink){return `<div class="dt-status" style="color:${ink}">
 function duoTopBar(c){
   const {st,v1,noStrip,bandInk,tabsCard}=c, pill=`${surfStyle()};border-radius:999px`;
   const lead=`<div class="cap dt-lead" style="${pill};color:${bandInk}"><button class="tbtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"><span class="chip">${svg('panel')}</span></button><button class="tbtn" data-act="home" aria-label="主页"><span class="chip">${svg('home')}</span></button></div>`;
-  const trail=`<div class="cap dt-trail" style="${pill};color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}${noStrip?tabsCard('tbtn'):''}${tool('more',st==='more')}</div>`;
+  const trail=`<div class="cap dt-trail" style="${pill};color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown16')}</b></span></button>${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}${noStrip?tabsCard('tbtn'):''}${tool('more',st==='more')}</div>`;
   const status=`<div class="dt-status" style="color:${inkOn(S.th.canvasBg)}"><b>9:41</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9.5a12 12 0 0 1 16 0"/><path d="M7.2 13a7.6 7.6 0 0 1 9.6 0"/><circle cx="12" cy="17.4" r="1.5" fill="currentColor" stroke="none"/></svg><span class="dt-batt"><i style="width:82%"></i></span></div>`;
   return `<div class="dtop">${lead}<div class="dt-title">${NB().n}</div>${trail}${status}</div>`;
 }
@@ -2946,9 +2984,13 @@ function libSidebar(){
     <div class="lb-scroll">
       ${row('lbHome','主页',{on:inLib,act:'home'})}${row('lbTemplates','模板')}${row('lbBell','通知',{n:3})}
       <div class="lb-div"></div>
-      ${row('lbLibrary','我的资料库',{chev:'lbChevR'})}
-      ${row('lbFav','收藏',{chev:'lbChevD'})}
-      ${row('lbFolderBlue','Personal',{sub:true,chev:'lbChevR'})}${doc('lbNotebook','Physics — Lecture Notes')}${doc('lbNotebook','Calculus II')}${doc('lbFile','Design Journal')}${doc('lbFileText','Essay Draft')}
+      ${(()=>{ const T=S.libTree||(S.libTree={mylib:false,fav:true,personal:false,coursework:false});
+        const tog=(k,ic,l,sub)=>`<div class="lb-row${sub?' sub':''}" data-act="lbtoggle" data-key="${k}">${ico(ic)}<span>${l}</span>${svg(T[k]?'lbChevD':'lbChevR')}</div>`;
+        let h=tog('mylib','lbLibrary','我的资料库');
+        if(T.mylib){ h+=tog('coursework','lbFolderBlue','Coursework',true); if(T.coursework){ h+=`<div class="lb-row sub sub2">${ico('lbFolderBlue')}<span>Problem Sets</span>${svg('lbChevR')}</div>`+doc('lbNotebook','Physics — Lecture Notes').replace('lb-row','lb-row sub2'); } h+=`<div class="lb-row sub">${ico('lbFolderBlue')}<span>Reading List</span></div>`+doc('lbNotebook','Sketchbook')+doc('lbFile','Design Journal'); }
+        h+=tog('fav','lbFav','收藏');
+        if(T.fav){ h+=tog('personal','lbFolderBlue','Personal',true); if(T.personal){ h+=doc('lbNotebook','Group Project — Heat Engines').replace('lb-row','lb-row sub2'); } h+=doc('lbNotebook','Physics — Lecture Notes')+doc('lbNotebook','Calculus II')+doc('lbFile','Design Journal')+doc('lbFileText','Essay Draft'); }
+        return h; })()}
     </div>
     ${row('lbTrash','废纸篓')}${row('lbFeedback','发送反馈')}
     <div class="lb-div"></div>
@@ -3089,6 +3131,14 @@ function layersPanel(pos){
 }
 function dropdown(kind,pos){ const dropdownKind=kind;
   const items=kind==='export'?EXPORT_ITEMS:kind==='addpage'?ADD_ITEMS:[...(S.moreExtra||[]),...MORE_ITEMS];
+  if(kind==='addpage'&&S.version==='v1'){ /* 10/2 Tom · phase one scope: current template · default template · blank, always after the current page; position toggle + more templates move to the future version */
+    return `<div class="menu appanel v1" data-anchor='[data-tool="addPage"]' style="${panelStyle()};${pos};color:#1e1b1b">
+    <div class="ph">添加页面</div>
+    <div class="ap-opts">
+      <button class="ap-opt" data-act="np-same"><span class="ap-thumb"><span class="tw">${window.PAGE_THUMB?window.PAGE_THUMB(NB().page):''}</span></span><span>当前模板</span></button>
+      <button class="ap-opt" data-act="np-default"><span class="ap-thumb" style="background:#fff repeating-linear-gradient(0deg,transparent 0 11px,rgba(30,27,27,.14) 11px 12px)"></span><span>默认模板</span></button>
+      <button class="ap-opt" data-act="np-blank"><span class="ap-thumb blank"></span><span>空白页面</span></button>
+    </div></div>`; }
   if(kind==='addpage'){const posv=S.npPos||'after', R=window.RULE_MAP||{}, RS=window.RULESZ_MAP||{};
     return `<div class="menu appanel" data-anchor='[data-tool="addPage"]' style="${panelStyle()};${pos};color:#1e1b1b">
     <div class="ph">添加页面</div>
@@ -3111,7 +3161,7 @@ function dropdown(kind,pos){ const dropdownKind=kind;
     return `<button class="${ic==='trash'?'danger':''}${desc?' two':''}" ${attr}>${ic==='tabs'?TABS_ICON:svg(ic)}<span class="col"><span>${label}</span>${desc?`<span class="desc">${desc}</span>`:''}</span>${trail}</button>`; };
   /* 规则文档: pure-list menus (export …) are the SYSTEM menu on iOS (UIMenu — drawn here as a look-alike) and Peru DropdownMenu Touch on Android; the "more" panel keeps switches + descriptions, so it stays a self-drawn Peru Popover on both platforms with system switches inside */
   const sysMenu=false;   /* 10/1 Tom: export / more menus use the same custom dropdown on both platforms (glass on iOS) */ const tag=S.anno?`<div class="lab sys" style="position:absolute;right:8px;top:-22px">${sysMenu?'系统 UIMenu（模拟）':kind==='more'?'自绘面板 · Peru Popover':'Peru DropdownMenu Touch'}</div>`:'';
-  return `<div class="menu" data-anchor='[data-tool="${kind==='export'?'share':kind==='addpage'?'addPage':'more'}"]' style="${panelStyle()};${pos};color:#1e1b1b;${S.anno?'overflow:visible;':''}">${tag}${head}
+  return `<div class="menu" ${kind==='more'?'data-keeptop="1"':''} data-anchor='[data-tool="${kind==='export'?'share':kind==='addpage'?'addPage':'more'}"]' style="${panelStyle()};${pos};color:#1e1b1b;${S.anno?'overflow:visible;':''}">${tag}${head}
     ${items.map(row).join('')}</div>`;
 }
 /* the OS photo picker: a centred dialog where there is room, a sheet on a phone */
@@ -3383,7 +3433,7 @@ function render(){
   if(!noStrip&&S.view!=='library') inner+=`<div style="position:absolute;left:0;right:${duo&&t.duoBand!==false?DUO_STRIP:0}px;top:0;height:${navH+tabH}px;z-index:4;background:${fill(t.tabBg,t.tabBg2,t.tabGrad)}"></div>`;
   const statusInk=S.view==='library'?'#1e1b1b':(noStrip?inkOn(t.band?bandMix:t.canvasBg):navInk);   /* 9/29: on the library page the top band is white, so the status cluster turns dark (Tom: 回首页顶部对比度) */
   if(duoPort){ inner+=duoPortStatus(statusInk);   /* 104×48 at right 24 / top 24 — the hardware region that never hides */
-    if(false) inner+=`<div class="dt-trailwrap"><div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown')}</b></span></button>${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}</div>${(noStrip&&!duo)?`<div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:''}</div>`; }
+    if(false) inner+=`<div class="dt-trailwrap"><div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}"><button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown16')}</b></span></button>${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${tool('layers',st==='layers')}</div>${(noStrip&&!duo)?`<div class="cap" style="${surfStyle()};border-radius:999px;color:${bandInk}">${tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:''}</div>`; }
   if(!duo&&!duoPort&&stShow) inner+=`<div class="statusbar" style="height:${navH}px;color:${statusInk}${(S.view==='library'&&!phone)?';background:'+(S.dev==='android'?'#EEF2F8':'#E0E9F5'):''}">
     <div>9:41${(compact||hClass==='compact')?'':'&nbsp;&nbsp;2月11日周四'}</div>
     <div class="sig"><i style="width:15px;height:10px"></i><i style="width:13px;height:10px"></i><i style="width:21px;height:10px"></i></div></div>`;
@@ -3396,7 +3446,7 @@ function render(){
   inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP)+16:(duoPort?DUO_STATUS_W:0)}px;height:${tabH+1}px;color:${navInk}">   ${''/* 9/29: +16 on Duo so the “+” never touches the fold-column status region */}   ${''/* 9/29: strip is 1pt taller and the selected tab 45 tall, so it overlaps the surface below by 1pt — kills the anti-aliasing hairline between tab and canvas (Duo mock reference) */}
     <div class="fixed" style="${duo?'padding-left:12px':''}">
       ${(phone&&!duo)?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
-      ${duo?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
+      ${false?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
     <div class="scroller" id="tabscroll">
       ${S.tabs.map((tb,i)=>{const on=i===S.tab;
         return (i&&!on&&i-1!==S.tab?`<span class="tsep" style="color:${navInk}"></span>`:'')+
@@ -3467,7 +3517,7 @@ function render(){
           <button class="tbtn" aria-label="撤销" style="color:${bandInk}"><span class="chip">${svg('undo')}</span></button>
           ${!R.redo?'':`<button class="tbtn" aria-label="重做" style="color:${bandInk}"><span class="chip">${svg('redo')}</span></button>`}</div>`);
     const rightHTML=((duo||!R.right)?'':`<div class="cap" style="${pill};color:${bandInk}">
-          ${!R.av?'':`<button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown')}</b></span></button>`}
+          ${!R.av?'':`<button class="avatars" data-tool="collab" aria-pressed="${st==='collab'}" aria-label="协作者"><i class="av av-sl">SL</i><span class="avwrap"><i class="av av-dr">DR</i><b>${svg('chevDown16')}</b></span></button>`}
           ${R.addPage?tool('addPage',st==='addpage'):''}${tool('share',st==='export'||st==='exportmenu'||st==='sysshare')}${R.layers?tool('layers',st==='layers'):''}</div>`)+(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${phone?'':tabsCard('tbtn',`style="color:${bandInk}"`)}${tool('more',st==='more')}</div>`:'');   /* hidden-tabs scheme: no strip, so the row carries tabs + ⋯ */
     const cols=[leftHTML?'auto':'','minmax(0,1fr)',rightHTML?'auto':''].filter(Boolean).join(' ');
     const PADX=duo?20:BAR.PAD;   /* Duo layout margin: 20pt */
@@ -3585,8 +3635,7 @@ function render(){
     inner+=`<div class="menu nocaret pagemenu" data-pmfor="${S.pageMenu}" style="${panelStyle()};left:248px;top:120px;color:#1e1b1b;min-width:232px">${S.dev!=='android'?`<div class="mh pmh"><div class="t2">第 ${S.pageMenu+1} 页</div></div>`:''}${PM.map(it=>it==='sep'?'<div class="sep"></div>':`<button class="${it[0]==='trash'?'danger':''}" data-act="${it[2]}">${svg(it[0])}<span class="col"><span>${it[1]}</span></span></button>`).join('')}</div>`;}
   if(S.sidebar&&floatNav) inner+=`<div class="navscrim" data-act="sidebar"></div>`;
   const floatWide=floatNav&&!(phone||compact);   /* wide: the panel runs to the bottom and the dock moves beside it */
-  if(S.sidebar&&!floatNav&&!sidebarPush) inner+=`<div class="pscrim" data-act="sidebar" style="left:240px;top:${navH+tabH}px"></div>`;   /* 9/29 Tom: overlaying page sidebar = same panel as the wide layout + a dark overlay on its right; tapping it closes */
-  if(S.sidebar) inner+=`<div class="psidebar${floatNav?' float':''}${(!floatNav&&!sidebarPush)?' over':''}" style="${floatNav?`${panelStyle()};top:${cTop+2}px;bottom:${floatWide?16:16+((phone||compact)?176:44)+8}px;left:${uiLeft+16}px`:`background:#F9F9F9;top:${navH+tabH}px;${sidebarPush?'box-shadow:1px 0 0 rgba(0,0,0,.07)':''}`}">
+  if(S.sidebar) inner+=`<div class="psidebar${floatNav?' float':''}${(!floatNav&&!sidebarPush)?' over':''}" style="${floatNav?`${panelStyle()};top:${cTop+2}px;bottom:${floatWide?16:16+((phone||compact)?176:44)+8}px;left:${uiLeft+16}px`:`background:#F9F9F9;top:${sidebarPush?navH+tabH:cTop}px;${sidebarPush?'box-shadow:1px 0 0 rgba(0,0,0,.07)':''}`}">   ${''/* 10/2 Tom: below 737 the page sidebar overlays the CANVAS (starts under the toolbars), no scrim */}
     <div class="ph"><span>页面</span><button class="cx" data-act="sidebar" aria-label="关闭侧边栏">${svg('close')}</button></div>
     <div class="list">
       ${[...Array(NB().pages)].map((_,i)=>`<div class="pg ${NB().page===i?'on':''}" data-page="${i}">
@@ -3601,7 +3650,7 @@ function render(){
     if(st==='layers') pan+=layersPanel(`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='collab') pan+=collabPanel(`right:${duo?pr:pr+96}px;top:${duo?70:cTopV+8}px`);
     let men='';
-    if(st==='more')   men+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+4}px`);
+    if(st==='more')   men+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
     if(st==='addpage') men+=dropdown('addpage',`right:${pr+96}px;top:${duo?70:cTopV+8}px`);
     const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):(st==='exportopts'?exportDialog({W,H,phone,duo}):''));   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
     if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
@@ -3618,7 +3667,7 @@ function render(){
     inner+=duoSheet?duoSheetWrap(pan,W,H,hClass==='compact'):pan;
     if(st==='export') inner+=dropdown('export',`right:${pr}px;top:${duo?70:cTop+8}px`);
     if(st==='exportopts') inner+=exportDialog({W,H,phone,duo}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
-    if(st==='more')   inner+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+4}px`);
+    if(st==='more')   inner+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
     if(st==='mic'&&S.rec) inner+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTop+8}px`);
     if(S.anno){
       anno.push(`<div class="lab" style="left:${canvasLeft+canvasW/2}px;transform:translateX(-50%);top:${navH+tabH-11}px">L1 · 常驻</div>`);
@@ -3693,7 +3742,7 @@ function render(){
     if(st==='layers') inner+=layersPanel(`right:10px;top:${cTop+58}px`);
     if(st==='export') inner+=dropdown('export',`right:10px;top:${cTop+58}px`);
     if(st==='exportopts') inner+=exportDialog({W,H,phone,duo}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
-    if(st==='more')   inner+=dropdown('more',`right:10px;top:${navH+tabH+4}px`);
+    if(st==='more')   inner+=dropdown('more',`right:10px;top:${navH+tabH+barGap}px`);
     if(st==='mic'&&S.rec) inner+=recDrawer();   /* phone tier (<600) → bottom drawer */
   }
 
@@ -3766,6 +3815,7 @@ function render(){
       sc.style.maskImage=m; sc.style.webkitMaskImage=m;};
     sc.addEventListener('scroll',sync,{passive:true}); sync();
   });
+  { const on=stage.querySelector('.psidebar .pg.on'); if(on&&S._sbFollow){S._sbFollow=false; on.scrollIntoView({block:'nearest'});} }
   { const ls=stage.querySelector('#lhscroll'); if(ls){ ls.scrollTop=S._libScroll||0; ls.addEventListener('scroll',()=>{S._libScroll=ls.scrollTop; const c=ls.scrollTop>120; if(c!==!!S.libCondensed){S.libCondensed=c; ls.closest('.libhome').classList.toggle('condensed',c); const bd=stage.querySelector('.lh-duoband'); if(bd) bd.classList.toggle('condensed',c);} },{passive:true}); } }
   placeSelection(stage); centreToolMid(stage); placeFloatNav(stage); placePopovers(stage); placePageMenu(stage); placeSecRow(stage); bindRotate(stage); placeRulerMenu(stage); clampPopovers(stage.querySelector('.device'),S.w,S.h); translateDOM(document.body);
   const ts=document.getElementById('tabscroll');
@@ -4494,9 +4544,16 @@ function reconcileState(){
 }
 /* 规则文档: a popover never crosses the screen edge — after layout, anything floating is pushed back inside with a 12pt buffer (menus, panels, the object menu) */
 function fadeEdges(el){ const top=el.scrollTop>4, bot=el.scrollTop+el.clientHeight<el.scrollHeight-4; el.dataset.fade=(top?'t':'')+(bot?'b':''); }
-function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; const availH=H-12-Math.max(12,t0); if(h0>availH){ /* 9/30 Tom: too tall for the window → the panel keeps its anchor and SHRINKS to the 12pt bottom buffer, scrolls inside, fades its edges */ el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
+function clampPopovers(root,W,H){ if(!root) return; const R0=root.getBoundingClientRect(); const zf=(R0.width/W)||1; root.querySelectorAll('.menu:not(.static),.pop,.spanel,.lpanel,.wcard,.tcpanel,.appanel,.objmenu,.omsheet,.rl-menu,.ctxmenu').forEach(el=>{ if(el.closest('.vsheet,.dsheet,.sharewrap,.dlg')) return; let r=el.getBoundingClientRect(); let t0=(r.top-R0.top)/zf, h0=r.height/zf; const availH=H-12-Math.max(12,t0); el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; if(h0>availH){ /* 9/30 Tom: too tall for the window → the panel keeps its anchor and SHRINKS to the 12pt bottom buffer, scrolls inside, fades its edges */ el.style.maxHeight=availH+'px'; el.style.overflowY='auto'; el.classList.add('scrollfade'); if(!el._fade){ el._fade=1; el.addEventListener('scroll',()=>fadeEdges(el),{passive:true}); } requestAnimationFrame(()=>fadeEdges(el)); r=el.getBoundingClientRect(); } const l=(r.left-R0.left)/zf, t=(r.top-R0.top)/zf, w=r.width/zf, h=r.height/zf; let dx=0, dy=0; if(l<12) dx=12-l; else if(l+w>W-12) dx=(W-12)-(l+w); if(t<12) dy=12-t; else if(t+h>H-12) dy=(H-12)-(t+h); if(dx||dy){ const cur=getComputedStyle(el).transform; el.style.transform=(cur&&cur!=='none'?cur+' ':'')+`translate(${Math.round(dx)}px,${Math.round(dy)}px)`; } }); }
 function toHexColor(c){ if(!c) return null; if(c[0]==='#') return c.length===4?'#'+[...c.slice(1)].map(x=>x+x).join(''):c; const m=c.match(/\d+(\.\d+)?/g); if(!m||m.length<3) return null; return '#'+m.slice(0,3).map(v=>Math.round(+v).toString(16).padStart(2,'0')).join(''); }
 function bind(root,compact){
+  /* 10/2 Tom · page sidebar: long-press (450ms) anywhere on the list shows a quick-jump slider; drag to any page, release to land */
+  { const sb=root.querySelector('.psidebar'); const list=sb&&sb.querySelector('.list'); if(sb&&list){ let tm=0,x0=0,y0=0,active=false,lastY=0;
+    const setP=y=>{ const r=list.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(y-r.top-24)/(r.height-48))); const n=NB().pages; const pIdx=Math.round(f*(n-1)); const sl=sb.querySelector('.pgslide'); if(sl){ sl.querySelector('b').style.top=(f*(sl.clientHeight-36))+'px'; sl.querySelector('span').style.top=(f*(sl.clientHeight-36))+'px'; sl.querySelector('span').textContent=(pIdx+1)+' / '+n; } if(NB().page!==pIdx){ NB().page=pIdx; list.querySelectorAll('.pg').forEach((el,i)=>el.classList.toggle('on',i===pIdx)); const t=list.querySelectorAll('.pg')[pIdx]; if(t) t.scrollIntoView({block:'center'}); } };
+    sb.addEventListener('pointerdown',e=>{ if(e.target.closest('.ph,.addp')||e.button>0) return; x0=e.clientX; y0=lastY=e.clientY; clearTimeout(tm); tm=setTimeout(()=>{ active=true; S._pgSlid=true; const sl=document.createElement('div'); sl.className='pgslide'; sl.innerHTML='<b></b><span></span>'; sb.appendChild(sl); setP(lastY); },450); },true);
+    const mv=e=>{ lastY=e.clientY; if(!active){ if(Math.hypot(e.clientX-x0,e.clientY-y0)>8) clearTimeout(tm); return; } e.preventDefault(); setP(e.clientY); };
+    const up=()=>{ clearTimeout(tm); if(!active) return; active=false; const sl=sb.querySelector('.pgslide'); if(sl) sl.remove(); scrollToPage(); setTimeout(()=>{S._pgSlid=false;},50); };
+    window.addEventListener('pointermove',mv,{passive:false}); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); } }
   /* 待编辑模式 ('idle'): a finger on the canvas scrolls the page instead of drawing */
   { const cv=root.querySelector('#cv'); if(cv){ cv.addEventListener('pointerdown',ev=>{ if(S.st!=='idle'||S.picking||ev.button>0) return; if(ev.target.closest('[data-act],[data-tool],.objmenu,.pgpill')) return; const y0=ev.clientY,x0=ev.clientX,st0=cv.scrollTop,sl0=cv.scrollLeft; const zf=(root.getBoundingClientRect().width/S.w)||1; const mv=e=>{cv.scrollTop=st0-(e.clientY-y0)/zf; cv.scrollLeft=sl0-(e.clientX-x0)/zf;}; const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);}; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); },true); } }
   /* eyedropper: while picking, the loupe follows the pointer and samples the element underneath (stroke → fill → background) */
@@ -4539,6 +4596,7 @@ function bind(root,compact){
   }
   root.onclick=e=>{
     const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-stickycustom],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
+    if(b&&(S.sel||S.selSet)&&!b.closest('.objmenu,.omsheet,.selbox')&&b.dataset.obj===undefined&&!(b.dataset.act||'').startsWith('om-')){S.sel=null;S.selSet=null;S.omMore=false;}   /* 10/2 Tom: any other control drops the selection + object menu */
     if(!b){
       /* canvas tap: an unpinned sheet is single-use and hands the toolbar straight back */
       if(S.pageMenu!=null&&!e.target.closest('.pagemenu')){if(S.swallowClick){S.swallowClick=false;return;}S.pageMenu=null;return render();}
@@ -4561,6 +4619,7 @@ function bind(root,compact){
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
     if(d.mi){ if(d.mi==='expPage'||d.mi==='expAll'){S.expScope=d.mi==='expAll'?'all':'page';} S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'exportopts':d.mi);syncState();return render();}
+    if(d.act==='lbtoggle'){S.libTree=S.libTree||{mylib:false,fav:true,personal:false,coursework:false}; S.libTree[d.key]=!S.libTree[d.key]; return render();}
     if(d.act==='closelib'){ if(S.lib||S.libDrawer){S.lib=false;S.libDrawer=false;} else S.libCollapsed=true; return render();}
     if(d.act==='libdrawer'){S.libDrawer=!S.libDrawer;return render();}
     if(d.libcreate){ if(!['notebook','quicknote','textdoc','whiteboard'].includes(d.libcreate)){S.libNew=false;return render();} const nm=(d.libcreate==='quicknote'?'速记 ':d.libcreate==='whiteboard'?'白板 ':d.libcreate==='textdoc'?'文本 ':'未命名笔记 ')+(S.tabs.length+1); S.tabs.push({...S.tabs[0],n:nm,cover:'#FFFFFF',paper:'#fff',rule:d.libcreate==='whiteboard'?'dot':'line',pages:1,page:0,scroll:0,kind:'plain'}); S.tab=S.tabs.length-1; S.view='doc'; S.libNew=false; if(phoneDevice()){ S.docMode[nm]='edit'; S.st=(S.version!=='v1'&&S.w<BP.NARROW)?'l1':'idle'; } /* 9/30 Tom: creating on mobile → 待编辑模式 (edit UI, no tool armed, gestures only scroll/zoom) */ else if(S.version!=='v1'&&S.w<BP.NARROW) S.st='l1'; else S.st='writing'; syncState(); return render(); }
@@ -4649,7 +4708,7 @@ function bind(root,compact){
       return render();}
     if(d.act==='sidebar'){S.sidebar=!S.sidebar;return render();}
     if(d.act==='addpage'){NB().pages++;NB().page=NB().pages-1;return render();}
-    if(d.page!==undefined){NB().page=+d.page;scrollToPage();return render();}
+    if(d.page!==undefined){ if(S._pgSlid){S._pgSlid=false;return;} NB().page=+d.page;scrollToPage();return render();}
     if(d.closetab!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.closetab,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.act==='home'){S.view='library';S.libDrawer=false;return render();}
     if(d.tab!==undefined){S.tab=+d.tab;S.st=compact?'l1':'writing';syncState();return render();}
@@ -4722,7 +4781,7 @@ function bind(root,compact){
       S.pen=k;S.st='writing';syncState();return render();}
     if(d.tool==='addPage'){S.st=S.st==='addpage'?(S.lastTool||'writing'):'addpage';syncState();return render();}
     if(d.nppos){S.npPos=d.nppos;return render();}
-    if(d.act&&d.act.startsWith('np-')){ if(d.act!=='np-more'){ NB().pages++; if((S.npPos||'after')==='after') NB().page=Math.min(NB().pages-1,NB().page+1); }
+    if(d.act&&d.act.startsWith('np-')){ if(d.act!=='np-more'){ NB().pages++; if((S.npPos||'after')==='after') NB().page=Math.min(NB().pages-1,NB().page+1); S._sbFollow=true; }
       if(d.act==='np-blank'){/* blank page: same notebook, no ruling on this page (demo keeps one ruling per notebook) */}
       if(d.act==='np-more'){S.tmplOpen=true;S.tmplFrom='add';S.tmplSel=NB().rule;}
       S.st=S.lastTool||'writing';syncState();scrollToPage();return render();}
