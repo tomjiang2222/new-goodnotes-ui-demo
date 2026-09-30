@@ -2046,6 +2046,32 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .avatars{width:88px!important;margin:0 8px 0 4px!important}
 .avatars .avwrap{left:26px}
 .toolrow>.side.r .cap>.avatars+.tbtn{margin-left:0!important}
+
+/* ═══ 10/9 · round 24 ═══ */
+/* library: the top row holds the title, so the first section starts below it */
+.libhome .lh-sec.lh-ask{padding-top:64px!important;margin-top:0!important}
+.libhome.phone .lh-sec.lh-ask{padding-top:56px!important}
+/* sheets: the panel's own .ph title moves into the head */
+.vsheet .lpanel>.ph,.vsheet .appanel>.ph{display:none!important}
+/* 添加页面 thumbnails: the page renders at 3× and scales down so the ruling reads as a thumbnail */
+.ap-thumb .tw{width:300%!important;height:300%!important;transform:scale(.3333)!important;transform-origin:0 0!important;left:0;top:0}
+.ap-thumb .tw>*{width:100%!important;height:100%!important;transform:none!important}
+/* colour picker (极速版 PresetColorPanel / AdvancedColorPicker) */
+.pop.presetp{display:flex;flex-direction:column;max-height:min(520px,calc(100% - 24px))}
+.presetp .pbody{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:none;margin:0 -6px;padding:0 6px}
+.presetp .pbody::-webkit-scrollbar{display:none}
+.presetp .morebtn{flex:0 0 auto}
+.vsheet .vs-body:has(> .presetp){overflow:hidden;display:flex;flex-direction:column}
+.vsheet .presetp{display:flex!important;flex-direction:column;min-height:0;flex:1 1 auto;max-height:100%!important}
+.vsheet .presetp .pbody{flex:1 1 auto;min-height:0;overflow-y:auto}
+.cp-addbtn{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:none}
+.cp-addbtn i{width:30px;height:30px;border-radius:999px;border:1.5px dashed var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center} .cp-addbtn i svg{width:16px;height:16px}
+.cp-hexin{flex:1;height:48px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px #E4E4E7;display:flex;align-items:center;gap:12px;padding:0 16px;box-sizing:border-box;cursor:text}
+.cp-hexin i{font-style:normal;color:rgba(64,59,59,.45);font-size:16px}
+.cp-hexin input{flex:1;border:0;background:none;font:inherit;font-size:17px;font-weight:600;color:#1e1b1b;outline:none;min-width:0;text-transform:uppercase;letter-spacing:.02em}
+.cp-prev{width:72px;height:48px;border-radius:14px;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.12);flex:0 0 auto}
+/* while the eyedropper is live the picker steps aside (极速版) */
+.device:has(.loupe) .pop.presetp,.device:has(.loupe) .vsheet:has(.presetp){visibility:hidden}
 </style>
 </head>
 <body>
@@ -3033,17 +3059,17 @@ function textColorPanel(pos){const cur=(S.tbColor||'#111213').toLowerCase();
 function customColorPage(pos,kind){ const hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri; const hex=hslToHex(hue,sat,bri); const a=(hue-90)*Math.PI/180, cx=133+116*Math.cos(a), cy=133+116*Math.sin(a);
   const anchor=kind==='sticky'?`data-anchor='[data-act="stickyColor"]'`:kind==='text'?`data-anchor='[data-tb="color"]'`:kind==='shape'?`data-anchor='[data-act="shapeColor"]'`:'';
   return `<div class="pop presetp custom" ${anchor} style="${panelStyle()};${pos};color:#1e1b1b;width:360px">
-    <div class="pph"><button class="tbtn" data-act="cpback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>自定颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
+    <div class="pph"><button class="tbtn" data-act="cpback" aria-label="返回"><span class="chip">${svg('chevLeft')}</span></button><h4>选择颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
     <div class="cp-wheelwrap"><div class="cp-wheel"><div class="cp-ring"></div><b class="cp-rthumb" style="left:${cx.toFixed(1)}px;top:${cy.toFixed(1)}px;background:hsl(${hue} 100% 50%)"></b>
       <div class="cp-plane" style="background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))"><b class="cp-pthumb" style="left:${sat}%;top:${100-bri}%;background:${hex}"></b></div></div></div>
-    <div class="cp-row"><button class="cp-addbtn" data-cpadd="${hex}" aria-label="添加到预设">${svg('plus')}</button><label class="cp-hexin"><span class="cp-swatch" style="background:${hex}"></span><i>#</i><input value="${hex.slice(1).toUpperCase()}" maxlength="6" data-cphex="1" spellcheck="false" autocomplete="off"></label></div></div>`; }
+    <div class="cp-row"><button class="cp-addbtn" data-cpadd="${hex}" aria-label="添加到预设"><i>${svg('plus')}</i></button><label class="cp-hexin"><i>Hex</i><input value="${hex.slice(1).toUpperCase()}" maxlength="6" data-cphex="1" spellcheck="false" autocomplete="off"></label><span class="cp-prev" style="background:${hex}"></span></div></div>`; }
 function hexToHsl(hex){ const h=hex.replace('#',''); const r=parseInt(h.slice(0,2),16)/255,g=parseInt(h.slice(2,4),16)/255,b=parseInt(h.slice(4,6),16)/255; const mx=Math.max(r,g,b),mn=Math.min(r,g,b); let hh=0,ss=0; const l=(mx+mn)/2; if(mx!==mn){ const d=mx-mn; ss=l>.5?d/(2-mx-mn):d/(mx+mn); hh=mx===r?((g-b)/d+(g<b?6:0)):mx===g?((b-r)/d+2):((r-g)/d+4); hh*=60; } return [Math.round(hh),Math.round(ss*100),Math.round(l*100)]; }
 function hslToHex(h,s,l){ s/=100; l/=100; const k=n=>(n+h/30)%12, a=s*Math.min(l,1-l), f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1))); return '#'+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,'0')).join(''); }
 function presetPanel(pos,kind){
-  const tape=kind==='tape', text=kind==='text', shape=kind==='shape', cfg=tape?S.tapeCfg:S.penCfg[S.pen], cur=(text?(S.tbColor||'#111213'):shape?(S.shapeColor||COLORS[S.color]):(cfg.colors[cfg.ci]||'')).toLowerCase(), list=(tape?TAPE_PALETTE:PRESET56).slice(0,28); /* Peru ColorPicker Touch (26892:378) grid at 7 wide; 4 rows like 极速版 */ if(S.cpCustom) return customColorPage(pos,kind);
+  const tape=kind==='tape', text=kind==='text', shape=kind==='shape', cfg=tape?S.tapeCfg:S.penCfg[S.pen], cur=(text?(S.tbColor||'#111213'):shape?(S.shapeColor||COLORS[S.color]):(cfg.colors[cfg.ci]||'')).toLowerCase(), list=(tape?TAPE_PALETTE:PRESET56).concat(((S.userPresets||{})[kind])||[]); /* 极速版 PresetColorPanel: the full 7×8 palette + the colours the user added, grid scrolls, 更多颜色 stays pinned */ if(S.cpCustom) return customColorPage(pos,kind);
   return `<div class="pop presetp${text?' textp':''}${shape?' shapep':''}" ${text?`data-anchor='[data-tb="color"]'`:shape?`data-anchor='[data-act="shapeColor"]'`:''} style="${panelStyle()};${pos};color:#1e1b1b;width:360px">
     <div class="pph"><span></span><h4>预设颜色</h4><button class="tbtn" data-act="dropper" aria-label="从屏幕取色"><span class="chip">${svg('dropper')}</span></button></div>
-    <div class="pgrid">${list.map(c=>`<button class="psw${tape?' sq':''}" data-preset="${c}" aria-label="${c}"><span style="background:${c}">${c.toLowerCase()===cur?`<span class="cchev">${svg('check')}</span>`:''}</span></button>`).join('')}</div>
+    <div class="pbody"><div class="pgrid">${list.map(c=>`<button class="psw${tape?' sq':''}" data-preset="${c}" aria-label="${c}"><span style="background:${c}">${c.toLowerCase()===cur?`<span class="cchev">${svg('check')}</span>`:''}</span></button>`).join('')}</div></div>
     <button class="morebtn" data-act="cpmore">${svg('plus')}<span>${tape?'更多样式':'更多颜色'}</span></button></div>`;
 }
 /* ObjectMenuContainer: property group · separator · action group · ⋯ ; sheet 240 below */
@@ -3451,8 +3477,8 @@ function collabPanel(pos){
 }
 /* v1 phone: every popover becomes a bottom sheet below 600 (phone tier) — iOS system sheet on Apple, Peru sheet on Android */
 const sheetTitle=()=>{const x=STATES.find(([v])=>v===S.st);return x?x[1]:'';};
-const ownsTitle=html=>/class="(cb-t|rt|ph|tch|wlab)"/.test(html);
-const panelTitle=html=>{ const m=html.match(/class="pph"[\s\S]*?<h4[^>]*>([^<]*)<\/h4>/)||html.match(/<div class="st">([^<]*)<\/div>/); return m?m[1]:''; };   /* 10/5 Tom: the panel's own title moves up into the × row, so it never scrolls */
+const ownsTitle=html=>/class="(cb-t|rt|tch|wlab)"/.test(html);
+const panelTitle=html=>{ const m=html.match(/class="pph"[\s\S]*?<h4[^>]*>([^<]*)<\/h4>/)||html.match(/<div class="st">([^<]*)<\/div>/)||html.match(/<div class="ph">([^<]*)<\/div>/); return m?m[1]:''; };   /* 10/5 Tom: the panel's own title moves up into the × row, so it never scrolls */
 /* Peru Sheet·Touch: the CONTAINER is the platform's (iOS system sheet / Android drawer), the CONTENT is one shared layout:
    round close button left, centred title, 64pt sides so the title stays centred */
 /* Rename → Peru AlertDialog (320 / radius 36) with one text field; Change template → Sheet · Touch Form (560 centred) on tablets, bottom sheet on phones, Duo sheet on Duo */
@@ -4965,7 +4991,7 @@ function landNewPage(cv){ const h=cv.querySelector('.pulladd'); const ghost=h&&h
 function bind(root,compact){
   /* 10/6 · colour wheel (Lite AdvancedColorPicker): drag on the ring = hue, drag on the plane = saturation / brightness; live thumbs, commit on release; hex field commits on change */
   root.addEventListener('pointerdown',ev=>{ const wheel=ev.target.closest('.cp-wheel'); if(!wheel||ev.button>0) return; ev.preventDefault(); const wr=wheel.getBoundingClientRect(); const plane=wheel.querySelector('.cp-plane'), pr=plane.getBoundingClientRect(); const inPlane=ev.clientX>=pr.left&&ev.clientX<=pr.right&&ev.clientY>=pr.top&&ev.clientY<=pr.bottom; let hue=S.cpHue==null?210:S.cpHue, sat=S.cpSat==null?70:S.cpSat, bri=S.cpBri==null?80:S.cpBri;
-    const paint=()=>{ const hex=hslToHex(hue,sat,bri); const rt=wheel.querySelector('.cp-rthumb'), pt=wheel.querySelector('.cp-pthumb'); const a=(hue-90)*Math.PI/180; rt.style.left=(133+116*Math.cos(a))+'px'; rt.style.top=(133+116*Math.sin(a))+'px'; rt.style.background=`hsl(${hue} 100% 50%)`; plane.style.background=`linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))`; pt.style.left=sat+'%'; pt.style.top=(100-bri)+'%'; pt.style.background=hex; const pop=wheel.closest('.pop'); if(pop){ const sw=pop.querySelector('.cp-hexin .cp-swatch'), inp=pop.querySelector('[data-cphex]'), add=pop.querySelector('[data-cpadd]'); if(sw) sw.style.background=hex; if(inp) inp.value=hex.slice(1).toUpperCase(); if(add) add.dataset.cpadd=hex; } };
+    const paint=()=>{ const hex=hslToHex(hue,sat,bri); const rt=wheel.querySelector('.cp-rthumb'), pt=wheel.querySelector('.cp-pthumb'); const a=(hue-90)*Math.PI/180; rt.style.left=(133+116*Math.cos(a))+'px'; rt.style.top=(133+116*Math.sin(a))+'px'; rt.style.background=`hsl(${hue} 100% 50%)`; plane.style.background=`linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(${hue} 100% 50%))`; pt.style.left=sat+'%'; pt.style.top=(100-bri)+'%'; pt.style.background=hex; const pop=wheel.closest('.pop'); if(pop){ const sw=pop.querySelector('.cp-prev'), inp=pop.querySelector('[data-cphex]'), add=pop.querySelector('[data-cpadd]'); if(sw) sw.style.background=hex; if(inp) inp.value=hex.slice(1).toUpperCase(); if(add) add.dataset.cpadd=hex; } };
     const at=e=>{ if(inPlane){ sat=Math.round(Math.min(100,Math.max(0,(e.clientX-pr.left)/pr.width*100))); bri=Math.round(100-Math.min(100,Math.max(0,(e.clientY-pr.top)/pr.height*100))); } else { const cx=wr.left+wr.width/2, cy=wr.top+wr.height/2; hue=Math.round((Math.atan2(e.clientY-cy,e.clientX-cx)*180/Math.PI+90+360)%360); } paint(); };
     at(ev); const mv=e=>{e.preventDefault(); at(e);}; const up=()=>{ window.removeEventListener('pointermove',mv); window.removeEventListener('pointerup',up); window.removeEventListener('pointercancel',up); S.cpHue=hue; S.cpSat=sat; S.cpBri=bri; }; window.addEventListener('pointermove',mv,{passive:false}); window.addEventListener('pointerup',up); window.addEventListener('pointercancel',up); },true);
   root.addEventListener('change',ev=>{ const inp=ev.target.closest&&ev.target.closest('[data-cphex]'); if(!inp) return; let v=inp.value.replace(/[^0-9a-f]/gi,''); if(v.length===3) v=[...v].map(c=>c+c).join(''); if(v.length!==6) return; const [h,sa,l]=hexToHsl('#'+v); S.cpHue=h; S.cpSat=sa; S.cpBri=l; render(); },true);
@@ -5067,8 +5093,9 @@ function bind(root,compact){
     if(d.tcol!==undefined){const cfg=S.tapeCfg;
       if(cfg.ci===+d.tcol&&S.st!=='tapeColor'){S.st='tapeColor';}else{cfg.ci=+d.tcol;S.st='tape';}syncState();return render();}
     if(d.lstyle){const cfg=S.penCfg[S.pen];cfg.style[cfg.sel]=d.lstyle;return render();}
-    if(d.cpadd&&S.st==='textColor'){S.tbColor=d.cpadd;S.cpCustom=false;S.st='textbox';syncState();return render();}
-    if(d.cpadd&&S.st==='shapeColor'){S.shapeColor=d.cpadd;S.cpCustom=false;S.st='shapes';syncState();return render();}
+    if(d.cpadd&&!['stickyColor'].includes(S.st)){ const kind=S.st==='textColor'?'text':S.st==='shapeColor'?'shape':S.st==='tapeColor'?'tape':'pen'; S.userPresets=S.userPresets||{}; const up=S.userPresets[kind]||(S.userPresets[kind]=[]); const hex=d.cpadd.toUpperCase(); if(!up.includes(hex)&&!PRESET56.includes(hex)&&!(kind==='tape'&&TAPE_PALETTE.includes(hex))) up.push(hex);
+      if(kind==='text'){S.tbColor=hex; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=hex;} else if(kind==='shape') S.shapeColor=hex; else if(kind==='tape') S.tapeCfg.colors[S.tapeCfg.ci]=hex; else { const cfg=S.penCfg[S.pen]; if(cfg&&cfg.colors) cfg.colors[cfg.ci]=hex; }
+      S.cpCustom=false; return render(); }   /* 极速版: 添加到预设 → back to the preset page, the new swatch carries the check */
     if(d.preset&&S.st==='textColor'){S.tbColor=d.preset; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=d.preset; S.st='textbox';syncState();return render();}
     if(d.preset&&S.st==='shapeColor'){S.shapeColor=d.preset;S.st='shapes';syncState();return render();}
     if(d.omtb){S.omMenu=S.omMenu===d.omtb?null:d.omtb;S.omMore=false;S.omSub=null;return render();}
