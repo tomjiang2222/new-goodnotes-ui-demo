@@ -1382,7 +1382,7 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device.ios .slider .track.drag b{width:46px!important;height:28px!important;border-radius:14px!important}
 .device.android .slider .track.drag b{width:40px!important;height:24px!important}
 /* 9/29 · scroll-edge fades for panels that had to shrink to the window */
-.scrollfade{position:relative}
+/* 10/8: .scrollfade no longer touches position — a shrunken panel keeps its anchor and width, only its height shrinks (12pt bottom buffer) and it scrolls inside */
 .scrollfade::before,.scrollfade::after{content:"";position:sticky;left:0;right:0;display:block;height:32px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:5}
 .scrollfade::before{top:0;margin-bottom:-32px;background:linear-gradient(rgba(247,247,248,.96),rgba(247,247,248,0))}
 .scrollfade::after{bottom:0;margin-top:-32px;background:linear-gradient(rgba(247,247,248,0),rgba(247,247,248,.96))}
@@ -2009,6 +2009,25 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .fontp .fp-row+.fp-row{border-top:1px solid rgba(30,27,27,.08)}
 .fontp .fp-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .fontp .fp-row svg{width:20px;height:20px;opacity:.55;flex:0 0 auto}
 .fontp.android .fp-card{margin-bottom:0}
+
+/* ═══ 10/8 · round 22 ═══ */
+/* Duo column sheet: card left of the strip, buttons inside the strip, nothing painted behind */
+.device .vsheet.colsheet,.device.ios .vsheet.colsheet,.device.android .vsheet.colsheet,.device .vsheet.colsheet.solid{display:flex!important;flex-direction:row!important;align-items:stretch!important;right:0!important;background:none!important;background-image:none!important;box-shadow:none!important;border:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;padding:0!important;border-radius:0!important}
+.vsheet.colsheet .dsh-card{flex:1 1 auto!important;min-width:0;position:relative;max-height:100%;margin-right:8px}
+.vsheet.colsheet .dsh-head{padding:0 24px}
+.vsheet.colsheet .dsh-btns{display:none}
+.vsheet.colsheet .dsh-col{display:flex!important;flex:0 0 var(--colw,84px)!important;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;padding:16px 0 0!important;position:static!important;width:auto!important;bottom:auto}
+.vsheet.colsheet .dsh-col .ex-go{width:48px!important;height:48px!important}
+/* selection: one frame only */
+.obj.on{outline:none!important}
+/* shapes 线条样式: endpoints in two labelled rows; tapered width slider with the pill knob and the glass press */
+.shapestroke .eprow{display:flex;align-items:center;gap:12px;margin-top:8px}
+.shapestroke .eplab{width:36px;font-size:14px;color:rgba(64,59,59,.7);flex:0 0 auto}
+.shapestroke .epgrp{display:flex;gap:6px}
+.shapestroke .wlab{display:flex;justify-content:space-between;align-items:center;margin:16px 0 14px;font-size:15px} .shapestroke .wlab em{font-style:normal;color:rgba(64,59,59,.6);font-size:14px}
+.device.ios .wtrack.drag b{width:52px!important;height:30px!important;border-radius:15px!important;background:rgba(255,255,255,.28)!important;border:.5px solid rgba(0,0,0,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 10px rgba(0,0,0,.10)!important}
+/* while a column sheet is up, the strip's own controls step back so the sheet's × / action read alone (status cluster stays) */
+.device:has(.vsheet.colsheet) .duostrip :is(button,.ds-avs,.avatars){opacity:.18;pointer-events:none}
 </style>
 </head>
 <body>
@@ -2348,8 +2367,6 @@ const SIZES=[
   ['duoOpenP','Duo 展开 · 竖向 669×951',669,951,'duo','duo'],
   ['duoFold','Duo 折叠 · 竖向 466×678',466,678,'duo','duo'],
   ['duoFoldL','Duo 折叠 · 横向 678×466',678,466,'duo','duo'],
-  ['duoFlexH','Duo 半折叠 · 上下屏 669×951',669,951,'duo','duo','flexH'],
-  ['duoFlexV','Duo 半折叠 · 左右屏 951×669',951,669,'duo','duo','flexV'],
   /* Android: dp = px ÷ density (OEM defaults) — two phones, two tablets, one foldable (9/28) */
   ['a_oppo','OPPO Pad 3 Pro 横向 · 1120×800',1120,800,'android'],
   ['a_oppop','OPPO Pad 3 Pro 竖向 · 800×1120',800,1120,'android'],
@@ -2581,8 +2598,9 @@ const EP_ICON={none:()=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentCol
 function shapeStrokePop(pos){ const w=S.shapeW==null?40:S.shapeW, ls=S.shapeLine||'solid'; const ep=side=>['none','arrow','filledArrow'].map(k=>`<button class="epc" data-ep="${side}:${k}" aria-pressed="${(S[side==='start'?'shapeArrowS':'shapeArrowE']||'none')===k}" aria-label="${k}">${EP_ICON[k](side)}</button>`).join('');
   return `<div class="spanel wcard shapestroke" data-anchor='[data-act="shapeStroke"]' style="${panelStyle()};${pos};color:#1e1b1b;width:320px"><div class="st">线条样式</div>
     <div class="lstiles">${[['solid','实线','strokeSolid'],['dashed','虚线','strokeDashed'],['dotted','点线','strokeDotted']].map(([k,l,ic])=>`<button class="lst${ls===k?' on':''}" data-shapeline="${k}">${svg(ic)}<span>${l}</span></button>`).join('')}</div>
-    <div class="slider"><div class="top"><span>线条粗细</span><em>${(0.5+w/100*7.5).toFixed(1)}pt</em></div><div class="track ticks" data-sslider="shapeW"><i style="width:${w}%"></i><b style="left:${w}%;--p:${w}%"></b></div></div>
-    <div class="st sub">端点</div><div class="eprow"><div class="epgrp">${ep('start')}</div><span class="epline"></span><div class="epgrp">${ep('end')}</div></div></div>`; }
+    <div class="wlab"><span>线条粗细</span><em>${(0.5+w/100*7.5).toFixed(1)}pt</em></div>
+    <div class="wtrack" data-shapew="1"><svg viewBox="0 0 100 14" preserveAspectRatio="none"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="#E2E2E4"/></svg><svg class="fillsvg" viewBox="0 0 100 14" preserveAspectRatio="none" style="clip-path:inset(0 ${100-w}% 0 0)"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="var(--accent)"/></svg><b style="left:${w}%;--p:${w}%"></b></div>
+    <div class="st sub">端点</div><div class="eprow"><span class="eplab">起点</span><div class="epgrp">${ep('start')}</div></div><div class="eprow"><span class="eplab">终点</span><div class="epgrp">${ep('end')}</div></div></div>`; }
 function strokeWidthBtn(){
   return `<button class="wbtn" data-act="penWidth" aria-pressed="true" aria-label="笔头粗细" style="color:${activeInk(true)}"><span class="wr" style="${activeChip(true)}">${strokeWidthIcon(S.weight)}</span></button>`;}
 /* tape width — dark bars, rounded-square halo (1326:14513) */
@@ -3415,7 +3433,7 @@ function collabPanel(pos){
 }
 /* v1 phone: every popover becomes a bottom sheet below 600 (phone tier) — iOS system sheet on Apple, Peru sheet on Android */
 const sheetTitle=()=>{const x=STATES.find(([v])=>v===S.st);return x?x[1]:'';};
-const ownsTitle=html=>/class="(cb-t|rt|ph|tch)"/.test(html);
+const ownsTitle=html=>/class="(cb-t|rt|ph|tch|wlab)"/.test(html);
 const panelTitle=html=>{ const m=html.match(/class="pph"[\s\S]*?<h4[^>]*>([^<]*)<\/h4>/)||html.match(/<div class="st">([^<]*)<\/div>/); return m?m[1]:''; };   /* 10/5 Tom: the panel's own title moves up into the × row, so it never scrolls */
 /* Peru Sheet·Touch: the CONTAINER is the platform's (iOS system sheet / Android drawer), the CONTENT is one shared layout:
    round close button left, centred title, 64pt sides so the title stays centred */
@@ -3474,7 +3492,7 @@ function pasteClip(pg,x,y){ if(!S.clip) return; const all=[...S.clip.strokes.fla
   const ys=[...S.ink.filter(k=>ns.includes(k.id)).flatMap(k=>k.pts.map(p=>p[1])),...S.objs.filter(o=>no.includes(o.id)).flatMap(o=>[o.y,o.y+(o.h||o.w)])];
   S.selSet={pg,strokes:ns,objs:no,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]}; S.sel=no[0]||null; }
 function colSheet(html,opts={}){ const t=opts.title||panelTitle(html)||(ownsTitle(html)?'':sheetTitle()); const trail=opts.trail||'';
-  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="dsh-head"><div class="dsh-t">${t}</div></div><div class="dsh-btns"><button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>${trail}</div><div class="vs-body">${html}</div></div></div>`; }   /* iOS 27 Duo sheets (12886-17617 / 17629 / 23660): the card spans the width under the column, title top-left, the primary × and any trailing action stack top-right on the column's axis */
+  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}" style="--colw:${DUO_STRIP}px"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="dsh-head"><div class="dsh-t">${t}</div></div><div class="vs-body">${html}</div></div><div class="dsh-col"><button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>${trail}</div></div>`; }   /* 10/8 Tom: the side strip is a safe area — the card stops before it, the × and any trailing action stand in the strip on its axis */
 function sheetWrap(html){ if(!html) return ''; if(S._duoCol) return colSheet(html,{land:S._duoLand});
   const t=panelTitle(html)||(ownsTitle(html)?'':sheetTitle());
   return `<div class="vsback" data-act="closesheet"></div><div class="vsheet ${S.dev==='android'?'android':'ios'}" style="${panelStyle()}"><div class="vs-hdl"></div>
@@ -3871,6 +3889,7 @@ function render(){ S._rendering=true;
     /* 10/6 Tom: redo + collaborators no longer fold by available width — they follow the 737 breakpoint set in R (one rule, simpler); the tool pill scrolls if the row is tight (Lite does) */
     for(const k of ['lib','side']){ if(need(8)<=availW) break; R[k]=false; }
     const slotsVisible=()=>(availW-need(0))/SLOTW;   /* L1 tool slots the middle pill can show without scrolling */
+    if(slotsVisible()<4.5&&R.av){R.av=false;}   /* 10/8 Tom: with the page sidebar open the collaborators fold before the tool pill drops below 4.5 slots */
     if(slotsVisible()<4.5) R.addPage=false;           /* …then add page — only once fewer than 4.5 tools would stay visible; share never folds */   /* tools may scroll (Lite does); share / layers / recording / undo stay */
     if(!duo){ S.moreExtra=[...(R.right?[]:[['share','导出','share'],['layers','图层','layers']]),...(R.av?[]:[['collab','协作者','collab']]),...(R.right&&!R.layers?[['layers','图层','layers']]:[]),...(R.addPage?[]:[['addPage','添加页面','addpage']]),...((noStrip&&phone)?[['tabs','标签栏','tabmgr']]:[]),...(R.mic?[]:[['mic','录音','mic']])]; if(S.moreExtra.length) S.moreExtra.push('sep'); }
     const leftHTML=(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${R.lib?`<button class="tbtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库" style="color:${bandInk}"><span class="chip">${svg('panel')}</span></button>`:''}<button class="tbtn" data-act="home" aria-label="主页" style="color:${bandInk}"><span class="chip">${svg('home')}</span></button></div>`:'')
@@ -4183,6 +4202,7 @@ function render(){ S._rendering=true;
   { const pl=stage.querySelector('.psidebar .list'); if(pl){ const on=pl.querySelector('.pg.on'); const zf=(pl.getBoundingClientRect().height/(pl.clientHeight||1))||1; const follow=S._sbFollow||S._psPage!==NB().page||S._psScroll==null; if(on&&follow){ S._sbFollow=false; const top=(on.getBoundingClientRect().top-pl.getBoundingClientRect().top)/zf+pl.scrollTop; const inView=top>=pl.scrollTop&&top+on.offsetHeight<=pl.scrollTop+pl.clientHeight; pl.scrollTop=inView?(S._psScroll==null?pl.scrollTop:S._psScroll):Math.max(0,top-(pl.clientHeight-on.offsetHeight)/2); } else if(S._psScroll!=null) pl.scrollTop=S._psScroll; S._psPage=NB().page; S._psScroll=pl.scrollTop; pl.addEventListener('scroll',()=>{S._psScroll=pl.scrollTop;},{passive:true}); } }
   { const ls=stage.querySelector('#lhscroll'); if(ls){ ls.scrollTop=S._libScroll||0; ls.addEventListener('scroll',()=>{S._libScroll=ls.scrollTop; const c=ls.scrollTop>120; if(c!==!!S.libCondensed){S.libCondensed=c; ls.closest('.libhome').classList.toggle('condensed',c); const bd=stage.querySelector('.lh-duoband'); if(bd) bd.classList.toggle('condensed',c);} },{passive:true}); } }
   placeSelection(stage); centreToolMid(stage); placeFloatNav(stage); placePopovers(stage); placePageMenu(stage); placeSecRow(stage); bindRotate(stage); placeRulerMenu(stage); clampPopovers(stage.querySelector('.device'),S.w,S.h); translateDOM(document.body);
+  { const tm=stage.querySelector('.toolmid.hscroll'); if(tm){ const act=tm.querySelector('[aria-pressed="true"]'); const cur=act&&act.dataset.tool; const zf=(tm.getBoundingClientRect().width/(tm.clientWidth||1))||1; if(cur&&cur!==S._l1Active){ S._l1Active=cur; const x=(act.getBoundingClientRect().left-tm.getBoundingClientRect().left)/zf+tm.scrollLeft; const vis=x>=tm.scrollLeft&&x+act.offsetWidth<=tm.scrollLeft+tm.clientWidth; tm.scrollLeft=vis?(S._l1Scroll||0):Math.max(0,x-tm.clientWidth/2+act.offsetWidth/2); } else if(S._l1Scroll!=null) tm.scrollLeft=S._l1Scroll; S._l1Scroll=tm.scrollLeft; tm.addEventListener('scroll',()=>{S._l1Scroll=tm.scrollLeft;},{passive:true}); } }   /* 10/8 Tom: the selected tool stays on screen when its L2 opens */
   { if(S.kbOpen&&S.sel){ const el=stage.querySelector(`.device .txtin[data-txt="${S.sel}"]`), kb=stage.querySelector('.device .kbwrap'); if(el&&kb){ kb.hidden=false; el.focus(); } else S.kbOpen=false; } S._rendering=false; }   /* 10/6 Tom: the keyboard stays up while a text box is being edited, whatever re-renders */
   const ts=document.getElementById('tabscroll');
   if(ts){ if(S._tabFollow){ const on=ts.querySelector('.tab.on'); if(on) ts.scrollLeft=Math.max(0,on.offsetLeft-ts.offsetLeft-ts.clientWidth+on.offsetWidth+56); S._tabFollow=false; S._tabScroll=ts.scrollLeft; } else if(S._tabScroll!=null) ts.scrollLeft=S._tabScroll; else {const a=ts.querySelector('.tab:not(.dim)');if(a)ts.scrollLeft=Math.max(0,a.offsetLeft-ts.offsetLeft-6);} ts.addEventListener('scroll',()=>{S._tabScroll=ts.scrollLeft;},{passive:true}); }   /* 10/3 Tom: the strip keeps its scroll; creating a tab scrolls the new one into view */
@@ -4251,14 +4271,14 @@ function bindSliders(root){
       let last=null;
       const at=e=>{const r=tr.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)); last=f;
         if(knob){ knob.style.left=(f*100)+'%'; knob.style.setProperty('--p',(f*100)+'%'); } if(fill) fill.style.width=(f*100)+'%'; if(tr.classList.contains('track')&&tr.closest('.slider')) paintTicks(tr.closest('.slider').parentElement||tr.closest('.slider')); if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
-        if(em&&(tr.dataset.gslider||tr.dataset.eslider)) em.textContent=Math.round(f*100)+'%'; if(em&&tr.dataset.sslider) em.textContent=(0.5+f*7.5).toFixed(1)+'pt'; if(em&&tr.dataset.tsslider) em.textContent=Math.round(8+f*64);};
+        if(em&&(tr.dataset.gslider||tr.dataset.eslider)) em.textContent=Math.round(f*100)+'%'; if(em&&(tr.dataset.sslider||tr.dataset.shapew)) em.textContent=(0.5+f*7.5).toFixed(1)+'pt'; if(em&&tr.dataset.tsslider) em.textContent=Math.round(8+f*64);};
       tr.classList.add('drag'); at(ev); try{tr.setPointerCapture(ev.pointerId);}catch(_){}
       const mv=e=>{e.preventDefault(); at(e);};
       const up=e=>{tr.removeEventListener('pointermove',mv); tr.removeEventListener('pointerup',up); tr.removeEventListener('pointercancel',up); tr.classList.remove('drag');
         if(last==null) return;
         const k=tr.dataset.gslider; if(k){(S.penTune[S.pen]||(S.penTune[S.pen]={...PEN_TUNE_DEF}))[k]=Math.round(last*100); return render();}
         if(tr.dataset.eslider){S.ePressureVal=Math.round(last*100);return render();}
-        if(tr.dataset.sslider){S.shapeW=Math.round(last*100);return render();}
+        if(tr.dataset.sslider||tr.dataset.shapew){S.shapeW=Math.round(last*100);return render();}
         if(tr.dataset.tsslider){S.tbSize=Math.round(8+last*64); const el=document.querySelector(`.device .txtin[data-txt="${S.sel}"]`); if(el) el.style.fontSize=S.tbSize+'px'; return render();}
         const l=tr.dataset.lslider; if(l){ if(l==='size') S.laserSize=Math.round(last*100); else S.laserFade=Math.round((0.5+last*9.5)*10)/10; return render();}
         /* width sliders: hand the release position to the existing click handlers */
@@ -4606,13 +4626,14 @@ function placeSelection(scope){
   const dr=dev.getBoundingClientRect(), pr=pg.getBoundingClientRect(), cr=cv.getBoundingClientRect();
   const sx=dr.width/dev.offsetWidth||1, sy=dr.height/dev.offsetHeight||1;
   const b=S.selSet.box;
-  const L=(pr.left-dr.left)/sx+(pr.width/sx)*b[0]/100;
-  const T=(pr.top-dr.top)/sy+(pr.height/sy)*b[1]/100;
-  const W2=(pr.width/sx)*(b[2]-b[0])/100, H2=(pr.height/sy)*(b[3]-b[1])/100;
+  let L=(pr.left-dr.left)/sx+(pr.width/sx)*b[0]/100;
+  let T=(pr.top-dr.top)/sy+(pr.height/sy)*b[1]/100;
+  let W2=(pr.width/sx)*(b[2]-b[0])/100, H2=(pr.height/sy)*(b[3]-b[1])/100;
+  let rot=0; if(S.selSet.objs&&S.selSet.objs.length===1&&!(S.selSet.strokes||[]).length){ const o=S.objs.find(v=>v.id===S.selSet.objs[0]); const el=pg.querySelector(`[data-obj="${S.selSet.objs[0]}"]`); if(o&&el&&(o.rot||0)){ rot=o.rot; const k=(pr.width/sx)/(pg.offsetWidth||1); L=(pr.left-dr.left)/sx+el.offsetLeft*k; T=(pr.top-dr.top)/sy+el.offsetTop*k; W2=el.offsetWidth*k; H2=el.offsetHeight*k; } }   /* 10/8 Tom: one frame only — the selbox follows the object's rotation instead of drawing its axis-aligned bounds beside it */
   const cTopL=(cr.top-dr.top)/sy, cBot=cTopL+cr.height/sy;
   const vis=T+H2>cTopL-8&&T<cBot+8;
   if(sb){sb.style.display=vis?'block':'none';
-    sb.style.left=(L-2)+'px';sb.style.top=(T-2)+'px';sb.style.width=(W2+4)+'px';sb.style.height=(H2+4)+'px';
+    sb.style.left=(L-2)+'px';sb.style.top=(T-2)+'px';sb.style.width=(W2+4)+'px';sb.style.height=(H2+4)+'px'; sb.style.transform=rot?`rotate(${rot}deg)`:'none'; sb.style.transformOrigin='center';
     const so=S.selSet.objs.length===1&&!S.selSet.strokes.length?S.objs.find(v=>v.id===S.selSet.objs[0]):null; sb.style.transform=so&&so.rot?`rotate(${so.rot}deg)`:'';}
   if(om){om.style.display=vis?'flex':'none'; om.style.transform='none';
     /* computeFloatingMenuPlacement: above with a 16 gap, else below the rotation handle */
@@ -5068,7 +5089,7 @@ function bind(root,compact){
       if(el){el.focus();document.execCommand('selectAll');document.execCommand('foreColor',false,S.tbColor);el.dispatchEvent(new Event('input',{bubbles:true}));}
       S.st='textbox';syncState();return render();}
     if(d.act==='togglefinger'){S.useFinger=S.useFinger===false;return render();}
-    if(d.act==='closesheet'){ if(S.tmplOpen){S.tmplOpen=false;return render();} if(['export','exportopts','exportmenu','sysshare'].includes(S.st)){S.st=S.lastTool||'writing';S.omMore=false;syncState();return render();} const k=ACTIVE_FOR[S.st]||S.st; if(k===S.st&&L1.includes(k)){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=true;} else S.st=k||S.lastTool||'writing'; S.omMore=false;S.penAdv=false;S.cpCustom=false;syncState();return render();}   /* 10/6 Tom: × and tap-outside always close the sheet */
+    if(d.act==='closesheet'){ if(S.tmplOpen){S.tmplOpen=false;return render();} if(['export','exportopts','exportmenu','sysshare','mic'].includes(S.st)){S.st=S.lastTool||'writing';S.omMore=false;syncState();return render();} const k=ACTIVE_FOR[S.st]||S.st; if(k===S.st&&L1.includes(k)){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=true;} else if(k===S.st){S.st=S.lastTool||'writing';} else S.st=k||S.lastTool||'writing'; S.omMore=false;S.penAdv=false;S.cpCustom=false;syncState();return render();}   /* 10/6 Tom: × and tap-outside always close the sheet */
     if(d.act==='om-copy'){copySel();S.omMore=false;return render();}
     if(d.act==='om-paste'){pasteClip(NB().page);S.omMore=false;return render();}
     if(d.act==='ctx-paste'){const m=S.ctxMenu;S.ctxMenu=null;pasteClip(m.pg,m.x,m.y);return render();}
@@ -5133,7 +5154,7 @@ function bind(root,compact){
     if(d.act==='eraserType'){S.st=S.st==='eraserType'?'eraser':'eraserType';syncState();return render();}
     if(d.act==='eraserSet'){S.st=S.st==='eraserSet'?'eraser':'eraserSet';syncState();return render();}
     if(d.act==='tapeMode'){S.st=S.st==='tapeMode'?'tape':'tapeMode';syncState();return render();}
-    if(d.tm){S.tapeMode=d.tm;S.st='tape';syncState();return render();}
+    if(d.tm){S.tapeMode=d.tm;S.st='tapeMode';syncState();return render();}   /* 10/8 Tom: stay open */
     if(d.act==='stickymore'){S.stickyMore=!S.stickyMore;return render();}
     if(d.sd){S.shapeDraw=d.sd;S.shapeExactOn=false;return render();}
     if(d.se){S.shapeExact=d.se;S.shapeExactOn=true;return render();}   /* pick the shape, then drag it out on the page */
