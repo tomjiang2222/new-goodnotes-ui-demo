@@ -1711,6 +1711,36 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .omg{padding:0!important}
 .vsheet{max-height:calc(100% - 56px)!important}
 
+/* ═══ 10/2 · round 12 ═══ */
+/* pull to add a page: a dashed page placeholder grows from the bottom (Lite), fills when ready */
+.pulladd{bottom:0!important;left:50%!important;transform:translateX(-50%)!important;width:min(70%,320px)!important;height:calc(28px + var(--p,0) * 72px);margin:8px 0 0;padding:0!important;border-radius:10px!important;background:none!important;border:1.5px dashed rgba(30,27,27,.35);color:rgba(30,27,27,.6)!important;justify-content:center;font-size:13px;box-sizing:border-box}
+.pulladd i{display:none!important}
+.pulladd.ready{border-color:var(--accent)!important;color:var(--accent)!important;background:var(--accent-sf)!important}
+/* phone library: 新建 only appears once the header condenses (like the tablet); covers are never clipped */
+.libhome.phone:not(.condensed) .lh-phonebar .lh-new{opacity:0;pointer-events:none}
+.lh-tile{overflow:visible!important}
+/* bottom sheet material: tall → solid ground, short → glass */
+.device.ios .vsheet.solid{background:#F2F2F7!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.device.android .vsheet.solid{background:#fff!important}
+/* eraser settings (Lite): no 较轻 / 较重 ends */
+.spanel .pends{display:none!important}
+/* iOS switches everywhere = system 51×31 */
+.device.ios .sw{width:51px!important;height:31px!important;border-radius:999px;background:#E9E9EB;position:relative;flex:0 0 auto;border:0!important;box-sizing:border-box}
+.device.ios .sw[aria-pressed="true"]{background:var(--accent)!important;border-color:var(--accent)!important}
+.device.ios .sw i{width:27px!important;height:27px!important;top:2px!important;left:2px!important;border-radius:999px;background:#fff!important;box-shadow:0 3px 8px rgba(0,0,0,.15),0 3px 1px rgba(0,0,0,.06);position:absolute;transition:left .15s}
+.device.ios .sw[aria-pressed="true"] i{left:22px!important}
+/* text tool L2 chips (Goodnotes CN): value + chevron in a 36pt rounded chip */
+.chipctl{height:36px;padding:0 8px 0 10px;border-radius:12px;background:rgba(30,27,27,.06);display:inline-flex;align-items:center;gap:4px;font-size:15px;color:inherit;margin:0 2px;flex:0 0 auto;white-space:nowrap}
+.chipctl .cv{display:inline-flex;opacity:.6} .chipctl .cv svg{width:14px;height:14px}
+.chipctl.font span{max-width:112px;overflow:hidden;text-overflow:ellipsis;font-size:14px} .chipctl.font span.serif{font-family:Georgia,serif}
+.chipctl.styling b{font-size:16px} .chipctl.styling .it{font-family:Georgia,serif;font-style:italic;font-size:16px;margin-left:-2px}
+.chipctl.listmenu svg{width:20px;height:20px}
+.chipctl[aria-pressed="true"]{background:rgba(30,27,27,.14)}
+.tbmenu .tbic{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:16px} .tbmenu .tbic svg{width:20px;height:20px}
+/* keyboard accessory: three pills — lists/align · B I U S · dismiss */
+.kbwrap .textbar.fmt.right{position:absolute;right:${'64px'}}
+.kbwrap .textbar.fmt.right{right:64px}
+
 </style>
 </head>
 <body>
@@ -2063,15 +2093,15 @@ const phoneDevice=()=>S.custom?Math.max(S.w,S.h)<=932:PHONE_PRESETS.has(S.size);
 const secHidden=(a)=>{const k=a||ACTIVE_FOR[S.st]||S.st; return !!(S.secHideBy&&S.secHideBy[k]);};
 const readMode=()=>{const dm=S.docMode[(S.tabs[S.tab]||{}).n]; return S.version==='v1'&&S.view!=='library'&&(dm==='ro'||(S.w<600&&phoneDevice()&&dm!=='edit'));};
 const STATES=[['writing','笔'],['tape','胶带'],['tapeMode','胶带 · 绘制模式'],['tapeWidth','胶带 · 宽度'],
-  ['penWidth','笔头粗细'],['eraser','橡皮'],['eraserType','橡皮 · 类型'],['eraserSet','橡皮 · 设置'],
-  ['lasso','套索'],['lassoScope','套索 · 范围'],['textbox','文本'],['textColor','文本 · 颜色'],['stickyNote','便签'],['stickyColor','便签 · 颜色'],['image','图片'],
+  ['penWidth','笔头粗细'],['eraser','橡皮'],['eraserType','橡皮 · 类型'],['eraserSet','橡皮擦设置'],
+  ['lasso','套索'],['lassoScope','套索 · 范围'],['textbox','文本'],['textColor','文本 · 颜色'],['tbStyle','文字样式'],['tbList','列表'],['stickyNote','便签'],['stickyColor','便签 · 颜色'],['image','图片'],
   ['shapes','形状'],['laser','激光笔'],['laserSet','激光笔 · 设置'],['laserColor','激光笔 · 颜色'],['colorpop','颜色面板'],['penset','笔设置'],['mic','录音'],['layers','图层'],
   ['pagedir','翻页方向'],
   ['export','导出'],['more','更多'],
   ['ro','只读态（compact）'],['l1','主工具栏（compact）'],['pen2','笔 L2（compact）'],['pentypes','笔型 L3（compact）'],
   ['insert','＋ 菜单（compact）'],['text-edit','文本 · 输入（compact）'],['text-sel','文本 · 选中（compact）'],['text-obj','文本 · 对象（compact）']];
 /* keeps the rail and the L1 highlight alive while an L3 menu is open */
-const ACTIVE_FOR={stickyColor:'stickyNote',textColor:'textbox',tapeColor:'tape',lassoScope:'lasso',eraserType:'eraser',eraserSet:'eraser',colorpop:'writing',
+const ACTIVE_FOR={stickyColor:'stickyNote',textColor:'textbox',tbStyle:'textbox',tbList:'textbox',tapeColor:'tape',lassoScope:'lasso',eraserType:'eraser',eraserSet:'eraser',colorpop:'writing',
   penset:'writing',penWidth:'writing',tapeMode:'tape',tapeWidth:'tape',laserSet:'laser',laserColor:'laser',pen2:'writing',pentypes:'writing',insert:'plus',
   'text-edit':'textbox','text-sel':'textbox','text-obj':'textbox'};
 const COMPACT_STATES=['ro','l1','pen2','pentypes','insert','text-edit','text-sel','text-obj'];
@@ -2114,7 +2144,7 @@ const PRESET56=['#000000','#454545','#707070','#9A9A9A','#C0C0C0','#DEDEDE','#FF
 const PEN_RANGE={pen:[0.1,2],ballpen:[0.1,2],brush:[0.1,2],pencil:[0.1,2],highlighter:[1,7.7],tape:[1,15.4]};
 function mkPenCfg(){const o={};for(const k in PEN_DEF)o[k]={slots:[...PEN_DEF[k].slots],style:['solid','solid','solid'],sel:0,colors:[...PEN_DEF[k].colors],ci:0};return o;}
 function mkTapeCfg(){return {slots:[...TAPE_DEF.slots],sel:0,colors:[...TAPE_DEF.colors],ci:0};}
-const I18N={
+const I18N={'协作者':'Collaborators','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
 '当前模板':'Current template','当前页之前':'Before this page','当前页之后':'After this page',
 '全部项目':'All items','在我的资料库中查看全部':'See all in My library','1 周前打开':'Opened 1w ago','2 天前打开':'Opened 2d ago',
 '页面导航':'Page nav','侧栏':'Sidebar','浮层 · Claude 式':'Floating · Claude-style',
@@ -2461,7 +2491,7 @@ function stickerPanel(pos){
 /* which control opened each L3 menu — the popover hangs off that control */
 const POP_FOR={colorpop:()=>`[data-pcol="${S.penCfg[S.pen].ci}"]`,penset:()=>`[data-pen="${S.pen}"]`,
   penWidth:()=>`[data-pslot="${S.penCfg[S.pen].sel}"]`,tapeWidth:()=>`[data-tslot="${S.tapeCfg.sel}"]`,tapeMode:()=>'[data-act="tapeMode"]',
-  textColor:()=>'[data-tb="color"]',
+  textColor:()=>'[data-tb="color"]',tbStyle:()=>'[data-tb="styling"]',tbList:()=>'[data-tb="listmenu"]',
   tapeColor:()=>`[data-tcol="${S.tapeCfg.ci}"]`,
   eraserType:()=>'[data-act="eraserType"]',eraserSet:()=>'[data-act="eraserSet"]',lassoScope:()=>'[data-act="lassoScope"]',
   laserSet:()=>'[data-act="laserSet"]',laserColor:()=>`[data-lslot="${S.laserSlot}"]`,elements:()=>'[data-tool="elements"]'};
@@ -2741,7 +2771,7 @@ function railPopoverInner(){
     ${ERASER_OPTS.map(([k,l,desc],i)=>`<div class="orow2${i?' div':''}">
       <div class="tg" style="padding:0"><span class="l">${l}</span><button class="sw" data-eo="${k}" aria-pressed="${S[k]}" aria-label="${l}"><i></i></button></div>
       <div class="d">${desc}</div>
-      ${k==='ePressure'&&S.ePressure?`<div class="prow"><div class="pl">触发压力</div>
+      ${k==='ePressure'&&S.ePressure?`<div class="prow"><div class="pl" style="display:flex;justify-content:space-between;align-items:center"><span>触发压力</span><em style="font-style:normal;color:rgba(64,59,59,.6)">${S.ePressureVal}%</em></div>
         <div class="ptrack" data-pslider="1"><i style="width:${S.ePressureVal}%"></i><b style="left:${S.ePressureVal}%;--p:${S.ePressureVal}%"></b></div>
         <div class="pends"><span>较轻</span><span>较重</span></div></div>`:''}</div>`).join('')}</div>`;
   if(S.st==='tapeMode') return `<div class="spanel" style="${panelStyle()};${pos};color:#1e1b1b;width:226px">
@@ -2755,6 +2785,7 @@ function railPopoverInner(){
     if(S.st==='tapeColor') return presetPanel(pos,'tape');
     if(S.st==='colorpop')  return presetPanel(pos,'pen');
     if(S.st==='stickyColor') return stickyColorPanel(pos);
+    if(S.st==='tbStyle') return tbMenu(pos,'style'); if(S.st==='tbList') return tbMenu(pos,'list');
     if(S.st==='textColor') return textColorPanel(pos);
   }
   if(S.st==='tapeWidth') return widthCard('胶带宽度',TAPE_MM[S.tapeW].toFixed(2)+'mm',S.tapeW/4*100,'tslider',pos);
@@ -2830,16 +2861,16 @@ function kbLive(w,inset=0,short=false){
   const r2='asdfghjkl'.split('').map(k=>key(k,'',`width:${kw}px`)).join('');
   const r3=key('⇧','fn',`width:${kw*1.4}px`)+'zxcvbnm'.split('').map(k=>key(k,'',`width:${kw}px`)).join('')+key('⌫','fn',`width:${kw*1.4}px`);
   const r4=key('123','fn',`width:${kw*1.25}px`)+key(ios?'🌐':'😊','fn',`width:${kw}px`)+key('space','space')+key(ios?'return':'↵','fn',`width:${kw*1.9}px`);
-  const tb=`<div class="textbar fmt" style="${surfStyle()};margin-right:${inset+8}px">
-      <button class="plainic" data-tb="bold" aria-label="粗体"><b>B</b></button>
+  const tb=`<div class="textbar fmt" style="${surfStyle()}">
+      <button class="plainic" data-tb="list" aria-label="无序列表">${svg('listBullet')}</button>
+      <button class="plainic" data-tb="olist" aria-label="数字列表">${svg('listNumber')}</button>
+      <button class="plainic" data-tb="align" aria-label="对齐">${svg('alignLeft')}</button></div>
+      <div class="textbar fmt right" style="${surfStyle()}">
+      <button class="plainic" data-tb="bold" aria-label="加粗"><b>B</b></button>
       <button class="plainic" data-tb="italic" aria-label="斜体"><i style="font-family:Georgia,serif">I</i></button>
       <button class="plainic" data-tb="underline" aria-label="下划线"><u>U</u></button>
-      <button class="plainic" data-tb="strike" aria-label="删除线"><s>S</s></button>
-      <span class="divider"></span>
-      <button class="plainic" data-tb="align" aria-label="对齐">${svg('alignLeft')}</button>
-      <button class="plainic" data-tb="list" aria-label="项目列表">${svg('listBullet')}</button>
-      <button class="plainic" data-tb="olist" aria-label="编号列表">${svg('listNumber')}</button>
-      </div><div class="textbar fmt kbdone" style="${surfStyle()};margin-right:${inset+8}px"><button class="plainic" data-tb="done" aria-label="收起键盘">${svg('kbDown')}</button></div>`;
+      <button class="plainic" data-tb="strike" aria-label="删除线"><s>S</s></button></div>
+      <div class="textbar fmt kbdone" style="${surfStyle()};margin-right:${inset+8}px"><button class="plainic" data-tb="done" aria-label="收起键盘">${svg('kbDown')}</button></div>`;
   return `<div class="kbwrap ${ios?'ios':'android'}${S.kbShift?' shift':''}${short?' short':''}" style="width:${w}px" hidden>${tb}
     <div class="kb2">${ios?'':'<div class="kbsugg"><span>the</span><span>design</span><span>notes</span></div>'}
       <div class="kbrow">${r1}</div><div class="kbrow">${r2}</div><div class="kbrow">${r3}</div><div class="kbrow">${r4}</div>
@@ -2863,6 +2894,8 @@ function bindTextRow(dev){
   dev.addEventListener('pointerdown',e=>{const b=e.target.closest('.secrow [data-tb],.textrail [data-tb]'); if(!b) return;
     e.preventDefault(); e.stopPropagation();
     if(b.dataset.tb==='color'){S.st=S.st==='textColor'?'textbox':'textColor';syncState();render();return;}
+    if(b.dataset.tb==='styling'){S.st=S.st==='tbStyle'?'textbox':'tbStyle';syncState();render();return;}
+    if(b.dataset.tb==='listmenu'){S.st=S.st==='tbList'?'textbox':'tbList';syncState();render();return;}
     if(b.dataset.tb==='more') return;
     let el=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('.txtin');
     if(!el&&S.sel){el=dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el){el.focus(); document.execCommand('selectAll');}}
@@ -3039,12 +3072,12 @@ function flexDeck(kind,c){
 function collabPanel(pos){
   const row=(ini,bg,name,right,dim)=>`<div class="cb-row${dim?' dim':''}"><i style="background:${bg}">${ini}</i><span>${name}</span><b>${right}</b></div>`;
   return `<div class="collab" data-anchor='[data-tool="collab"]' style="${panelStyle()};${pos};color:#1e1b1b">
-    <div class="cb-t">Collaborators</div>
-    <div class="cb-search">${svg('search')}<span>Search</span></div>
-    <div class="cb-h">CURRENTLY VIEWING</div>
-    <div class="cb-list">${row('DR','#D9D2F2','Dieter Rams <em>(You)</em>','Spotlight')}${row('RC','#F2D2E2','Rodney Chow','Follow')}${row('JL','#E8D0B8','Joosep Laht','Follow')}</div>
-    <div class="cb-h">PREVIOUSLY VIEWED</div>
-    <div class="cb-list dim">${row('SG','#CFE0F5','Stu Greenham','7h ago',1)}${row('AS','#DDEFC4','Anojan Sivaranjan','12h ago',1)}${row('CM','#F5E2B0','Chelsea Mangold-Takao','2 days ago',1)}${row('LC','#F5D0D0','Luka Cabral de Vasconc…','15 days ago',1)}${row('JB','#F5E2C4','Jordan Birkbeck','2 months ago',1)}</div></div>`;
+    <div class="cb-t">协作者</div>
+    <div class="cb-search">${svg('search')}<span>搜索</span></div>
+    <div class="cb-h">正在查看</div>
+    <div class="cb-list">${row('DR','#D9D2F2','Dieter Rams <em>（你）</em>','聚焦')}${row('RC','#F2D2E2','Rodney Chow','跟随')}${row('JL','#E8D0B8','Joosep Laht','跟随')}</div>
+    <div class="cb-h">之前查看</div>
+    <div class="cb-list dim">${row('SG','#CFE0F5','Stu Greenham','7 小时前',1)}${row('AS','#DDEFC4','Anojan Sivaranjan','12 小时前',1)}${row('CM','#F5E2B0','Chelsea Mangold-Takao','2 天前',1)}${row('LC','#F5D0D0','Luka Cabral de Vasconc…','15 天前',1)}${row('JB','#F5E2C4','Jordan Birkbeck','2 个月前',1)}</div></div>`;
 }
 /* v1 phone: every popover becomes a bottom sheet below 600 (phone tier) — iOS system sheet on Apple, Peru sheet on Android */
 const sheetTitle=()=>{const x=STATES.find(([v])=>v===S.st);return x?x[1]:'';};
@@ -3270,14 +3303,13 @@ function secondaryBar(scrollHTML,trailHTML,withBack){
 /* text tool options: the same actions as the keyboard bar (font · size · B I U · align · list · colour), restyled as row chips */
 function textRow(){const ink=INK;
   return `<button class="dotctl" data-tb="color" style="background:${S.tbColor||'#111213'}" aria-label="文字颜色" aria-pressed="${S.st==='textColor'}">${svg('chevDown')}</button>`
-    +`<button class="chipctl size" data-tb="size" aria-label="字号">${S.tbSize||24}</button>`
-    +`<button class="tbtn" data-tb="font" aria-label="字体" style="color:${ink}"><span class="chip"><span class="aa${S.tbSerif?' serif':''}">Aa</span></span></button><span class="divider"></span>`
-    +`<button class="tbtn" data-tb="bold" aria-label="粗体" style="color:${ink}"><span class="chip"><b style="font-size:16px">B</b></span></button>`
-    +`<button class="tbtn" data-tb="italic" aria-label="斜体" style="color:${ink}"><span class="chip"><i style="font-family:Georgia,serif;font-size:16px">I</i></span></button>`
-    +`<button class="tbtn" data-tb="underline" aria-label="下划线" style="color:${ink}"><span class="chip"><u style="font-size:16px">U</u></span></button><span class="divider"></span>`
-    +`<button class="tbtn" data-tb="align" aria-label="对齐" style="color:${ink}"><span class="chip">${svg('alignLeft')}</span></button>`
-    +`<button class="tbtn" data-tb="list" aria-label="列表" style="color:${ink}"><span class="chip">${svg('listBullet')}</span></button><span class="divider"></span>`
-    +`<button class="tbtn" data-tb="more" aria-label="更多" style="color:${ink}"><span class="chip">${svg('more')}</span></button>`;}
+    +`<button class="chipctl size" data-tb="size" aria-label="字号">${S.tbSize||24}<i class="cv">${svg('chevDown')}</i></button>`
+    +`<button class="chipctl font" data-tb="font" aria-label="字体"><span class="${S.tbSerif?'serif':''}">${S.tbSerif?'Source Serif':'PingFang-SC'}</span><i class="cv">${svg('chevDown')}</i></button><span class="divider"></span>`
+    +`<button class="chipctl styling" data-tb="styling" aria-pressed="${S.st==='tbStyle'}" aria-label="文字样式"><b>B</b><i class="it">I</i><i class="cv">${svg('chevDown')}</i></button><span class="divider"></span>`
+    +`<button class="chipctl listmenu" data-tb="listmenu" aria-pressed="${S.st==='tbList'}" aria-label="对齐与列表">${svg('alignLeft')}<i class="cv">${svg('chevDown')}</i></button>`;}
+/* styling / list menus hang off their chips (Goodnotes CN 11556:3761) */
+function tbMenu(pos,kind){ const items=kind==='style'?[['bold','加粗','<b>B</b>'],['italic','斜体','<i style="font-family:Georgia,serif">I</i>'],['underline','下划线','<u>U</u>'],['strike','删除线','<s>S</s>']]:[['list','无序列表',svg('listBullet')],['olist','数字列表',svg('listNumber')],['tasks','任务列表',svg('check')]];
+  return `<div class="menu tbmenu" data-anchor='[data-tb="${kind==='style'?'styling':'listmenu'}"]' style="${panelStyle()};${pos};color:#1e1b1b;min-width:160px">${items.map(([a,l,ic])=>`<button data-tbact="${a}"><span class="tbic">${ic}</span><span class="col"><span>${l}</span></span></button>`).join('')}</div>`; }
 function railSecondary(st){
   if(st==='writing') return ['pen','ballpen','brush','highlighter','pencil'].map(pn=>tool(pn,S.pen===pn,'pen')).join('')
     + `<span class="divider"></span>` + strokeWidthBtn()
@@ -3844,7 +3876,7 @@ function render(){
     iPad and iPhone share one design driven by width; Duo is adapted separately; Android is identical with Framed raised capsules and solid panels, no translucency.
     Title cap ${titleMax}pt · page sidebar ${sidebarPush?'push':'overlay'} · drag the corner to resize.</span>`;
   const dev=stage.querySelector('.device');
-  bind(dev,compact); clampPopovers(dev,W,H);
+  bind(dev,compact); clampPopovers(dev,W,H); dev.querySelectorAll('.vsheet').forEach(v=>v.classList.toggle('solid',v.offsetHeight>H*0.6));   /* 10/2 Tom: tall sheets go solid, short ones stay glass (iOS print options vs share sheet) */
   bindZoom(dev); bindCanvas(dev); bindKeyboard(dev); bindTextRow(dev); bindPageMenu(dev); bindSliders(dev);
   bindTouchDot(dev);
 }
@@ -4595,7 +4627,7 @@ function bind(root,compact){
     cv.addEventListener('scroll',onScroll,{passive:true});
   }
   root.onclick=e=>{
-    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-stickycustom],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
+    const b=e.target.closest('[data-gslider],[data-tool],[data-pen],[data-gopen],[data-color],[data-tapecolor],[data-sticky],[data-stickycustom],[data-tbact],[data-expfmt],[data-w],[data-tw],[data-act],[data-go],[data-pal],[data-tab],[data-closetab],[data-lt],[data-lf],[data-et],[data-es],[data-eo],[data-layer],[data-lvis],[data-llock],[data-sd],[data-se],[data-tm],[data-img],[data-page],[data-sheet],[data-pslider],[data-tslider],[data-lslider],[data-lm],[data-lslot],[data-lpal],[data-insnote],[data-insshape],[data-obj],[data-grip],[data-pick],[data-stk],[data-stktab],[data-tmtab],[data-tmclose],[data-mi],[data-pslot],[data-pcol],[data-tslot],[data-tcol],[data-lstyle],[data-preset],[data-mmslider],[data-tcolor],[data-tctab],[data-tmplpick],[data-tmplscope],[data-tmpltab],[data-libtab],[data-libcat],[data-doc],[data-libkind],[data-nppos],[data-cpfield],[data-cphue],[data-cpadd],[data-libcreate],[data-tmplpaper],[data-tmplcover],[data-tmplcat],[data-tmplland],[data-stickytab]');
     if(b&&(S.sel||S.selSet)&&!b.closest('.objmenu,.omsheet,.selbox')&&b.dataset.obj===undefined&&!(b.dataset.act||'').startsWith('om-')){S.sel=null;S.selSet=null;S.omMore=false;}   /* 10/2 Tom: any other control drops the selection + object menu */
     if(!b){
       /* canvas tap: an unpinned sheet is single-use and hands the toolbar straight back */
@@ -4614,7 +4646,7 @@ function bind(root,compact){
     if(d.act==='library'){ if(S.view==='library'&&S.libCollapsed){S.libCollapsed=false;return render();} S.lib=!S.lib;return render();}
     if(d.act==='tabmgr'){S.tabMgr=!S.tabMgr;return render();}
     if(d.act==='tabmgr-done'){S.tabMgr=false;return render();}
-    if(d.act==='tabmgr-add'){S.tabs.push({n:'未命名笔记',cover:'#FFFFFF',rule:'line',pages:1,page:0,scroll:0,kind:'plain'});S.tab=S.tabs.length-1;return render();}
+    if(d.act==='tabmgr-add'){const nm='未命名笔记 '+(S.tabs.length+1);S.tabs.push({n:nm,cover:'#FFFFFF',rule:'line',pages:1,page:0,scroll:0,kind:'plain'});S.tab=S.tabs.length-1; if(phoneDevice()){S.docMode[nm]='edit';S.st='idle';} return render();}
     if(d.tmtab!==undefined){S.tab=+d.tmtab;S.tabMgr=false;S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
@@ -4650,6 +4682,7 @@ function bind(root,compact){
     if(d.act==='lockzoom'){S.zoomLock=!S.zoomLock;return render();}
     if(d.act==='rename'){S.renaming=true;S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='renameok'){const inp=b.closest('.dlg').querySelector('input');if(inp&&inp.value.trim())NB().n=inp.value.trim();S.renaming=false;return render();}
+    if(d.tbact){ let el=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('.txtin'); if(!el&&S.sel){el=document.querySelector(`.device .txtin[data-txt="${S.sel}"]`); if(el){el.focus(); document.execCommand('selectAll');}} if(el&&d.tbact!=='tasks') applyTb(d.tbact,el,b,document.querySelector('.device .kbwrap')); return; }
     if(d.act==='closesys'){S.st=S.lastTool||'writing';syncState();return render();}
     if(d.act==='expgo'){S.st='sysshare';syncState();return render();}
     if(d.act==='expbg'){S.expBg=S.expBg===false;return render();}
@@ -4716,7 +4749,7 @@ function bind(root,compact){
       const COVERS=['#E6DCCB','#CFE0DD','#DAD2E2','#E0E4EA','#EDE0D4'];
       S.tabs.push({n:'未命名笔记 '+(S.tabs.length+1),cover:COVERS[S.tabs.length%COVERS.length],
         rule:['line','grid','dot'][S.tabs.length%3],pages:1,page:0,scroll:0,art:'none'});
-      S.tab=S.tabs.length-1;S.st=compact?'l1':'writing';syncState();return render();}
+      S.tab=S.tabs.length-1; if(phoneDevice()){S.docMode[S.tabs[S.tab].n]='edit';S.st=compact?'l1':'idle';} else S.st=compact?'l1':'writing'; syncState();return render();}   /* 10/2: creating from the strip → 待编辑模式 on phones */
     if(d.gslider){const r=b.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
       (S.penTune[S.pen]||(S.penTune[S.pen]={...PEN_TUNE_DEF}))[d.gslider]=Math.round(f*100); return render();}
     if(d.act==='camera'){S.picker='camera';return render();}
