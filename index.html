@@ -2028,6 +2028,24 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device.ios .wtrack.drag b{width:52px!important;height:30px!important;border-radius:15px!important;background:rgba(255,255,255,.28)!important;border:.5px solid rgba(0,0,0,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 10px rgba(0,0,0,.10)!important}
 /* while a column sheet is up, the strip's own controls step back so the sheet's × / action read alone (status cluster stays) */
 .device:has(.vsheet.colsheet) .duostrip :is(button,.ds-avs,.avatars){opacity:.18;pointer-events:none}
+
+/* ═══ 10/9 · round 23 ═══ */
+/* Duo column sheet: full-width card, content inset from the strip, buttons on the strip axis */
+.device .vsheet.colsheet,.device.ios .vsheet.colsheet,.device.android .vsheet.colsheet,.device .vsheet.colsheet.solid{display:block!important;right:8px!important}
+.vsheet.colsheet .dsh-card{margin-right:0;padding-right:0}
+.vsheet.colsheet .dsh-head{padding:0 calc(var(--colw,84px) + 8px) 0 24px}
+.vsheet.colsheet .vs-body{padding-right:calc(var(--colw,84px) + 8px)!important}
+.vsheet.colsheet .dsh-btns{display:flex!important;position:absolute;right:calc(var(--colw,84px) / 2 - 8px - 24px);top:8px;flex-direction:column;align-items:center;gap:10px;z-index:4}
+.vsheet.colsheet .dsh-col{display:none!important}
+.vsheet.colsheet .presetp>.pph .tbtn{right:auto;left:12px;top:10px}
+/* library header: 你在做什么？ sits in the top row until the list condenses; then it becomes 主页 */
+.libhome:not(.condensed) .lh-title .t-home{display:none}
+.libhome.condensed .lh-title .t-ask{display:none}
+.lh-sec.lh-ask .lh-h{display:none}
+/* collaborators pill: hug 82 of content in 88, 8 gap to the next button */
+.avatars{width:88px!important;margin:0 8px 0 4px!important}
+.avatars .avwrap{left:26px}
+.toolrow>.side.r .cap>.avatars+.tbtn{margin-left:0!important}
 </style>
 </head>
 <body>
@@ -2046,7 +2064,7 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
       <option value="fit">适应窗口</option><option value="real">真机 1:1</option><option value="1">100%</option><option value="0.75">75%</option><option value="0.5">50%</option></select>
       <select class="sel" id="selPpi" title="当前显示器的像素密度，用于 真机 1:1" style="display:none"></select></div>
     <div class="grp"><label>标签</label><div class="seg" id="segTabs">
-      <button data-tabs="strip" aria-pressed="true">方案1 · 顶部标签栏</button><button data-tabs="manager" aria-pressed="false">方案2 · 侧栏入口</button></div></div>
+      <button data-tabs="strip" aria-pressed="true">方案1 · 顶部标签栏</button></div></div>
     <div class="grp" style="display:none"><label>页面导航</label><div class="seg" id="segNav">
       <button data-nav="side" aria-pressed="true">侧栏</button><button data-nav="float" aria-pressed="false">浮层 · Claude 式</button></div></div>
     <div class="grp"><label>语言</label><div class="seg" id="segLang">
@@ -2886,10 +2904,10 @@ function placePopovers(scope){
       const cx=(tr.left+tr.width/2-dr.left)/sx, cy=(tr.top+tr.height/2-dr.top)/sx, tl=(tr.left-dr.left)/sx, tt=(tr.top-dr.top)/sx;
       pop.style.right='auto'; pop.style.transform='none';
       const ptr=document.createElement('i'); ptr.style.zIndex=(parseInt(getComputedStyle(pop).zIndex)||44)+1;
-      if(S.version==='v1'){ /* 第一版: to the left of the column button, centred on it, caret pointing right */
-        const left=Math.max(8,tl-8-10-w), top=Math.max(8,Math.min(cy-h/2,dev.offsetHeight-h-8));
+      if(S.version==='v1'){ /* 10/9 Tom: a menu from the column drops BELOW its button like every other dropdown (the beside-the-button flyout was inconsistent) */
+        const left=Math.max(8,Math.min(cx-w/2,dev.offsetWidth-w-8)), top=tt+tr.height/sx+10;   /* below the button; clampPopovers shrinks the height to the 12pt bottom buffer */
         pop.style.left=left+'px'; pop.style.top=top+'px';
-        ptr.className='ptr2 r'; ptr.style.left=(left+w)+'px'; ptr.style.top=(cy-10)+'px';
+        ptr.className='ptr2'; ptr.style.left=(cx-10)+'px'; ptr.style.top=(top-10)+'px';
       } else {              /* future version: the same left-of-column popover as 第一版 */
         const left=Math.max(8,tl-8-10-w), top=Math.max(8,Math.min(cy-h/2,dev.offsetHeight-h-8));
         pop.style.left=left+'px'; pop.style.top=top+'px';
@@ -3336,8 +3354,8 @@ function libraryView(c){const {W,H,phone,wide,top=0,overlay=false,right=0}=c; /*
   /* the top bar is empty until the create row scrolls away — then the page name and New appear (concept `home-condensed`) */
   const sideBtn=`<button class="lh-ib lh-sidebtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库">${svg('sidebar2')}</button>`;   /* 9/30 Tom: the library sidebar entry is ALWAYS shown when the sidebar is not docked */
   const searchBtn=`<button class="lh-ib" aria-label="搜索">${svg('search')}</button>`;
-  const top_=phone?`<div class="lh-phonebar">${sideBtn}<span class="lh-title always">主页</span><span class="lh-sp"></span>${searchBtn}${newBtn}</div>`
-    :`<div class="lh-topbar">${docked?'':sideBtn}<span class="lh-title${docked?'':' always'}">主页</span><span class="lh-sp"></span>${docked?'':searchBtn}${newBtn}</div>`;   /* docked sidebar already carries search */
+  const top_=phone?`<div class="lh-phonebar">${sideBtn}<span class="lh-title always"><span class="t-ask">你在做什么？</span><span class="t-home">主页</span></span><span class="lh-sp"></span>${searchBtn}${newBtn}</div>`
+    :`<div class="lh-topbar">${docked?'':sideBtn}<span class="lh-title always"><span class="t-ask">你在做什么？</span><span class="t-home">主页</span></span><span class="lh-sp"></span>${docked?'':searchBtn}${newBtn}</div>`;   /* docked sidebar already carries search */
   const side=docked?`<div class="lh-side">${libSidebar()}</div>`:(S.lib?libSidebar():''); /* pulled out from the left edge on narrow widths */
   const menu=S.libNew?`<div class="scrim" data-act="libnew"></div>${(()=>{const items=LIB_CREATE.map(([k,l])=>`<button data-libcreate="${k}"><img class="lh-mart" src="${window.ASSET[`create-${k}.svg`]||`create-${k}.svg`}" alt=""><span class="col"><span>${l}</span></span></button>`).join('');
       return phone?`<div class="vsheet ${S.dev==='android'?'android':'ios'} lh-newsheet" style="${panelStyle()}"><div class="vs-hdl"></div><div class="vs-head"><button class="vs-x" data-act="libnew" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">新建</div><span class="vs-sp"></span></div><div class="vs-body"><div class="menu lh-newmenu static">${items}</div></div></div>`
@@ -3492,7 +3510,7 @@ function pasteClip(pg,x,y){ if(!S.clip) return; const all=[...S.clip.strokes.fla
   const ys=[...S.ink.filter(k=>ns.includes(k.id)).flatMap(k=>k.pts.map(p=>p[1])),...S.objs.filter(o=>no.includes(o.id)).flatMap(o=>[o.y,o.y+(o.h||o.w)])];
   S.selSet={pg,strokes:ns,objs:no,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]}; S.sel=no[0]||null; }
 function colSheet(html,opts={}){ const t=opts.title||panelTitle(html)||(ownsTitle(html)?'':sheetTitle()); const trail=opts.trail||'';
-  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}" style="--colw:${DUO_STRIP}px"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="dsh-head"><div class="dsh-t">${t}</div></div><div class="vs-body">${html}</div></div><div class="dsh-col"><button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>${trail}</div></div>`; }   /* 10/8 Tom: the side strip is a safe area — the card stops before it, the × and any trailing action stand in the strip on its axis */
+  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}" style="--colw:${DUO_STRIP}px"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="dsh-head"><div class="dsh-t">${t}</div></div><div class="dsh-btns"><button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>${trail}</div><div class="vs-body">${html}</div></div></div>`; }   /* 10/9 Tom · iOS 27 12886-17629: the card spans the width; the CONTENT keeps out of the side strip (safe area); × and the trailing action stand on the strip's axis */
 function sheetWrap(html){ if(!html) return ''; if(S._duoCol) return colSheet(html,{land:S._duoLand});
   const t=panelTitle(html)||(ownsTitle(html)?'':sheetTitle());
   return `<div class="vsback" data-act="closesheet"></div><div class="vsheet ${S.dev==='android'?'android':'ios'}" style="${panelStyle()}"><div class="vs-hdl"></div>
@@ -3882,7 +3900,7 @@ function render(){ S._rendering=true;
     const R={redo:!tight,lib:noStrip&&!duo,side:false,av:W>=BP.SIDEBAR_PUSH&&!duo,right:!duo,mic:true,layers:!duo&&!phone,addPage:!duo,moreRow:false};   /* 10/3 Tom: layers exists from 600 up, no slot-count rule */ /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
     const need=(slots=10)=>(duo?0:((noStrip?pillOf(R.lib?2:1)+8:0)+(R.side?pillOf(1)+8:0)+pillOf(R.redo?2:1)))
       +BAR.GAP+(slots*SLOTW+18)+(R.mic?pillOf(1)+BAR.GAP:0)+BAR.GAP
-      +(duo?0:((R.right?pillOf(1+(R.layers?1:0)+(R.addPage?1:0)+(R.moreRow?1:0))+(R.av?72:0)+8:0)+((noStrip&&!R.moreRow)?pillOf(2):0)));
+      +(duo?0:((R.right?pillOf(1+(R.layers?1:0)+(R.addPage?1:0)+(R.moreRow?1:0))+(R.av?100:0)+8:0)+((noStrip&&!R.moreRow)?pillOf(2):0)));
     const statusReserve=(duoPort&&noStrip)?DUO_STATUS_W-BAR.PAD:0;   /* hidden tabs: the row stops short of the status cluster */
     const availW=canvasW-2*BAR.PAD-statusReserve;
     /* recording is the last thing to go: it folds only when even eight tool slots would not fit beside it */
@@ -5250,13 +5268,9 @@ function renderEditor(){
     <h3>调试</h3>
     <div class="row"><span>显示状态栏</span><label class="toggle"><input type="checkbox" data-dbg="showStatus"${S.showStatus?' checked':''}></label></div>
     <div class="row"><span>层级标注</span><label class="toggle"><input type="checkbox" data-dbg="anno"${S.anno?' checked':''}></label></div>
-    <h3>浮层材质</h3>
-    <div class="presets">
-      <button data-mat="android" aria-pressed="${t.material==='android'}">Android · Frosted</button>
-      <button data-mat="ios" aria-pressed="${t.material==='ios'}">iOS · Liquid Glass</button></div>
-    <div class="src" style="margin-top:8px">材质与设备绑定：Android = Peru Framed（实色凸起胶囊 + hairline，面板实色）；iPad / iPhone = Peru Glass（Clear 给工具栏、Regular 给面板）。</div>
-    ${(t.material==='ios'&&S.dev==='apple')?`<div class="row"><span>不透明度</span><input type="range" min="10" max="100" value="${t.glassAlpha}" data-th="glassAlpha"><span class="val" data-for="glassAlpha">${t.glassAlpha}%</span></div>
+    ${S.dev!=='android'?`<h3>玻璃参数</h3><div class="row"><span>不透明度</span><input type="range" min="10" max="100" value="${t.glassAlpha}" data-th="glassAlpha"><span class="val" data-for="glassAlpha">${t.glassAlpha}%</span></div>
     <div class="row"><span>模糊半径</span><input type="range" min="0" max="40" value="${t.glassBlur}" data-th="glassBlur"><span class="val" data-for="glassBlur">${t.glassBlur}px</span></div>`:''}
+    <div class="src" style="margin-top:8px">浮层材质跟设备走，不单独选：iPad / iPhone / Duo = iOS Liquid Glass（Peru Glass：Clear 给工具栏、Regular 给面板）；Android = Frosted（Peru Framed：实色凸起胶囊 + hairline，面板实色）。</div>
     <div class="src">
       激活态是固定的：圆形底 + <code>icon-*-active.svg</code> 彩色图标。顶栏文字与图标按背景亮度在黑/白之间自动切换（渐变按两色均值判断）。<br><br>
       每一块工具栏表面只画一层——玻璃之下不再叠任何不透明底色，材质切换因此可见。<br><br>
