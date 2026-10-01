@@ -2131,6 +2131,35 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .libbar{overflow:hidden!important}
 .libbar .lb-scroll{flex:1 1 0!important;min-height:0!important;overflow-y:auto!important;display:flex;flex-direction:column}
 .libbar .lb-tail{margin-top:auto;padding-top:8px}
+
+/* ═══ 10/12 · round 27 ═══ */
+/* Duo column sheet: a real flex column so the card gets a definite height and its body scrolls */
+.device .vsheet.colsheet,.device.ios .vsheet.colsheet,.device.android .vsheet.colsheet,.device .vsheet.colsheet.solid{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+.vsheet.colsheet .dsh-card{flex:1 1 auto!important;min-height:0!important;max-height:100%!important}
+.vsheet.colsheet .vs-body{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important}
+/* ⋯ sub-panel floats beside the menu */
+[data-subof="more"]{z-index:46!important}
+/* shape endpoints: selected cell = white tile with the same lift as the line-style tiles */
+.epgrid .epc[aria-pressed="true"],.vsheet .epgrid .epc[aria-pressed="true"]{background:#fff!important;box-shadow:0 1px 3px rgba(16,24,40,.14),0 0 0 .5px rgba(16,24,40,.08)!important}
+/* Duo library: content runs under the transparent column, sections keep clear of it, the pill row scrolls beneath it */
+.libhome.duo .lh-topbar{right:84px}
+.libhome.duo .lh-sec{padding-right:84px}
+.libhome.duo .lh-sec.lh-ask{padding-right:0}
+.libhome.duo .lh-pills{padding-right:84px}
+.libhome.duo .lh-sec .lh-bar,.libhome.duo .lh-sec .lh-grid{margin-right:0}
+.libhome.duo.wide .lh-main{right:0!important}
+/* Duo portrait (unfolded) library: title in the band row, no second header, pills right under */
+.lh-duoband .lh-bandtitle{font-size:20px;font-weight:600;color:#1e1b1b;margin-left:8px;transition:opacity .18s}
+.lh-duoband.condensed .lh-bandtitle{opacity:0}
+.libhome.duoport:not(.condensed) .lh-topbar{display:none}
+.libhome.duoport .lh-sec.lh-ask{padding-top:8px!important}
+
+/* round 27 · follow-ups */
+.vsheet .collab{max-height:none!important;overflow:visible!important}
+.libhome.duo .lh-sec{padding-right:84px!important}
+.libhome.duo .lh-sec.lh-ask{padding-right:0!important}
+.libhome.duoport .lh-scroll{padding-top:0!important}
+.libhome.duoport .lh-sec.lh-ask{padding-top:8px!important;margin-top:0!important}
 </style>
 </head>
 <body>
@@ -2784,7 +2813,7 @@ function railFor(W){
     + `<span class="divider h"></span>`
     + SHAPE_EXACT.map(([k,ic,zh])=>{const on=S.shapeExactOn&&S.shapeExact===k;
       return `<button class="tbtn" data-se="${k}" data-insshape="${k}" aria-pressed="${on}" aria-label="${zh}" style="color:${activeInk(on)}"><span class="chip" style="${activeChip(on)}">${svg(ic)}</span></button>`;}).join('')
-    + `<span class="divider h"></span>` + strokeWidthBtn() + swatchBtn(COLORS[S.color],S.color,true,'color'));
+    + `<span class="divider h"></span>` + shapeStrokeBtn() + shapeColorBtn());
   /* camera and library stay pinned; the recent run scrolls, so a long library
      stays reachable without stretching the rail */
   if(st==='image') return railWrap(
@@ -2978,6 +3007,7 @@ function placePopovers(scope){
   const dev=scope.querySelector('.device'); if(!dev) return;
   const dr=dev.getBoundingClientRect(), sx=dr.width/dev.offsetWidth||1;
   dev.querySelectorAll('.ptr2').forEach(e=>e.remove());
+  dev.querySelectorAll('[data-subof="more"]').forEach(sub=>{ const menu=[...dev.querySelectorAll('.menu')].find(m=>(m.dataset.anchor||'').includes('"more"')); if(!menu) return; const row=menu.querySelector(`[data-mi="${sub.dataset.subrow}"]`)||menu; const mr=menu.getBoundingClientRect(), rr=row.getBoundingClientRect(); const w=sub.offsetWidth, h=sub.offsetHeight; let left=(mr.left-dr.left)/sx-8-w; if(left<8) left=Math.min(dev.offsetWidth-w-8,(mr.right-dr.left)/sx+8); const top=Math.max(8,Math.min((rr.top-dr.top)/sx,dev.offsetHeight-h-8)); sub.style.left=left+'px'; sub.style.top=top+'px'; sub.style.right='auto'; sub.style.transform='none'; });   /* ⋯ sub-panel: beside the menu, aligned to its row */
   dev.querySelectorAll('[data-for],[data-anchor]').forEach(pop=>{
     if(pop.closest('.vsheet')) return;
     const sel=pop.dataset.for||pop.dataset.anchor;
@@ -2990,10 +3020,10 @@ function placePopovers(scope){
       const cx=(tr.left+tr.width/2-dr.left)/sx, cy=(tr.top+tr.height/2-dr.top)/sx, tl=(tr.left-dr.left)/sx, tt=(tr.top-dr.top)/sx;
       pop.style.right='auto'; pop.style.transform='none';
       const ptr=document.createElement('i'); ptr.style.zIndex=(parseInt(getComputedStyle(pop).zIndex)||44)+1;
-      if(S.version==='v1'){ /* 10/9 Tom: a menu from the column drops BELOW its button like every other dropdown (the beside-the-button flyout was inconsistent) */
-        const left=Math.max(8,Math.min(cx-w/2,dev.offsetWidth-w-8)), top=tt+tr.height/sx+10;   /* below the button; clampPopovers shrinks the height to the 12pt bottom buffer */
+      if(S.version==='v1'){ /* 10/12 Tom: a menu from the side column flies out to the LEFT of its button, centred on it, caret pointing right (every posture with the column) */
+        const left=Math.max(8,tl-8-10-w), top=Math.max(8,Math.min(cy-h/2,dev.offsetHeight-h-8));
         pop.style.left=left+'px'; pop.style.top=top+'px';
-        ptr.className='ptr2'; ptr.style.left=(cx-10)+'px'; ptr.style.top=(top-10)+'px';
+        ptr.className='ptr2 r'; ptr.style.left=(left+w)+'px'; ptr.style.top=(Math.min(Math.max(cy,top+16),top+h-16)-10)+'px';
       } else {              /* future version: the same left-of-column popover as 第一版 */
         const left=Math.max(8,tl-8-10-w), top=Math.max(8,Math.min(cy-h/2,dev.offsetHeight-h-8));
         pop.style.left=left+'px'; pop.style.top=top+'px';
@@ -3441,12 +3471,12 @@ function libraryView(c){const {W,H,phone,wide,top=0,overlay=false,right=0}=c; /*
   const sideBtn=`<button class="lh-ib lh-sidebtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库">${svg('sidebar2')}</button>`;   /* 9/30 Tom: the library sidebar entry is ALWAYS shown when the sidebar is not docked */
   const searchBtn=`<button class="lh-ib" aria-label="搜索">${svg('search')}</button>`;
   const top_=phone?`<div class="lh-phonebar">${sideBtn}<span class="lh-title always"><span class="t-ask">你在做什么？</span><span class="t-home">主页</span></span><span class="lh-sp"></span>${searchBtn}${newBtn}</div>`
-    :`<div class="lh-topbar">${docked?'':sideBtn}<span class="lh-title always"><span class="t-ask">你在做什么？</span><span class="t-home">主页</span></span><span class="lh-sp"></span>${docked?'':searchBtn}${newBtn}</div>`;   /* docked sidebar already carries search */
+    :`<div class="lh-topbar">${(docked||c.duo)?'':sideBtn}<span class="lh-title always"><span class="t-ask">你在做什么？</span><span class="t-home">主页</span></span><span class="lh-sp"></span>${(docked||c.duo)?'':searchBtn}${newBtn}</div>`;   /* docked sidebar already carries search */
   const side=docked?`<div class="lh-side">${libSidebar()}</div>`:(S.lib?libSidebar():''); /* pulled out from the left edge on narrow widths */
   const menu=S.libNew?`<div class="scrim" data-act="libnew"></div>${(()=>{const items=LIB_CREATE.map(([k,l])=>`<button data-libcreate="${k}"><img class="lh-mart" src="${window.ASSET[`create-${k}.svg`]||`create-${k}.svg`}" alt=""><span class="col"><span>${l}</span></span></button>`).join('');
       return (phone&&S._duoCol)?colSheet(`<div class="menu lh-newmenu static">${items}</div>`,{title:'新建'}).replace(/data-act="closesheet"/g,'data-act="libnew"'):phone?`<div class="vsheet ${S.dev==='android'?'android':'ios'} lh-newsheet" style="${panelStyle()}"><div class="vs-hdl"></div><div class="vs-head"><button class="vs-x" data-act="libnew" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">新建</div><span class="vs-sp"></span></div><div class="vs-body"><div class="menu lh-newmenu static">${items}</div></div></div>`
         :`<div class="menu lh-newmenu" data-anchor='[data-newbtn]' style="${panelStyle()};right:24px;top:72px;color:#1e1b1b">${items}</div>`;})()}`:'';
-  return `<div class="libhome${docked?' wide':''}${phone?' phone':''}${overlay?' overlay':''}${c.duoPort?' duoport':''}${S.libCondensed?' condensed':''}" style="left:0;top:${top}px;width:${W}px;height:${H}px">
+  return `<div class="libhome${docked?' wide':''}${phone?' phone':''}${overlay?' overlay':''}${c.duoPort?' duoport':''}${c.duo?' duo':''}${S.libCondensed?' condensed':''}" style="left:0;top:${top}px;width:${W}px;height:${H}px">
     ${side}
     <div class="lh-main" style="left:${sideW}px;right:${right}px">
       ${top_}
@@ -3615,6 +3645,8 @@ function layersPanel(pos){
       ${base?'':`<button class="ic ${l.v?'on':''}" data-lvis="${i}" aria-label="显示 ${l.n}">${svg(l.v?'eye':'eyeOff')}</button>`}
       <button class="ic ${l.l?'on':''}${base?' dim':''}" data-llock="${i}" aria-label="锁定 ${l.n}">${svg(l.l?'lock':'unlock')}</button></div>`;}).join('')}</div></div>`;
 }
+function moreSubPanel(){ const k=S.moreSub; const h=k==='collab'?collabPanel(''):k==='layers'?layersPanel(''):dropdown('addpage',''); return h.replace(/data-anchor='[^']*'/,`data-subof="more" data-subrow="${k}"`); }
+function dropdownMore(pos){ return dropdown('more',pos)+(S.moreSub?moreSubPanel():''); }
 function dropdown(kind,pos){ const dropdownKind=kind;
   const items=kind==='export'?EXPORT_ITEMS:kind==='addpage'?ADD_ITEMS:[...(S.moreExtra||[]),...MORE_ITEMS];
   if(kind==='addpage'&&S.version==='v1'){ /* 10/2 Tom · phase one scope: current template · default template · blank, always after the current page; position toggle + more templates move to the future version */
@@ -3831,7 +3863,7 @@ function keyboard(){
 }
 
 /* ══════════════════════ render ══════════════════════ */
-function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 10/11 Tom: every open of the pen panel starts on page 1 */
+function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false; if(S.st!=='more') S.moreSub=null;   /* 10/11 Tom: every open of the pen panel starts on page 1 */
   const W=S.w,H=S.h,t=S.th;
   const v1=S.version==='v1';               /* 第一版: Lite's structure on every width */
   L1=v1?L1_V1:L1_FUTURE;
@@ -3954,7 +3986,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
     const chip=(attr,ic)=>`<button class="ds-chip flat" ${attr}>${svg(ic)}</button>`;
     const group=inner=>inner?`<div class="ds-group" style="${pill}">${inner}</div>`:'';
     const showConfirm=!v1&&compact&&ios&&(SHEET_STATES.includes(active)||st==='pen2'||st==='pentypes');
-    const groups=group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('data-act="home" aria-label="主页"','home')+chip(`data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="${on('more')}"`,'dotsV'))
+    const groups=inLib?group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('aria-label="搜索"','search')):group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('data-act="home" aria-label="主页"','home')+chip(`data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="${on('more')}"`,'dotsV'))
       +((!v1&&showConfirm)?`<button class="ds-ai confirm" data-go="l1" aria-label="完成">${svg('check')}</button>`:'') /* 9/28: no separate page-sidebar entry — the dock pill is the entry */
       +(outerLand?'':group((v1&&!(noStrip&&outerPort)?`<button class="ds-av" data-tool="collab" aria-label="协作者"><i class="av av-sl">SL</i><span class="ds-wrap"><i class="av av-dr">DR</i><b>${svg('chevDown')}</b></span></button>`:'')
           +chip(`data-tool="share" aria-pressed="${st==='export'||st==='exportmenu'||st==='sysshare'}" aria-label="导出" style="${on('export')}"`,'share')
@@ -3966,7 +3998,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
       ${groups}
       <div class="ds-grow"></div>
       ${noStrip&&!outerLand?`<button class="ds-ai" style="${pill}" data-act="tabmgr" aria-pressed="${!!S.tabMgr}" aria-label="标签">${TABS_ICON}</button>`:''}
-      <button class="ds-ai" style="${pill}" data-tool="ai" aria-label="Goodnotes AI">${svg('ai')}</button>
+      ${inLib?'':`<button class="ds-ai" style="${pill}" data-tool="ai" aria-label="Goodnotes AI">${svg('ai')}</button>`}
       ${outerLand?'<div class="ds-camwrap bottom"><div class="ds-cam"></div></div>':''}
     </div>`;
     setInk(bandInk);
@@ -4039,6 +4071,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
       else body=railSecondary(active);}
     if(active==='ruler'||active==='mic'||active==='idle') body='';      /* the ruler has no secondary options; 'idle' (待编辑模式) has no tool */
     if(secHidden(active)) body='';                     /* collapsed only if THIS tool was collapsed by tapping it again */
+    if(active==='elements'&&v1phone) body='';   /* 10/12 Tom: on a sheet posture the sticker tool has no L2 row — the compact pen chip was leaking in */
     if(active==='textbox'&&S.selSet&&S.selSet.objs&&S.selSet.objs.length===1&&S.objs.find(o=>o.id===S.selSet.objs[0]&&o.kind==='text')) body='';   /* 10/10 Tom: the text object menu replaces the text L2 while a text box is selected */
     const pillHTML=body?`<div class="cap secpill${active==='stickyNote'?' sticky':''}" style="${pill};color:${INK};max-width:${Math.round(v1phone?canvasW-LITE.COMPACT_LEFT-12:canvasW-24)}px">
           <div class="fadewrap" style="--fadec:${fadeC}"><div class="cap hscroll" style="min-width:0">${body}</div></div></div>`:'';
@@ -4139,7 +4172,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
     if(st==='layers') pan+=layersPanel(`right:${pr}px;top:${duo?70:cTopV+8}px`);
     if(st==='collab') pan+=collabPanel(`right:${duo?pr:pr+96}px;top:${duo?70:cTopV+8}px`);
     let men='';
-    if(st==='more')   men+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
+    if(st==='more')   men+=dropdownMore(`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
     if(st==='addpage') men+=dropdown('addpage',`right:${pr+96}px;top:${duo?70:cTopV+8}px`);
     const share=st==='export'?shareModal({W,H,phone,duo,duoSheet,hClass,duoPort}):(st==='sysshare'?sysShareSheet({W,H,phone,duo}):(st==='exportopts'?exportDialog({W,H,phone,duo,duoSheet,hClass}):''));   /* 9/30 Tom: 第一版 the share button opens the export MENU (共享文档 · 导出本页 · 导出整本); 共享文档 → this share modal, PDF items → the system share sheet */
     if(st==='exportmenu') men+=dropdown('export',`right:${pr}px;top:${duo?70:cTopV+8}px`);
@@ -4157,7 +4190,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
     inner+=duoSheet?duoSheetWrap(pan,W,H,hClass==='compact'):pan;
     if(st==='export') inner+=dropdown('export',`right:${pr}px;top:${duo?70:cTop+8}px`);
     if(st==='exportopts') inner+=exportDialog({W,H,phone,duo,duoSheet,hClass}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
-    if(st==='more')   inner+=dropdown('more',`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
+    if(st==='more')   inner+=dropdownMore(`right:${pr}px;top:${duo?70:navH+tabH+barGap}px`);
     if(st==='mic'&&S.rec) inner+=recPopover(`left:${Math.round(canvasLeft+canvasW*0.5)}px;top:${cTop+8}px`);
     if(S.anno){
       anno.push(`<div class="lab" style="left:${canvasLeft+canvasW/2}px;transform:translateX(-50%);top:${navH+tabH-11}px">L1 · 常驻</div>`);
@@ -4232,7 +4265,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
     if(st==='layers') inner+=layersPanel(`right:10px;top:${cTop+58}px`);
     if(st==='export') inner+=dropdown('export',`right:10px;top:${cTop+58}px`);
     if(st==='exportopts') inner+=exportDialog({W,H,phone,duo,duoSheet,hClass}); if(st==='sysshare') inner+=sysShareSheet({W,H,phone,duo});
-    if(st==='more')   inner+=dropdown('more',`right:10px;top:${navH+tabH+barGap}px`);
+    if(st==='more')   inner+=dropdownMore(`right:10px;top:${navH+tabH+barGap}px`);
     if(st==='mic'&&S.rec) inner+=recDrawer();   /* phone tier (<600) → bottom drawer */
   }
 
@@ -4277,8 +4310,8 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
   if(flexMode) inner+=flexDeck(flex,{W,H,navH,tabH,v1,active,st,bandInk,fadeC,nb,pw,tight});
   if(S.anno) inner+=`<div class="anno">${anno.filter(Boolean).join('')}</div>`;
   if(S.view==='library'){ const lt=duoPort?84:0, lw=duo?W-DUO_STRIP:W;
-    if(duoPort) inner+=`<div class="lh-duoband${S.libCondensed?' condensed':''}" style="height:${lt}px">${'<button class="lh-ib" data-act="library" aria-label="资料库">'+svg('sidebar2')+'</button><span class="lh-sp"></span><button class="lh-ib" aria-label="搜索">'+svg('search')+'</button>'}</div>`;   /* 9/30 Tom: on the library page the Duo top band is plain white — status cluster right, sidebar entry left */
-    if(duo||duoPort) inner+=libraryView({W,H:H-lt,top:lt,right:duo?DUO_STRIP:0,phone,compact:lw<BP.SIDEBAR_PUSH,wide:lw>=BP.SIDEBAR_PUSH,v1,duo,duoPort,overlay:true});
+    if(duoPort) inner+=`<div class="lh-duoband${S.libCondensed?' condensed':''}" style="height:${lt}px">${'<button class="lh-ib" data-act="library" aria-label="资料库">'+svg('sidebar2')+'</button><span class="lh-bandtitle">你在做什么？</span><span class="lh-sp"></span><button class="lh-ib" aria-label="搜索">'+svg('search')+'</button>'}</div>`;   /* 9/30 Tom: on the library page the Duo top band is plain white — status cluster right, sidebar entry left */
+    if(duo||duoPort) inner+=libraryView({W,H:H-lt,top:lt,right:0,phone,compact:lw<BP.SIDEBAR_PUSH,wide:lw>=BP.SIDEBAR_PUSH,v1,duo,duoPort,overlay:true});
     else { const sb=inner.match(/<div class="statusbar"[\s\S]*?<\/div>\s*<\/div>/); inner=(sb?sb[0]:'')+libraryView({W,H:H-navH,top:navH,phone,compact:cw<BP.SIDEBAR_PUSH,wide:cw>=BP.SIDEBAR_PUSH,v1,duo,duoPort}); anno=[]; } }
   const stage=document.getElementById('stage');
   const fit=Math.min(1,(stage.clientWidth-64)/W,(stage.clientHeight-64)/H);
@@ -4308,7 +4341,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 1
   { const pl=stage.querySelector('.psidebar .list'); if(pl){ const on=pl.querySelector('.pg.on'); const zf=(pl.getBoundingClientRect().height/(pl.clientHeight||1))||1; const follow=S._sbFollow||S._psPage!==NB().page||S._psScroll==null; if(on&&follow){ S._sbFollow=false; const top=(on.getBoundingClientRect().top-pl.getBoundingClientRect().top)/zf+pl.scrollTop; const inView=top>=pl.scrollTop&&top+on.offsetHeight<=pl.scrollTop+pl.clientHeight; pl.scrollTop=inView?(S._psScroll==null?pl.scrollTop:S._psScroll):Math.max(0,top-(pl.clientHeight-on.offsetHeight)/2); } else if(S._psScroll!=null) pl.scrollTop=S._psScroll; S._psPage=NB().page; S._psScroll=pl.scrollTop; pl.addEventListener('scroll',()=>{S._psScroll=pl.scrollTop;},{passive:true}); } }
   { const ls=stage.querySelector('#lhscroll'); if(ls){ ls.scrollTop=S._libScroll||0; ls.addEventListener('scroll',()=>{S._libScroll=ls.scrollTop; const c=ls.scrollTop>120; if(c!==!!S.libCondensed){S.libCondensed=c; ls.closest('.libhome').classList.toggle('condensed',c); const bd=stage.querySelector('.lh-duoband'); if(bd) bd.classList.toggle('condensed',c);} },{passive:true}); } }
   placeSelection(stage); centreToolMid(stage); placeFloatNav(stage); placePopovers(stage); placePageMenu(stage); placeSecRow(stage); bindRotate(stage); placeRulerMenu(stage); clampPopovers(stage.querySelector('.device'),S.w,S.h); translateDOM(document.body);
-  { const tm=stage.querySelector('.toolmid.hscroll'); if(tm){ const act=tm.querySelector('[aria-pressed="true"]'); const cur=act&&act.dataset.tool; const zf=(tm.getBoundingClientRect().width/(tm.clientWidth||1))||1; if(cur&&cur!==S._l1Active){ S._l1Active=cur; const x=(act.getBoundingClientRect().left-tm.getBoundingClientRect().left)/zf+tm.scrollLeft; const vis=x>=tm.scrollLeft&&x+act.offsetWidth<=tm.scrollLeft+tm.clientWidth; tm.scrollLeft=vis?(S._l1Scroll||0):Math.max(0,x-tm.clientWidth/2+act.offsetWidth/2); } else if(S._l1Scroll!=null) tm.scrollLeft=S._l1Scroll; S._l1Scroll=tm.scrollLeft; tm.addEventListener('scroll',()=>{S._l1Scroll=tm.scrollLeft;},{passive:true}); } }   /* 10/8 Tom: the selected tool stays on screen when its L2 opens */
+  { const tm=stage.querySelector('#toolmid'); if(tm){ const act=tm.querySelector('[aria-pressed="true"]'); const cur=act&&act.dataset.tool; const zf=(tm.getBoundingClientRect().width/(tm.clientWidth||1))||1; if(cur&&cur!==S._l1Active){ S._l1Active=cur; const x=(act.getBoundingClientRect().left-tm.getBoundingClientRect().left)/zf+tm.scrollLeft; const vis=x>=tm.scrollLeft&&x+act.offsetWidth<=tm.scrollLeft+tm.clientWidth; tm.scrollLeft=vis?(S._l1Scroll||0):Math.max(0,x-tm.clientWidth/2+act.offsetWidth/2); } else if(S._l1Scroll!=null) tm.scrollLeft=S._l1Scroll; S._l1Scroll=tm.scrollLeft; tm.addEventListener('scroll',()=>{S._l1Scroll=tm.scrollLeft;},{passive:true}); } }   /* 10/8 Tom: the selected tool stays on screen when its L2 opens */
   { if(S.kbOpen&&S.sel){ const el=stage.querySelector(`.device .txtin[data-txt="${S.sel}"]`), kb=stage.querySelector('.device .kbwrap'); if(el&&kb){ kb.hidden=false; el.focus(); } else S.kbOpen=false; } S._rendering=false; }   /* 10/6 Tom: the keyboard stays up while a text box is being edited, whatever re-renders */
   const ts=document.getElementById('tabscroll');
   if(ts){ if(S._tabFollow){ const on=ts.querySelector('.tab.on'); if(on) ts.scrollLeft=Math.max(0,on.offsetLeft-ts.offsetLeft-ts.clientWidth+on.offsetWidth+56); S._tabFollow=false; S._tabScroll=ts.scrollLeft; } else if(S._tabScroll!=null) ts.scrollLeft=S._tabScroll; else {const a=ts.querySelector('.tab:not(.dim)');if(a)ts.scrollLeft=Math.max(0,a.offsetLeft-ts.offsetLeft-6);} ts.addEventListener('scroll',()=>{S._tabScroll=ts.scrollLeft;},{passive:true}); }   /* 10/3 Tom: the strip keeps its scroll; creating a tab scrolls the new one into view */
@@ -5134,7 +5167,8 @@ function bind(root,compact){
     if(d.tmtab!==undefined){S.tab=+d.tmtab;S.tabMgr=false;S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
-    if(d.mi){ if(d.mi==='expPage'||d.mi==='expAll'){S.expScope=d.mi==='expAll'?'all':'page';} S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'exportopts':d.mi);syncState();return render();}
+    if(d.mi){ if(S.st==='more'&&['collab','layers','addpage'].includes(d.mi)){S.moreSub=S.moreSub===d.mi?null:d.mi;return render();}   /* 10/12 Tom: the sub-panel sits beside the ⋯ menu, the menu stays */
+      if(d.mi==='expPage'||d.mi==='expAll'){S.expScope=d.mi==='expAll'?'all':'page';} S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'exportopts':d.mi);syncState();return render();}
     if(d.act==='lbtoggle'){S.libTree=S.libTree||{mylib:false,fav:true,personal:false,coursework:false}; S.libTree[d.key]=!S.libTree[d.key]; return render();}
     if(d.act==='closelib'){ if(S.lib||S.libDrawer){S.lib=false;S.libDrawer=false;} else S.libCollapsed=true; return render();}
     if(d.act==='libdrawer'){S.libDrawer=!S.libDrawer;return render();}
