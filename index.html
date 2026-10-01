@@ -2257,6 +2257,14 @@ body.bare .bezel>div{border-radius:0!important}
 .setmodal{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border:0!important}   /* 图11: iOS dialogs are solid, never glass */
 .device.android .setmodal{background:#F2F2F7!important}
 .collab{display:flex;flex-direction:column}   /* lets the clamped collaborators panel scroll as one column */
+/* ═══ 10/14 · round 31 — Tom's replies on v2.3 ═══ */
+.device.android .vsheet{background:#F2F2F7!important}   /* 🔴2: Android bottom sheets stay light grey; first-level panels are white */
+.device.android .setmodal{background:#FFFFFF!important}
+.sm-body .gnote,.gest .gnote{background:#F5F5F5!important}   /* 附图2: the notice card is a light grey on white */
+.sm-x.vs-x{position:absolute;right:12px;top:8px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:none}   /* 附图2: same × as the bottom sheet (one component) */
+.sm-x.vs-x i{width:44px;height:44px}
+.device.ios .menu,.device.ios .appanel{background:rgba(255,255,255,.84)!important}   /* 🔴9: list menus read as one surface — the glass stays in the blur, not in the see-through (a title band over a white sidebar vs a body over the page made the title look painted white) */
+.device.android .vsheet .lpanel{background:none!important}   /* 附图1: inside an Android sheet the layers panel has no white card of its own — one ground per sheet */
 </style>
 </head>
 <body>
@@ -2637,6 +2645,7 @@ const PRESETS={
 const rgbOf=hex=>[1,3,5].map(i=>parseInt((hex||'#FFFFFF').slice(i,i+2),16));
 /* accent candidates (Peru has no brand accent; primary stays black). 方案一 = Lite blue ramp; 方案三 = Goodnotes brand Navy + Sky */
 const ACCENTS={
+  peru:{label:'Peru Primary 蓝',accent:'#0072CE',accentHi:'#005AA8',accentSf:'#DBEAFE'},   /* 10/14 Tom (🔴4): buttons / switches / selection use Peru's primary; the document tab bar keeps its own Goodnotes blue (tabBg) */
   gn:  {label:'方案一 · Goodnotes 蓝',accent:'#3462A2',accentHi:'#4A7BC2',accentSf:'#DCEBFA'},   /* 10/5 Tom: primary = the top-tab Goodnotes blue */
   navy:{label:'方案三 · Navy + Sky', accent:'#294C7F',accentHi:'#3462A2',accentSf:'#DCEBFA'}};
 /* a surface is either one colour or a two-stop gradient; its ink is chosen from the mix */
@@ -2729,7 +2738,7 @@ const S={version:'v1',lang:'zh',lib:false,docMode:{},size:'l11',w:1194,h:834,dev
     {n:'Calculus II',            cover:'#CFE0F4',paper:'#EAF2FB',rule:'grid',pages:3,page:0,scroll:0,kind:'plain'},
     {n:'Design Journal',        cover:'#DED6F2',paper:'#FBF1E6',rule:'dot', pages:4,page:0,scroll:0,kind:'plain'}],tab:0,
   ink:[],touch:true,penTune:{},selSet:null,zoomPct:100,zoomAuto:true,sharePw:false,showStatus:false,hideTabs:false,pageMenu:null,penCfg:mkPenCfg(),tapeCfg:mkTapeCfg(),omMore:false,recentStk:[],secHide:true,lastTool:'writing',laserInk:[],rulerOn:false,            /* strokes the pens leave · finger hot-zone sim */
-  th:{...PRESETS.darkTab,preset:'darkTab',material:'ios',glassAlpha:62,glassBlur:18,...ACCENTS.gn,accentPreset:'gn'}};
+  th:{...PRESETS.darkTab,preset:'darkTab',material:'ios',glassAlpha:62,glassBlur:18,...ACCENTS.peru,accentPreset:'peru'}};
 
 /* ══ materials ══
    The rule that makes glass work: a toolbar surface paints exactly ONE layer.
@@ -2751,7 +2760,7 @@ function surfStyle(sec){const t=S.th,a=t.glassAlpha/100,b=t.glassBlur,base=rgbOf
 function panelStyle(){const t=S.th,b=t.glassBlur;
   /* 2026-09-24: popovers, menus and sheets are SOLID on both platforms (Lite's white card) — a translucent panel
      over the page hurt legibility; the glass stays on the toolbar pills and standalone buttons only */
-  /* 规则文档 9/28 supersedes the 9/24 note above: on iOS every Peru component that ships a Glass variant uses it (Popover, ColorPicker, ObjectMenu, Menu, Sheet Bottom); Android skin is Flat → solid */ if(t.material!=='ios') return `background:#F2F2F7;border:0;box-shadow:0 1px 3px rgba(16,24,40,.08),0 12px 36px rgba(16,24,40,.16)`;   /* 10/13 Tom (R6): Android = one solid light grey for every L3 panel / menu / sheet — the same #F2F2F7 the iOS sheets use solid (R8: same colours, only the material differs) */
+  /* 规则文档 9/28 supersedes the 9/24 note above: on iOS every Peru component that ships a Glass variant uses it (Popover, ColorPicker, ObjectMenu, Menu, Sheet Bottom); Android skin is Flat → solid */ if(t.material!=='ios') return `background:#FFFFFF;border:0;box-shadow:0 1px 3px rgba(16,24,40,.08),0 12px 36px rgba(16,24,40,.16)`;   /* 10/14 Tom (🔴2): Android first-level containers (menus · popovers · dialogs) are WHITE like the layers panel; bottom sheets and second-level areas are the light grey #F2F2F7 (CSS below) */
   if(t.material==='ios'){
     /* Peru Glass · Style=Regular: frosted, readable on its own (menus, popovers, sheets) */
     const ga=Math.max(.3,t.glassAlpha/100*0.55), bl=Math.round(b*2.3+14);
@@ -3778,7 +3787,7 @@ function settingsModal(){ const W=S.w,H=S.h, w=Math.min(856,W-64), h=Math.min(68
   const body=cur==='gesture'?gestureBody():`<div class="gnote"><div><b>${title}</b><span>一期 demo 只做手势设置页；其余页面沿用极速版现有设计。</span></div></div>`;
   return `<div class="vsback" data-act="setclose"></div><div class="sharewrap"><div class="sharemodal card setmodal" style="${panelStyle()};width:${w}px;height:${h}px">
     <aside class="sm-nav"><div class="sm-navt">设置</div>${nav.map(([k,l,ic])=>`<button class="sm-item" data-act="setnav" data-k="${k}" aria-pressed="${cur===k}">${svg(ic)}<span>${l}</span></button>`).join('')}</aside>
-    <section class="sm-pane"><div class="sm-head"><div class="sm-t">${title}</div><button class="sm-x" data-act="setclose" aria-label="关闭"><i>${svg('xmark')}</i></button></div><div class="sm-body">${body}</div></section></div></div>`; }
+    <section class="sm-pane"><div class="sm-head"><div class="sm-t">${title}</div><button class="vs-x sm-x" data-act="setclose" aria-label="关闭"><i>${svg('xmark')}</i></button></div><div class="sm-body">${body}</div></section></div></div>`; }
 function dropdown(kind,pos){ const dropdownKind=kind;
   const items=kind==='export'?EXPORT_ITEMS:kind==='addpage'?ADD_ITEMS:[...(S.moreExtra||[]),...MORE_ITEMS,...(S.dev==='android'?[['gesture','手势设置','','chev']]:[])];   /* Lite MoreMainContent: 手势设置 is an Android-only row after 笔记通用设置 */
   if(kind==='addpage'&&S.version==='v1'){ /* 10/2 Tom · phase one scope: current template · default template · blank, always after the current page; position toggle + more templates move to the future version */
@@ -5409,9 +5418,9 @@ function bind(root,compact){
     if(d.act==='newrec'){stopRec(); S.objs.filter(o=>o.kind==='rec'&&o.tab===S.tab).forEach(o=>o.done=true); startRec(true); return render();}   /* CN 9927-11279: 新建录音 = stop the previous one (its card stays), drop a fresh card and start */
     if(d.act==='closerec'){S.st=compact?'l1':'writing';syncState();return render();}
     if(d.act==='pgjump'){S.sidebar=!S.sidebar;return render();}   /* the dock is the page-navigation entry */
+    if(d.act==='pm-addsub'){ const i=S.pageMenu; NB().page=i; if(S._useSheet){S.pageMenu=null;S.pmSub=null;S.apFrom='sidebar';S.st='addpage';syncState();} else {S.pmSub=S.pmSub==='add'?null:'add';} return render(); }   /* 10/14 Tom (附图3): the second level opens at once — the page menu stays (the generic pm- block used to close it first, so the sub only appeared on the NEXT long-press) */
     if(d.act&&d.act.startsWith('pm-')){const i=S.pageMenu; S.pageMenu=null;
       if(d.act==='pm-dup'){NB().pages++;NB().page=Math.min(NB().pages-1,i+1);}
-      if(d.act==='pm-addsub'){ NB().page=i; if(S._useSheet){S.pageMenu=null;S.pmSub=null;S.apFrom='sidebar';S.st='addpage';syncState();} else S.pmSub=S.pmSub==='add'?null:'add'; return render(); }
       else if(d.act==='pm-tmpl'){S.tmplOpen=true;}
       else if(d.act==='pm-del'){if(NB().pages>1){NB().pages--;NB().page=Math.min(NB().page,NB().pages-1);}}
       return render();}
