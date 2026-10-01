@@ -2177,6 +2177,13 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 /* Duo portrait: ⋯ follows “+” (16 gap) instead of hugging the status cluster */
 .tabstrip.dp .scroller{flex:0 1 auto!important}
 .tabstrip.dp .scroller+.fixed{margin-left:0}
+/* ═══ 10/13 · bare mode for rule-review screenshots: ?S={…}&bare=1 ═══ */
+body.bare .bar,body.bare .editor{display:none!important}
+body.bare .body{display:block}
+body.bare .stage{padding:0!important;overflow:hidden!important;display:block!important}
+body.bare .stage>.frame{margin:0!important;padding:0!important;width:auto!important;height:auto!important;display:inline-block}
+body.bare .bezel{padding:0!important;border-radius:0!important;background:none!important;box-shadow:none!important}
+body.bare .bezel>div{border-radius:0!important}
 </style>
 </head>
 <body>
@@ -3919,7 +3926,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false; if(S.s
   const sidebarPush=W>=BP.SIDEBAR_PUSH;            /* BP_SIDEBAR_PUSH */
   const titleMax=W<BP.NARROW?32:Math.min(160,Math.max(40,Math.round(40+(W-BP.NARROW)/4))); /* title grows with the leftover width, floor 40 — no title breakpoints */
   const rightCollapsed=W<BP.NARROW;               /* BP_RIGHT_COLLAPSE */
-  const tight=W<BP.SIDEBAR_PUSH||(v1&&phone);   /* 10/6 Tom: redo folds below 737 together with the collaborators — one breakpoint */
+  const tight=W<BP.NARROW||(v1&&phone);   /* 10/13 Tom: redo + collaborators are a phone-vs-tablet thing — they fold below 600 (was 737 since 10/6); from 600 up they yield only when fewer than MIN_TOOLS tool slots would stay visible (see R below) */
   const v1phone=v1&&phone&&!duo;                  /* 2824:94112 — undo leads the second row */
   const _dm=S.docMode[S.tabs[S.tab].n]; const roV1=v1&&!duo&&!duoPort&&!flexMode&&S.view!=='library'&&(_dm==='ro'||(phoneDevice()&&_dm!=='edit'))   /* 9/29: phone-CLASS devices open read-only in BOTH orientations (iPhone landscape 874 is tablet-width but still has no stylus) */; /* 第一版手机只读态 (Figma 3507-62075): no tool row until the user taps edit */
   const stShow=S.showStatus||(S.view==='library'&&!duo&&!duoPort&&!flexMode);   /* 9/29 Tom: the library page always shows the system status bar (Figma tablet library) */
@@ -4038,19 +4045,20 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false; if(S.s
       ?`<div style="position:absolute;top:0;height:${navH+BAR.ROW}px;left:0;width:${W}px;z-index:4;background:${fill(t.toolbarBg,t.toolbarBg2,t.barGrad)}"></div>`
       :`<div style="position:absolute;top:${navH+tabH}px;height:${BAR.ROW}px;left:${duo?0:canvasLeft}px;width:${duo?W:canvasW}px;z-index:4;background:${fill(t.toolbarBg,t.toolbarBg2,t.barGrad)}"></div>`;   /* on Duo the band runs under the column too */
     /* what the row must hold, and the order it gives things up when the width runs out */
-    const SLOTW=S.dev!=='android'?48:44, pillOf=n=>n*SLOTW+4;
-    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:W>=BP.SIDEBAR_PUSH&&!duo,right:!duo,mic:true,layers:!duo&&!phone,addPage:!duo,moreRow:false};   /* 10/3 Tom: layers exists from 600 up, no slot-count rule */ /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
+    const SLOTW=44, pillOf=n=>n*44+1, MIN_TOOLS=5;   /* 10/13: calibrated against the rendered row — 44 pitch on both platforms, a pill = n×44 + 1; the right group runs share 45 → +38 per further icon → +78 for the collaborators capsule */
+    const R={redo:!tight,lib:noStrip&&!duo,side:false,av:!tight&&!duo,right:!duo,mic:true,layers:!duo&&!phone,addPage:!duo,moreRow:false};   /* 10/3 Tom: layers exists from 600 up, no slot-count rule */ /* 9/29 Tom: ⋯ ALWAYS stays top-right in the tab strip so the tool row keeps its space; folded items (layers / add page / collaborators) land in that menu */ /* 9/29: share is ALWAYS exposed; folding order = layers → add page; on Duo the column carries ⋮, so the row never shows a second ⋯ */   /* unfolded portrait carries the iPad right group */   /* on a phone, layers lives in ⋯ */
+    const rightPill=()=>R.right?45+(R.layers?38:0)+(R.addPage?38:0)+(R.moreRow?38:0)+(R.av?78:0):0;   /* measured 10/13: full = 199, no capsule = 121, no add page = 83 */
     const need=(slots=10)=>(duo?0:((noStrip?pillOf(R.lib?2:1)+8:0)+(R.side?pillOf(1)+8:0)+pillOf(R.redo?2:1)))
-      +BAR.GAP+(slots*SLOTW+18)+(R.mic?pillOf(1)+BAR.GAP:0)+BAR.GAP
-      +(duo?0:((R.right?pillOf(1+(R.layers?1:0)+(R.addPage?1:0)+(R.moreRow?1:0))+(R.av?100:0)+8:0)+((noStrip&&!R.moreRow)?pillOf(2):0)));
+      +BAR.GAP+(slots*SLOTW+18)+(R.mic?pillOf(1)+BAR.GAP:0)+3
+      +(duo?0:(rightPill()+((noStrip&&!R.moreRow)?pillOf(2):0)));   /* full row at 737 = 89 + 98 + 199 = 386 → 7.4 slots; folded row at 600 = 45 + 98 + 121 = 264 → 7.1 slots */
     const statusReserve=(duoPort&&noStrip)?DUO_STATUS_W-BAR.PAD:0;   /* hidden tabs: the row stops short of the status cluster */
     const availW=canvasW-2*BAR.PAD-statusReserve;
     /* recording is the last thing to go: it folds only when even eight tool slots would not fit beside it */
-    /* 10/6 Tom: redo + collaborators no longer fold by available width — they follow the 737 breakpoint set in R (one rule, simpler); the tool pill scrolls if the row is tight (Lite does) */
+    /* 10/13 Tom (replaces 10/6 "<737 by breakpoint"): below 600 redo + collaborators fold with the phone layout; from 600 up the row yields in ONE order — add page → redo + collaborators — each only when fewer than MIN_TOOLS (5) tool slots would otherwise stay visible */
     for(const k of ['lib','side']){ if(need(8)<=availW) break; R[k]=false; }
     const slotsVisible=()=>(availW-need(0))/SLOTW;   /* L1 tool slots the middle pill can show without scrolling */
-    if(slotsVisible()<4.5&&R.av){R.av=false;}   /* 10/8 Tom: with the page sidebar open the collaborators fold before the tool pill drops below 4.5 slots */
-    if(slotsVisible()<4.5) R.addPage=false;           /* …then add page — only once fewer than 4.5 tools would stay visible; share never folds */   /* tools may scroll (Lite does); share / layers / recording / undo stay */
+    if(slotsVisible()<MIN_TOOLS) R.addPage=false;   /* 10/13 Tom: add page is the FIRST to go — as soon as fewer than 5 tool slots would stay visible (600–629 wide, or a docked page sidebar) */
+    if(slotsVisible()<MIN_TOOLS&&(R.av||R.redo)){R.av=false;R.redo=false;}   /* 10/13 Tom: then redo + collaborators together (the same pair that folds below 600) — only if even without add page fewer than 5 tool slots would remain (iPad 11″ portrait + sidebar keeps them at 5.05); share / layers / recording / undo / ⋯ never fold; the tool pill scrolls beyond that (Lite does) */
     if(!duo){ S.moreExtra=[...(R.right?[]:[['share','导出','share'],['layers','图层','layers']]),...(R.av?[]:[['collab','协作者','collab']]),...(R.right&&!R.layers?[['layers','图层','layers']]:[]),...(R.addPage?[]:[['addPage','添加页面','addpage']]),...((noStrip&&phone)?[['tabs','标签栏','tabmgr']]:[]),...(R.mic?[]:[['mic','录音','mic']])]; if(S.moreExtra.length) S.moreExtra.push('sep'); }
     const leftHTML=(noStrip&&!duo?`<div class="cap" style="${pill};color:${bandInk}">${R.lib?`<button class="tbtn" data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库" style="color:${bandInk}"><span class="chip">${svg('panel')}</span></button>`:''}<button class="tbtn" data-act="home" aria-label="主页" style="color:${bandInk}"><span class="chip">${svg('home')}</span></button></div>`:'')
       +((duo||!R.side)?'':`<div class="cap" style="${pill};color:${bandInk}">
@@ -5504,6 +5512,13 @@ document.getElementById('segVer').onclick=e=>{
 document.getElementById('btnEditor').onclick=e=>{S.editor=!S.editor;
   e.target.setAttribute('aria-pressed',S.editor);document.getElementById('editor').hidden=!S.editor;render();};
 sync();renderEditor();seedContent();render();
+
+/* 10/13: shareable state — ?S=<JSON merged into S>&bare=1[&zoom=1] renders that exact state without the control bar (used for the rule-review screenshots and for sending Tom a state link) */
+(()=>{try{const q=new URLSearchParams(location.search); const js=q.get('S'); const bare=q.get('bare'); if(!js&&!bare) return;
+  if(js){const o=JSON.parse(js); Object.assign(S,o); if(o.size&&!o.w){const sz=SIZES.find(x=>x[0]===o.size); if(sz){S.w=sz[2];S.h=sz[3];S.dev=sz[4];}}}
+  if(bare){document.body.classList.add('bare'); S.editor=false; S.zoom=q.get('zoom')||'1'; const ed=document.getElementById('editor'); if(ed) ed.hidden=true;}
+  syncState(); render(); document.body.classList.add('state-ready');
+}catch(e){console.warn('state query',e)}})();
 </script>
 </body></html>
 
