@@ -2045,7 +2045,7 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 /* collaborators pill: hug 82 of content in 88, 8 gap to the next button */
 .avatars{width:88px!important;margin:0 8px 0 4px!important}
 .avatars .avwrap{left:26px}
-.toolrow>.side.r .cap>.avatars+.tbtn{margin-left:0!important}
+.toolrow>.side.r .cap>.avatars+.tbtn{margin-left:-8px!important}
 
 /* ═══ 10/9 · round 24 ═══ */
 /* library: the top row holds the title, so the first section starts below it */
@@ -2094,7 +2094,7 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .device.android .shapestroke .epgrid .epc[aria-pressed="true"]{background:#F5F5F5;box-shadow:none}
 .shapestroke .st.sub{margin-top:18px;text-align:left;font-size:16px;color:#1e1b1b;font-weight:500}
 /* collaborators pill: 84 wide, 4 to the next button (Doc Concept 3214-80427) */
-.avatars{width:84px!important;margin:0 4px 0 4px!important}
+.avatars{width:82px!important;margin:0 0 0 4px!important}
 /* library sidebar: the tree pushes 废纸篓 / 发送反馈 down; the whole sidebar scrolls */
 .libbar{overflow-y:auto!important;scrollbar-width:none}
 .libbar .lb-scroll{flex:0 0 auto!important;min-height:auto!important;overflow:visible!important;margin-bottom:auto}
@@ -2105,6 +2105,32 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .libhome:not(.phone) .lh-sec.lh-ask{padding-top:52px!important}
 /* Android switch on = the same accent blue as iOS (Tom 10/10, overrides Peru's neutral emphasis) */
 .device.android .sw[aria-pressed="true"]{background:var(--accent)!important}
+
+/* ═══ 10/11 · round 26 ═══ */
+.vsheet .fontp>.pph,.vsheet .collab>.cb-t{display:none!important}
+.omsheet.omsub button,.tbmenu.ommenu button{display:flex!important;align-items:center;gap:12px;min-height:44px;height:44px;padding:0 12px;border-radius:12px;font-size:16px;line-height:24px;text-align:left;width:100%;box-sizing:border-box;color:inherit}
+.omsheet .tbic,.tbmenu .tbic{width:24px;height:24px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;font-size:16px}
+.omsheet .tbic svg,.tbmenu .tbic svg{width:20px!important;height:20px!important}
+.omsheet .sep,.tbmenu .sep{height:1px;background:rgba(30,27,27,.08);margin:4px 8px}
+.tbmenu.ommenu{min-width:200px!important;padding:8px!important}
+.device.android .lpanel{background:#FFFFFF!important}
+.secpill.sticky>.fadewrap{flex:1 1 auto;min-width:0;overflow:hidden}
+.secpill.sticky .cap.hscroll{display:flex;overflow:hidden!important;width:100%}
+.secpill.sticky .cwin{width:auto!important;flex:1 1 auto;min-width:88px;overflow-x:auto}
+.secpill.sticky .divider,.secpill.sticky .stkacc{flex:0 0 auto}
+.vsheet.colsheet .dsh-head{padding:0 calc(var(--colw,84px) - 8px) 0 0}
+.vsheet.colsheet .dsh-t{text-align:center}
+.vsheet.colsheet .vs-body{padding-right:calc(var(--colw,84px) - 8px)!important}
+.vsheet.colsheet .dsh-btns{right:calc(var(--colw,84px) / 2 - 26px)}   /* × centre = strip pill axis (strip padding 12 left · 24 right) */
+.vsheet .lpanel,.vsheet .lpanel .ls{max-height:none!important;overflow:visible!important}
+.duostrip{background:transparent!important}
+.duostrip .ds-av{display:flex;flex-direction:column;align-items:center;padding:4px 0}
+.duostrip .ds-av .av{width:32px;height:32px;font-size:13px;margin:0}
+.duostrip .ds-av .ds-wrap{display:flex;flex-direction:column;align-items:center;margin-top:-8px;padding:0 0 2px;border-radius:999px;background:rgba(24,24,27,.06)}
+.duostrip .ds-av .ds-wrap b{width:24px;height:20px;display:flex;align-items:center;justify-content:center;opacity:.75} .duostrip .ds-av .ds-wrap b svg{width:16px;height:16px}
+.libbar{overflow:hidden!important}
+.libbar .lb-scroll{flex:1 1 0!important;min-height:0!important;overflow-y:auto!important;display:flex;flex-direction:column}
+.libbar .lb-tail{margin-top:auto;padding-top:8px}
 </style>
 </head>
 <body>
@@ -2514,7 +2540,7 @@ const PRESET56=['#000000','#454545','#707070','#9A9A9A','#C0C0C0','#DEDEDE','#FF
 const PEN_RANGE={pen:[0.1,2],ballpen:[0.1,2],brush:[0.1,2],pencil:[0.1,2],highlighter:[1,7.7],tape:[1,15.4]};
 function mkPenCfg(){const o={};for(const k in PEN_DEF)o[k]={slots:[...PEN_DEF[k].slots],style:['solid','solid','solid'],sel:0,colors:[...PEN_DEF[k].colors],ci:0};return o;}
 function mkTapeCfg(){return {slots:[...TAPE_DEF.slots],sel:0,colors:[...TAPE_DEF.colors],ci:0};}
-const I18N={'拉动新增页面':'Pull to add page','释放以新增页面':'Release to add page','协作者':'Collaborators','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
+const I18N={'拉动新增页面':'Pull to add page','释放以新增页面':'Release to add page','协作者':'Collaborators','分享与导出':'Share and Export','正在查看':'CURRENTLY VIEWING','之前查看':'PREVIOUSLY VIEWED','聚焦':'Spotlight','跟随':'Follow','（你）':'(You)','7 小时前':'7h ago','12 小时前':'12h ago','2 天前':'2 days ago','15 天前':'15 days ago','2 个月前':'2 months ago','橡皮擦设置':'Eraser settings','文字样式':'Text style','列表':'Lists','加粗':'Bold','斜体':'Italic','下划线':'Underline','删除线':'Strikethrough','无序列表':'Bulleted list','数字列表':'Numbered list','任务列表':'Task list','默认模板':'Default template',
 '当前模板':'Current template','当前页之前':'Before this page','当前页之后':'After this page',
 '全部项目':'All items','在我的资料库中查看全部':'See all in My library','1 周前打开':'Opened 1w ago','2 天前打开':'Opened 2d ago',
 '页面导航':'Page nav','侧栏':'Sidebar','浮层 · Claude 式':'Floating · Claude-style',
@@ -2782,9 +2808,10 @@ const PEN_MM=[0.50,1.50,3.00];
 const mmss=t=>`${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
 /* "tapping the entry drops a recording card onto the canvas and starts recording
    immediately — no second tap needed" (11867:5166 · entry point) */
-function startRec(){
-  S.rec={state:'rec',t:0,name:'销售会议记录',pg:NB().page,tab:S.tab,x:8,y:6};
-  if(!S.objs.some(o=>o.kind==='rec'&&o.tab===S.tab)){const id=++OBJ_ID;S.objs.push({id,tab:S.tab,pg:NB().page,kind:'rec',x:8,y:6,w:40,h:8});}
+function startRec(fresh){
+  const n=S.objs.filter(o=>o.kind==='rec'&&o.tab===S.tab).length;
+  S.rec={state:'rec',t:0,name:n?`销售会议记录 ${n+1}`:'销售会议记录',pg:NB().page,tab:S.tab,x:8,y:6+n*10};
+  if(fresh||!S.objs.some(o=>o.kind==='rec'&&o.tab===S.tab&&!o.done)){const id=++OBJ_ID;S.objs.push({id,tab:S.tab,pg:NB().page,kind:'rec',x:8,y:6+n*10,w:40,h:8});}
   clearInterval(S._recTimer);
   S._recTimer=setInterval(()=>{
     if(!S.rec||S.rec.state!=='rec') return clearInterval(S._recTimer);
@@ -3340,7 +3367,7 @@ function bindKeyboard(dev){
     const under=((c.top+72)-r.top)/sy; if(under>0) cv.scrollTop-=under;};
   const show=on=>{S.kbOpen=on; kb.hidden=!on; if(on) requestAnimationFrame(reveal);};
   cv.addEventListener('focusin',e=>{if(e.target.closest('.txtin')) show(true);});
-  cv.addEventListener('pointerup',e=>{if(e.target.closest('.txtin')) setTimeout(()=>show(true),0);});
+  cv.addEventListener('pointerup',e=>{const t=e.target.closest('.txtin'); if(t&&document.activeElement===t) setTimeout(()=>show(true),0);});
   cv.addEventListener('pointerdown',e=>{if(!e.target.closest('.txtin')) show(false);});
   cv.addEventListener('focusout',()=>{setTimeout(()=>{ if(S._rendering) return; const a=document.activeElement;if(!(a&&a.closest&&a.closest('.txtin'))) show(false);},0);});
   kb.addEventListener('pointerdown',e=>{
@@ -3417,7 +3444,7 @@ function libraryView(c){const {W,H,phone,wide,top=0,overlay=false,right=0}=c; /*
     :`<div class="lh-topbar">${docked?'':sideBtn}<span class="lh-title always"><span class="t-ask">你在做什么？</span><span class="t-home">主页</span></span><span class="lh-sp"></span>${docked?'':searchBtn}${newBtn}</div>`;   /* docked sidebar already carries search */
   const side=docked?`<div class="lh-side">${libSidebar()}</div>`:(S.lib?libSidebar():''); /* pulled out from the left edge on narrow widths */
   const menu=S.libNew?`<div class="scrim" data-act="libnew"></div>${(()=>{const items=LIB_CREATE.map(([k,l])=>`<button data-libcreate="${k}"><img class="lh-mart" src="${window.ASSET[`create-${k}.svg`]||`create-${k}.svg`}" alt=""><span class="col"><span>${l}</span></span></button>`).join('');
-      return phone?`<div class="vsheet ${S.dev==='android'?'android':'ios'} lh-newsheet" style="${panelStyle()}"><div class="vs-hdl"></div><div class="vs-head"><button class="vs-x" data-act="libnew" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">新建</div><span class="vs-sp"></span></div><div class="vs-body"><div class="menu lh-newmenu static">${items}</div></div></div>`
+      return (phone&&S._duoCol)?colSheet(`<div class="menu lh-newmenu static">${items}</div>`,{title:'新建'}).replace(/data-act="closesheet"/g,'data-act="libnew"'):phone?`<div class="vsheet ${S.dev==='android'?'android':'ios'} lh-newsheet" style="${panelStyle()}"><div class="vs-hdl"></div><div class="vs-head"><button class="vs-x" data-act="libnew" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">新建</div><span class="vs-sp"></span></div><div class="vs-body"><div class="menu lh-newmenu static">${items}</div></div></div>`
         :`<div class="menu lh-newmenu" data-anchor='[data-newbtn]' style="${panelStyle()};right:24px;top:72px;color:#1e1b1b">${items}</div>`;})()}`:'';
   return `<div class="libhome${docked?' wide':''}${phone?' phone':''}${overlay?' overlay':''}${c.duoPort?' duoport':''}${S.libCondensed?' condensed':''}" style="left:0;top:${top}px;width:${W}px;height:${H}px">
     ${side}
@@ -3453,8 +3480,8 @@ function libSidebar(){
         h+=tog('fav','lbFav','收藏');
         if(T.fav){ h+=tog('personal','lbFolderBlue','Personal',true); if(T.personal){ h+=doc('lbNotebook','Group Project — Heat Engines').replace('lb-row','lb-row sub2'); } h+=doc('lbNotebook','Physics — Lecture Notes')+doc('lbNotebook','Calculus II')+doc('lbFile','Design Journal')+doc('lbFileText','Essay Draft'); }
         return h; })()}
+    <div class="lb-tail">${row('lbTrash','废纸篓')}${row('lbFeedback','发送反馈')}</div>
     </div>
-    ${row('lbTrash','废纸篓')}${row('lbFeedback','发送反馈')}
     <div class="lb-div"></div>
     <div class="lb-user"><i>VF</i><span>Viola</span><button aria-label="设置">${svg('lbGear')}</button></div>
   </div>`;
@@ -3510,8 +3537,8 @@ function collabPanel(pos){
 }
 /* v1 phone: every popover becomes a bottom sheet below 600 (phone tier) — iOS system sheet on Apple, Peru sheet on Android */
 const sheetTitle=()=>{const x=STATES.find(([v])=>v===S.st);return x?x[1]:'';};
-const ownsTitle=html=>/class="(cb-t|rt|tch|wlab)"/.test(html);
-const panelTitle=html=>{ const m=html.match(/class="pph"[\s\S]*?<h4[^>]*>([^<]*)<\/h4>/)||html.match(/<div class="st">([^<]*)<\/div>/)||html.match(/<div class="ph">([^<]*)<\/div>/); return m?m[1]:''; };   /* 10/5 Tom: the panel's own title moves up into the × row, so it never scrolls */
+const ownsTitle=html=>/class="(rt|tch|wlab)"/.test(html);
+const panelTitle=html=>{ const m=html.match(/class="pph"[\s\S]*?<h4[^>]*>([^<]*)<\/h4>/)||html.match(/<div class="st">([^<]*)<\/div>/)||html.match(/<div class="ph">([^<]*)<\/div>/)||html.match(/<div class="cb-t">([^<]*)<\/div>/); return m?m[1]:''; };   /* 10/5 Tom: the panel's own title moves up into the × row, so it never scrolls */
 /* Peru Sheet·Touch: the CONTAINER is the platform's (iOS system sheet / Android drawer), the CONTENT is one shared layout:
    round close button left, centred title, 64pt sides so the title stays centred */
 /* Rename → Peru AlertDialog (320 / radius 36) with one text field; Change template → Sheet · Touch Form (560 centred) on tablets, bottom sheet on phones, Duo sheet on Duo */
@@ -3620,7 +3647,7 @@ function dropdown(kind,pos){ const dropdownKind=kind;
     return `<button class="${ic==='trash'?'danger':''}${desc?' two':''}" ${attr}>${ic==='tabs'?TABS_ICON:svg(ic)}<span class="col"><span>${label}</span>${desc?`<span class="desc">${desc}</span>`:''}</span>${trail}</button>`; };
   /* 规则文档: pure-list menus (export …) are the SYSTEM menu on iOS (UIMenu — drawn here as a look-alike) and Peru DropdownMenu Touch on Android; the "more" panel keeps switches + descriptions, so it stays a self-drawn Peru Popover on both platforms with system switches inside */
   const sysMenu=false;   /* 10/1 Tom: export / more menus use the same custom dropdown on both platforms (glass on iOS) */ const tag=S.anno?`<div class="lab sys" style="position:absolute;right:8px;top:-22px">${sysMenu?'系统 UIMenu（模拟）':kind==='more'?'自绘面板 · Peru Popover':'Peru DropdownMenu Touch'}</div>`:'';
-  return `<div class="menu" ${kind==='more'?'data-keeptop="1"':''} data-anchor='[data-tool="${kind==='export'?'share':kind==='addpage'?'addPage':'more'}"]' style="${panelStyle()};${pos};color:#1e1b1b;${S.anno?'overflow:visible;':''}">${tag}${head}
+  return `<div class="menu" ${kind==='more'?'data-keeptop="1"':''} data-anchor='[data-tool="${kind==='export'?'share':kind==='addpage'?'addPage':'more'}"]' style="${panelStyle()};${pos};color:#1e1b1b;${S.anno?'overflow:visible;':''}">${tag}${kind==='export'?'<div class="mh pmh"><div class="t2">分享与导出</div></div>':head}
     ${items.map(row).join('')}</div>`;
 }
 /* the OS photo picker: a centred dialog where there is room, a sheet on a phone */
@@ -3804,7 +3831,7 @@ function keyboard(){
 }
 
 /* ══════════════════════ render ══════════════════════ */
-function render(){ S._rendering=true;
+function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false;   /* 10/11 Tom: every open of the pen panel starts on page 1 */
   const W=S.w,H=S.h,t=S.th;
   const v1=S.version==='v1';               /* 第一版: Lite's structure on every width */
   L1=v1?L1_V1:L1_FUTURE;
@@ -3905,8 +3932,8 @@ function render(){ S._rendering=true;
   if(!noStrip){
   inner+=`<div class="tabstrip" style="top:${navH}px;right:${duo?(t.duoBand===false?52:DUO_STRIP)+16:(duoPort?DUO_STATUS_W-24:0)}px;height:${tabH+1}px;color:${navInk}">   ${''/* 9/29: +16 on Duo so the “+” never touches the fold-column status region */}   ${''/* 9/29: strip is 1pt taller and the selected tab 45 tall, so it overlaps the surface below by 1pt — kills the anti-aliasing hairline between tab and canvas (Duo mock reference) */}
     <div class="fixed" style="${duo?'padding-left:12px':''}">
-      ${(phone&&!duo)?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
-      ${false?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
+      ${(phone||duo)?'':`<button class="tbtn" data-act="library" aria-pressed="${S.lib}" aria-label="资料库" style="color:${navSub}"><span class="chip">${svg('panel')}</span></button>`}
+      ${duo?'':`<button class="tbtn" data-act="home" aria-label="主页" style="color:${navSub}"><span class="chip">${svg('home')}</span></button>`}</div>
     <div class="scroller" id="tabscroll">
       ${S.tabs.map((tb,i)=>{const on=i===S.tab;
         return (i&&!on&&i-1!==S.tab?`<span class="tsep" style="color:${navInk}"></span>`:'')+
@@ -3927,14 +3954,14 @@ function render(){ S._rendering=true;
     const chip=(attr,ic)=>`<button class="ds-chip flat" ${attr}>${svg(ic)}</button>`;
     const group=inner=>inner?`<div class="ds-group" style="${pill}">${inner}</div>`:'';
     const showConfirm=!v1&&compact&&ios&&(SHEET_STATES.includes(active)||st==='pen2'||st==='pentypes');
-    const groups=group(chip('data-act="home" aria-label="主页"','home')+chip(`data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="${on('more')}"`,'dotsV'))
+    const groups=group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('data-act="home" aria-label="主页"','home')+chip(`data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="${on('more')}"`,'dotsV'))
       +((!v1&&showConfirm)?`<button class="ds-ai confirm" data-go="l1" aria-label="完成">${svg('check')}</button>`:'') /* 9/28: no separate page-sidebar entry — the dock pill is the entry */
-      +(outerLand?'':group((v1&&!(noStrip&&outerPort)?`<button class="ds-av" data-tool="collab" aria-label="协作者"><span class="ds-avs"><i class="av av-sl">SL</i><i class="av av-dr">DR</i></span><b>${svg('chevDown')}</b></button>`:'')
+      +(outerLand?'':group((v1&&!(noStrip&&outerPort)?`<button class="ds-av" data-tool="collab" aria-label="协作者"><i class="av av-sl">SL</i><span class="ds-wrap"><i class="av av-dr">DR</i><b>${svg('chevDown')}</b></span></button>`:'')
           +chip(`data-tool="share" aria-pressed="${st==='export'||st==='exportmenu'||st==='sysshare'}" aria-label="导出" style="${on('export')}"`,'share')
           +chip(`data-tool="layers" aria-pressed="${st==='layers'}" aria-label="图层" style="${on('layers')}"`,'layers')));
     /* rule: when the column is too short for a third group, its actions live in the ⋯ menu */
     S.moreExtra=outerLand?[...(noStrip?[['tabs','标签','tabmgr']]:[]),['share','导出','share'],['layers','图层','layers'],...(v1?[['collab','协作者','collab']]:[]),'sep']:[];
-    inner+=`<div class="duostrip${outerLand?' tight':''}" style="background:${inLib?'#FFFFFF':(dBand?dBg:'transparent')};width:${DUO_STRIP}px;color:${dInk}">
+    inner+=`<div class="duostrip${outerLand?' tight':''}" style="background:transparent;width:${DUO_STRIP}px;color:${dInk}">
       ${outerLand?'':`<div class="ds-statuscap" style="--capbg:rgba(255,255,255,${dBand?'.10':'.22'})">${outerPort?'<div class="ds-camwrap"><div class="ds-cam"></div></div>':''}${duoStatus()}</div>`}
       ${groups}
       <div class="ds-grow"></div>
@@ -4813,7 +4840,7 @@ function bindCanvas(root){
     if(S.selSet&&S.selSet.pg===pg&&x>=S.selSet.box[0]-1&&x<=S.selSet.box[2]+1&&y>=S.selSet.box[1]-1&&y<=S.selSet.box[3]+1){
       ev.preventDefault(); drag={x,y,kind:'sel'}; grab(cv,ev); return;}
 
-    if(ev.target.closest('.txtin')){ return; }   /* typing, not a canvas gesture */
+    { const tx=ev.target.closest('.txtin'); if(tx){ const tid=+tx.dataset.txt; if(document.activeElement!==tx&&S.sel!==tid){ ev.preventDefault(); const o=S.objs.find(v=>v.id===tid); if(o){ S.sel=tid; S.selSet={pg:o.pg,strokes:[],objs:[tid],box:objBox(o)}; render(); } } return; } }   /* 10/11 Tom: first tap selects the text box (object menu), the second tap enters editing */
     const objEl=ev.target.closest('[data-obj]');
     /* the recording card is a control, not content: it takes the tap in every tool mode */
     if(objEl&&(objEl.classList.contains('recobj')||objEl.dataset.ruler||(mode!=='ink'&&mode!=='erase'))){
@@ -5047,7 +5074,7 @@ function bind(root,compact){
   /* eyedropper: while picking, the loupe follows the pointer and samples the element underneath (stroke → fill → background) */
   root.addEventListener('pointermove',e=>{ if(!S.picking) return; const lp=root.querySelector('.loupe'); if(!lp) return; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1; lp.style.left=((e.clientX-R0.left)/zf-44)+'px'; lp.style.top=((e.clientY-R0.top)/zf-44)+'px'; const el=document.elementFromPoint(e.clientX,e.clientY); if(!el) return; const st=el.getAttribute&&el.getAttribute('stroke'), fl=el.getAttribute&&el.getAttribute('fill'); let c=(st&&st!=='none'&&st!=='currentColor')?st:((fl&&fl!=='none'&&fl!=='currentColor')?fl:getComputedStyle(el).backgroundColor); if(c&&c!=='rgba(0, 0, 0, 0)'&&c!=='transparent'){ S._pickColor=toHexColor(c)||c; lp.style.setProperty('--pick',S._pickColor); } },true);
   root.addEventListener('pointerdown',e=>{ if(!S.picking) return; const lp=root.querySelector('.loupe'); if(!lp) return; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1; lp.style.left=((e.clientX-R0.left)/zf-44)+'px'; lp.style.top=((e.clientY-R0.top)/zf-44)+'px'; const el=document.elementFromPoint(e.clientX,e.clientY); if(!el) return; const st=el.getAttribute&&el.getAttribute('stroke'), fl=el.getAttribute&&el.getAttribute('fill'); let c=(st&&st!=='none'&&st!=='currentColor')?st:((fl&&fl!=='none'&&fl!=='currentColor')?fl:getComputedStyle(el).backgroundColor); if(c&&c!=='rgba(0, 0, 0, 0)'&&c!=='transparent'){ S._pickColor=toHexColor(c)||c; lp.style.setProperty('--pick',S._pickColor); } },true);
-  root.addEventListener('pointerup',e=>{ if(!S.picking) return; const c=S._pickColor; S.picking=false; if(c){ if(S.st==='stickyColor'){S.stickyCustom=c;S.sticky=-1;} else if(S.st==='tapeColor'){S.tapeCfg.colors[S.tapeCfg.ci]=c;} else if(S.st==='colorpop'||S.st==='penset'){const cfg=S.penCfg[S.pen]; if(cfg&&cfg.colors) cfg.colors[cfg.ci]=c;} } setTimeout(()=>render(),0); },true);
+  root.addEventListener('pointerup',e=>{ if(!S.picking) return; const c=S._pickColor; S.picking=false; if(c){ const hex=(toHexColor(c)||c).toUpperCase(); if(S.st==='stickyColor'){S.stickyCustom=hex;S.sticky=-1;} else if(S.st==='tapeColor'){S.tapeCfg.colors[S.tapeCfg.ci]=hex;} else if(S.st==='textColor'){S.tbColor=hex; const el=root.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=hex;} else if(S.st==='shapeColor'){S.shapeColor=hex;} else {const cfg=S.penCfg[S.pen]; if(cfg&&cfg.colors) cfg.colors[cfg.ci]=hex;} const [h,sa,l]=hexToHsl(hex); S.cpHue=h; S.cpSat=sa; S.cpBri=l; S.cpCustom=true; }   /* 极速版 eyedropper-picked: the sampled colour becomes the draft on the 选择颜色 page, applied live; 添加到预设 stores it */ setTimeout(()=>render(),0); },true);
   /* Rodney's sticky drag (10051:263687): drag a colour swatch ≥8pt → an 88×88 ghost follows the finger; drop on a page → note placed there; drop off-page → colour armed */
   root.addEventListener('pointerdown',ev=>{ const sw=ev.target.closest('[data-sticky]'); if(!sw||ev.button>0) return; const idx=+sw.dataset.sticky, color=STICKY[idx]; const x0=ev.clientX,y0=ev.clientY; let ghost=null; const R0=root.getBoundingClientRect(), zf=(R0.width/S.w)||1;
     const mv=e=>{ if(!ghost&&Math.hypot(e.clientX-x0,e.clientY-y0)<8) return; if(!ghost){ ghost=document.createElement('div'); ghost.className='stkghost'; ghost.style.background=color; root.appendChild(ghost); } ghost.style.left=((e.clientX-R0.left)/zf-44)+'px'; ghost.style.top=((e.clientY-R0.top)/zf-44)+'px'; };
@@ -5133,8 +5160,8 @@ function bind(root,compact){
     if(d.cpadd&&!['stickyColor'].includes(S.st)){ const kind=S.st==='textColor'?'text':S.st==='shapeColor'?'shape':S.st==='tapeColor'?'tape':'pen'; S.userPresets=S.userPresets||{}; const up=S.userPresets[kind]||(S.userPresets[kind]=[]); const hex=d.cpadd.toUpperCase(); if(!up.includes(hex)&&!PRESET56.includes(hex)&&!(kind==='tape'&&TAPE_PALETTE.includes(hex))) up.push(hex);
       if(kind==='text'){S.tbColor=hex; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=hex;} else if(kind==='shape') S.shapeColor=hex; else if(kind==='tape') S.tapeCfg.colors[S.tapeCfg.ci]=hex; else { const cfg=S.penCfg[S.pen]; if(cfg&&cfg.colors) cfg.colors[cfg.ci]=hex; }
       S.cpCustom=false; return render(); }   /* 极速版: 添加到预设 → back to the preset page, the new swatch carries the check */
-    if(d.preset&&S.st==='textColor'){S.tbColor=d.preset; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=d.preset; S.st='textbox';syncState();return render();}
-    if(d.preset&&S.st==='shapeColor'){S.shapeColor=d.preset;S.st='shapes';syncState();return render();}
+    if(d.preset&&S.st==='textColor'){S.tbColor=d.preset; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.color=d.preset; return render();}
+    if(d.preset&&S.st==='shapeColor'){S.shapeColor=d.preset;return render();}
     if(d.omtb){S.omMenu=S.omMenu===d.omtb?null:d.omtb;S.omMore=false;S.omSub=null;return render();}
     if(d.omsub){S.omSub=S.omSub===d.omsub?null:d.omsub;return render();}
     if(d.font){S.tbFont=d.font; S.tbFam=d.fam; const dev=b.closest('.device'); const el=dev&&dev.querySelector(`.txtin[data-txt="${S.sel}"]`); if(el) el.style.fontFamily=d.fam||''; if(S.omMenu) S.omMenu=null; else if(S.st==='tbFont'){S.st='textbox';syncState();} return render();}
@@ -5145,7 +5172,7 @@ function bind(root,compact){
     if(d.act==='shapeColor'){S.st=S.st==='shapeColor'?'shapes':'shapeColor';syncState();return render();}
     if(d.act==='padv'){S.penAdv=true;return render();} if(d.act==='padvback'){S.penAdv=false;return render();}
     if(d.padv){S.penAdvVal=S.penAdvVal||{}; const a=S.penAdvVal[S.pen]||(S.penAdvVal[S.pen]={}); a[d.padv]=!a[d.padv]; return render();}
-    if(d.preset){const tape=S.st==='tapeColor';const cfg=tape?S.tapeCfg:S.penCfg[S.pen];cfg.colors[cfg.ci]=d.preset;S.st=tape?'tape':'writing';syncState();return render();}
+    if(d.preset){const tape=S.st==='tapeColor';const cfg=tape?S.tapeCfg:S.penCfg[S.pen];cfg.colors[cfg.ci]=d.preset;return render();}   /* 10/11 Tom: the panel stays until the user taps outside */
     if(d.mmslider!==undefined){const r=b.getBoundingClientRect();const tape=d.mmslider==='tape';const cfg=tape?S.tapeCfg:S.penCfg[S.pen];
       const [lo,hi]=PEN_RANGE[tape?'tape':S.pen];const v=lo+(hi-lo)*Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
       cfg.slots[cfg.sel]=Math.round(v*20)/20;return render();}
@@ -5187,10 +5214,10 @@ function bind(root,compact){
     if(d.act==='om-color'){S.st='colorpop';syncState();return render();}
     if(d.act==='om-resize'){return;}
     if(d.act==='recopen'){S.recSel=true;S.st='mic';syncState();return render();}
-    if(d.act==='stoprec'||d.act==='pauserec'){stopRec();syncState();return render();}
+    if(d.act==='stoprec'||d.act==='pauserec'){stopRec();S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}   /* CN 9927-11279: 停止 → popover closes, tool returns to default; the card stays as the player */
     if(d.act==='playrec'){return;}
     if(d.act==='locaterec'){if(S.rec){NB().page=S.rec.pg;scrollToPage();}S.st=compact?'l1':'writing';syncState();return render();}
-    if(d.act==='newrec'){stopRec();startRec();return render();}
+    if(d.act==='newrec'){stopRec(); S.objs.filter(o=>o.kind==='rec'&&o.tab===S.tab).forEach(o=>o.done=true); startRec(true); return render();}   /* CN 9927-11279: 新建录音 = stop the previous one (its card stays), drop a fresh card and start */
     if(d.act==='closerec'){S.st=compact?'l1':'writing';syncState();return render();}
     if(d.act==='pgjump'){S.sidebar=!S.sidebar;return render();}   /* the dock is the page-navigation entry */
     if(d.act&&d.act.startsWith('pm-')){const i=S.pageMenu; S.pageMenu=null;
