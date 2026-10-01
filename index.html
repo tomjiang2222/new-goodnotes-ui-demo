@@ -2072,6 +2072,39 @@ select.sel{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid v
 .cp-prev{width:72px;height:48px;border-radius:14px;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.12);flex:0 0 auto}
 /* while the eyedropper is live the picker steps aside (极速版) */
 .device:has(.loupe) .pop.presetp,.device:has(.loupe) .vsheet:has(.presetp){visibility:hidden}
+
+/* ═══ 10/10 · round 25 ═══ */
+/* colour picker custom page: add · Hex · preview on one row (极速版) */
+.cp-row{display:flex;align-items:center;gap:12px;width:100%;flex-wrap:nowrap}
+.cp-row .cp-hexin{flex:1 1 0!important;min-width:0!important}
+.cp-row .cp-hexin input{flex:1 1 0;width:0;min-width:0}
+.cp-row .cp-prev{flex:0 0 72px!important}
+/* eyedropper loupe = 极速版 EyedropperOverlay: 140 outer, 112 content, 7×7 cells, 1pt grid, ring in the sampled colour */
+.loupe{width:140px!important;height:140px!important;border:14px solid var(--pick,#fff)!important;border-radius:999px!important;box-sizing:border-box;background:var(--pick,#fff)!important;box-shadow:0 0 0 1px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.35),0 10px 28px rgba(0,0,0,.25)!important;position:absolute;overflow:hidden}
+.loupe::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.14) 0 1px,transparent 1px) 0 0/16px 16px,linear-gradient(0deg,rgba(0,0,0,.14) 0 1px,transparent 1px) 0 0/16px 16px;opacity:.9}
+.loupe::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.6);box-sizing:border-box}
+/* keyboard accessory centred */
+.kbtools{justify-content:center}
+/* text object menu: divider after the font chip (CN 10805-7237) */
+.objmenu .omg:first-child .chipctl.font{margin-right:8px!important}
+/* shape stroke endpoints: two columns (start | end) × three rows, selected cell white (Lite) */
+.shapestroke .epgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:10px}
+.shapestroke .epgrid .epc{width:auto;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:none}
+.shapestroke .epgrid .epc[aria-pressed="true"]{background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.06),0 1px 3px rgba(16,24,40,.08)}
+.device.android .shapestroke .epgrid .epc[aria-pressed="true"]{background:#F5F5F5;box-shadow:none}
+.shapestroke .st.sub{margin-top:18px;text-align:left;font-size:16px;color:#1e1b1b;font-weight:500}
+/* collaborators pill: 84 wide, 4 to the next button (Doc Concept 3214-80427) */
+.avatars{width:84px!important;margin:0 4px 0 4px!important}
+/* library sidebar: the tree pushes 废纸篓 / 发送反馈 down; the whole sidebar scrolls */
+.libbar{overflow-y:auto!important;scrollbar-width:none}
+.libbar .lb-scroll{flex:0 0 auto!important;min-height:auto!important;overflow:visible!important;margin-bottom:auto}
+/* sheets: a sub-page's own back button hides (the head carries it) */
+.vsheet .presetp.custom>.pph .tbtn[data-act="cpback"],.vsheet .pop.penset.padv>.pph{display:none!important}
+/* phone library: the scroller already clears the top row */
+.libhome.phone .lh-sec.lh-ask{padding-top:8px!important}
+.libhome:not(.phone) .lh-sec.lh-ask{padding-top:52px!important}
+/* Android switch on = the same accent blue as iOS (Tom 10/10, overrides Peru's neutral emphasis) */
+.device.android .sw[aria-pressed="true"]{background:var(--accent)!important}
 </style>
 </head>
 <body>
@@ -2549,11 +2582,11 @@ const S={version:'v1',lang:'zh',lib:false,docMode:{},size:'l11',w:1194,h:834,dev
 /* ══ materials ══
    The rule that makes glass work: a toolbar surface paints exactly ONE layer.
    Nothing opaque is stacked beneath it — every capsule goes through surfStyle(). */
-function surfStyle(sec){const t=S.th,a=t.glassAlpha/100,b=t.glassBlur,base=rgbOf(t.pillTint||'#FFFFFF'),C=(sec?[235,235,238]:base).join(','); /* L2 tint = #EBEBEE under the glass so iOS reads the same L1/L2 difference as Android's white / #F5F5F5 */   /* pillTint: the floating chrome's own colour (方向三 warm cream) */
+function surfStyle(sec){const t=S.th,a=t.glassAlpha/100,b=t.glassBlur,base=rgbOf(t.pillTint||'#FFFFFF'),C=(sec?[216,216,222]:base).join(','); /* L2 tint = #EBEBEE under the glass so iOS reads the same L1/L2 difference as Android's white / #F5F5F5 */   /* pillTint: the floating chrome's own colour (方向三 warm cream) */
   if(t.material==='ios'){
     /* Peru Glass · Style=Clear: one flat tint over content, no gradient glare and no inner shadow;
        the light hairline is skin/border/edge, standing in for the specular rim */
-    const ga=Math.max(.06,a*0.30), bl=Math.round(b*1.9+8), dark=INK==='#FFFFFF';
+    const ga=Math.max(.06,a*0.30)+(sec?0.16:0), bl=Math.round(b*1.9+8), dark=INK==='#FFFFFF';   /* 10/10 Tom: L2 keeps L1's opacity and adds a greyer ground, like Android */
     const top=(dark?ga*0.9:ga+0.22).toFixed(3), bot=(dark?ga*0.4:ga).toFixed(3);
     return `background:linear-gradient(165deg,rgba(${C},${top}) 0%,rgba(${C},${bot}) 55%,rgba(${C},${(dark?ga*0.6:ga+0.08).toFixed(3)}) 100%);`
       +`backdrop-filter:blur(${bl}px) saturate(${dark?170:190}%) brightness(${dark?1.02:1.06});`
@@ -2642,9 +2675,9 @@ const EP_ICON={none:()=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentCol
 function shapeStrokePop(pos){ const w=S.shapeW==null?40:S.shapeW, ls=S.shapeLine||'solid'; const ep=side=>['none','arrow','filledArrow'].map(k=>`<button class="epc" data-ep="${side}:${k}" aria-pressed="${(S[side==='start'?'shapeArrowS':'shapeArrowE']||'none')===k}" aria-label="${k}">${EP_ICON[k](side)}</button>`).join('');
   return `<div class="spanel wcard shapestroke" data-anchor='[data-act="shapeStroke"]' style="${panelStyle()};${pos};color:#1e1b1b;width:320px"><div class="st">线条样式</div>
     <div class="lstiles">${[['solid','实线','strokeSolid'],['dashed','虚线','strokeDashed'],['dotted','点线','strokeDotted']].map(([k,l,ic])=>`<button class="lst${ls===k?' on':''}" data-shapeline="${k}">${svg(ic)}<span>${l}</span></button>`).join('')}</div>
-    <div class="wlab"><span>线条粗细</span><em>${(0.5+w/100*7.5).toFixed(1)}pt</em></div>
+    <div class="wlab"><span>粗细</span><em>${(0.3+w/100*2.7).toFixed(2)}mm</em></div>
     <div class="wtrack" data-shapew="1"><svg viewBox="0 0 100 14" preserveAspectRatio="none"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="#E2E2E4"/></svg><svg class="fillsvg" viewBox="0 0 100 14" preserveAspectRatio="none" style="clip-path:inset(0 ${100-w}% 0 0)"><polygon points="0,7.4 100,1.2 100,12.8 0,6.6" fill="var(--accent)"/></svg><b style="left:${w}%;--p:${w}%"></b></div>
-    <div class="st sub">端点</div><div class="eprow"><span class="eplab">起点</span><div class="epgrp">${ep('start')}</div></div><div class="eprow"><span class="eplab">终点</span><div class="epgrp">${ep('end')}</div></div></div>`; }
+    <div class="st sub">连接线端点</div><div class="epgrid">${['none','arrow','filledArrow'].map(k=>['start','end'].map(side=>`<button class="epc" data-ep="${side}:${k}" aria-pressed="${(S[side==='start'?'shapeArrowS':'shapeArrowE']||'none')===k}" aria-label="${k}">${EP_ICON[k](side)}</button>`).join('')).join('')}</div></div>`; }
 function strokeWidthBtn(){
   return `<button class="wbtn" data-act="penWidth" aria-pressed="true" aria-label="笔头粗细" style="color:${activeInk(true)}"><span class="wr" style="${activeChip(true)}">${strokeWidthIcon(S.weight)}</span></button>`;}
 /* tape width — dark bars, rounded-square halo (1326:14513) */
@@ -3123,7 +3156,7 @@ function objMenu(){
   let right='';
   if(kind==='ruler') return '';   /* the ruler is a tool, not an object: long-press for its menu */
   if(kind==='text'){ const narrow=S.w<600, sz=S.tbSize||24, fn=S.tbFont||(S.tbSerif?'Source Serif':'PingFang-SC'); const chip=(k,lab,inner)=>`<button class="chipctl omchip ${k}" data-omtb="${k}" aria-pressed="${S.omMenu===k}" aria-label="${lab}">${inner}<i class="cv">${svg('chevDown')}</i></button>`;
-    left=`<button class="omc" data-act="om-color" aria-label="颜色"><span class="omsw" style="background:${S.tbColor||'#111213'}">${svg('chevDown')}</span></button>`+chip('size','字号',sz)+(narrow?'':chip('font','字体',`<span>${fn}</span>`));
+    left=`<button class="omc" data-act="om-color" aria-label="颜色"><span class="omsw" style="background:${S.tbColor||'#111213'}">${svg('chevDown')}</span></button>`+chip('size','字号',sz)+(narrow?'':chip('font','字体',`<span>${fn}</span>`));   /* CN 10805-7237: colour · size · font | actions */
     right=(narrow?'':cell('om-dup','dup','复制')+cell('om-cut','cut','剪切'))+chip('style','文字样式','<b>B</b><i class="it">I</i>')+(narrow?'':chip('align','对齐与缩进',svg('alignLeft'))+chip('list','列表',svg('listBullet'))+cell('om-link','link','链接'))+cell('om-del','trash','删除',' del')+`<button class="omc${S.omMore?' on':''}" data-act="om-more" aria-label="更多">${svg('more')}</button>`;
   } else {
     if(kind==='shape') right+=cell('om-edit',OM_BEZIER,'编辑形状');
@@ -3535,12 +3568,13 @@ function pasteClip(pg,x,y){ if(!S.clip) return; const all=[...S.clip.strokes.fla
   const xs=[...S.ink.filter(k=>ns.includes(k.id)).flatMap(k=>k.pts.map(p=>p[0])),...S.objs.filter(o=>no.includes(o.id)).flatMap(o=>[o.x,o.x+o.w])];
   const ys=[...S.ink.filter(k=>ns.includes(k.id)).flatMap(k=>k.pts.map(p=>p[1])),...S.objs.filter(o=>no.includes(o.id)).flatMap(o=>[o.y,o.y+(o.h||o.w)])];
   S.selSet={pg,strokes:ns,objs:no,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]}; S.sel=no[0]||null; }
-function colSheet(html,opts={}){ const t=opts.title||panelTitle(html)||(ownsTitle(html)?'':sheetTitle()); const trail=opts.trail||'';
-  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}" style="--colw:${DUO_STRIP}px"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="dsh-head"><div class="dsh-t">${t}</div></div><div class="dsh-btns"><button class="dsh-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button>${trail}</div><div class="vs-body">${html}</div></div></div>`; }   /* 10/9 Tom · iOS 27 12886-17629: the card spans the width; the CONTENT keeps out of the side strip (safe area); × and the trailing action stand on the strip's axis */
+function colSheet(html,opts={}){ const t=opts.title||panelTitle(html)||(ownsTitle(html)?'':sheetTitle()); const trail=opts.trail||''; const bk=sheetBack(html);
+  return `<div class="vsback" data-act="closesheet"></div><div class="vsheet duo colsheet${opts.land?' land':''}${opts.full?' full':''}" style="--colw:${DUO_STRIP}px"><div class="dsh-card ${S.dev==='android'?'android':'ios'}"><div class="dsh-head"><div class="dsh-t">${t}</div></div><div class="dsh-btns"><button class="dsh-x" data-act="${bk||'closesheet'}" aria-label="${bk?'返回':'关闭'}"><i>${svg(bk?'chevLeft':'xmark')}</i></button>${trail}</div><div class="vs-body">${html}</div></div></div>`; }   /* 10/9 Tom · iOS 27 12886-17629: the card spans the width; the CONTENT keeps out of the side strip (safe area); × and the trailing action stand on the strip's axis */
+const sheetBack=html=>/data-act="padvback"/.test(html)?'padvback':/data-act="cpback"/.test(html)?'cpback':null;   /* 10/10 Tom: × and back never coexist — a sub-page's back takes the × slot */
 function sheetWrap(html){ if(!html) return ''; if(S._duoCol) return colSheet(html,{land:S._duoLand});
-  const t=panelTitle(html)||(ownsTitle(html)?'':sheetTitle());
+  const t=panelTitle(html)||(ownsTitle(html)?'':sheetTitle()); const bk=sheetBack(html);
   return `<div class="vsback" data-act="closesheet"></div><div class="vsheet ${S.dev==='android'?'android':'ios'}" style="${panelStyle()}"><div class="vs-hdl"></div>
-    <div class="vs-head"><button class="vs-x" data-act="closesheet" aria-label="关闭"><i>${svg('xmark')}</i></button><div class="vs-t">${t}</div><span class="vs-sp"></span></div>
+    <div class="vs-head"><button class="vs-x" data-act="${bk||'closesheet'}" aria-label="${bk?'返回':'关闭'}"><i>${svg(bk?'chevLeft':'xmark')}</i></button><div class="vs-t">${t}</div><span class="vs-sp"></span></div>
     <div class="vs-body">${html}</div></div>`;}
 function duoSheetWrap(html,W,H,land,opts={}){ if(!html) return ''; return colSheet(html,{title:opts.title,full:opts.full,land,trail:opts.trail}); }
 function layersPanel(pos){
@@ -3672,7 +3706,7 @@ function photoPickerAndroid(){
       <div class="gp-foot"><button class="gp-add" data-act="addpicked">添加${S.picked.length?` (${S.picked.length})`:''}</button></div></div></div>`;}
 function recPopover(pos){
   const rec=S.rec.state==='rec';
-  return `<div class="recpop" style="${panelStyle()};${pos};color:#1e1b1b">
+  return `<div class="recpop" data-anchor='[data-tool="mic"]' style="${panelStyle()};${pos};color:#1e1b1b">
     <div class="rt">${rec?'正在录音中':'录音已完成'}</div>
     <div class="card"><div class="n">${S.rec.name}</div><div class="t rectime">${mmss(S.rec.t)}</div>
       <div class="acts">
@@ -3699,8 +3733,8 @@ function textRow(){const ink=INK; const narrow=S.w<600;   /* Goodnotes CN 10783-
   return `<button class="dotctl" data-tb="color" style="background:${S.tbColor||'#111213'}" aria-label="文字颜色" aria-pressed="${S.st==='textColor'}">${svg('chevDown')}</button>`
     +`<button class="chipctl size" data-tb="size" aria-label="字号">${S.tbSize||24}<i class="cv">${svg('chevDown')}</i></button>`
     +`<button class="chipctl font${narrow?' icon':''}" data-tb="font" aria-label="字体">${narrow?'<span class="fontAa">Aa</span>':`<span class="${S.tbSerif?'serif':''}">${S.tbFont||(S.tbSerif?'Source Serif':'PingFang-SC')}</span>`}<i class="cv">${svg('chevDown')}</i></button>`
-    +(narrow?'':`<button class="chipctl styling" data-tb="styling" aria-pressed="${S.st==='tbStyle'}" aria-label="文字样式"><b>B</b><i class="it">I</i><i class="cv">${svg('chevDown')}</i></button>`
-    +`<button class="chipctl listmenu" data-tb="listmenu" aria-pressed="${S.st==='tbList'}" aria-label="对齐与列表">${svg('alignLeft')}<i class="cv">${svg('chevDown')}</i></button>`);}
+    +`<button class="chipctl styling" data-tb="styling" aria-pressed="${S.st==='tbStyle'}" aria-label="文字样式"><b>B</b><i class="it">I</i><i class="cv">${svg('chevDown')}</i></button>`
+    +`<button class="chipctl listmenu" data-tb="listmenu" aria-pressed="${S.st==='tbList'}" aria-label="对齐与列表">${svg('alignLeft')}<i class="cv">${svg('chevDown')}</i></button>`;}   /* 10/10 Tom: narrow keeps every chip, only the font collapses to Aa */
 /* styling / list menus hang off their chips (Goodnotes CN 11556:3761) */
 function railSecondary(st){
   if(st==='writing') return ['pen','ballpen','brush','highlighter','pencil'].map(pn=>tool(pn,S.pen===pn,'pen')).join('')
@@ -3978,6 +4012,7 @@ function render(){ S._rendering=true;
       else body=railSecondary(active);}
     if(active==='ruler'||active==='mic'||active==='idle') body='';      /* the ruler has no secondary options; 'idle' (待编辑模式) has no tool */
     if(secHidden(active)) body='';                     /* collapsed only if THIS tool was collapsed by tapping it again */
+    if(active==='textbox'&&S.selSet&&S.selSet.objs&&S.selSet.objs.length===1&&S.objs.find(o=>o.id===S.selSet.objs[0]&&o.kind==='text')) body='';   /* 10/10 Tom: the text object menu replaces the text L2 while a text box is selected */
     const pillHTML=body?`<div class="cap secpill${active==='stickyNote'?' sticky':''}" style="${pill};color:${INK};max-width:${Math.round(v1phone?canvasW-LITE.COMPACT_LEFT-12:canvasW-24)}px">
           <div class="fadewrap" style="--fadec:${fadeC}"><div class="cap hscroll" style="min-width:0">${body}</div></div></div>`:'';
     if(v1phone){
@@ -4200,7 +4235,7 @@ function render(){ S._rendering=true;
     if(r){inner+=`<div class="rl-menu" data-rlmenu="1" data-rlfor="${r.id}" style="${panelStyle()};left:50%;transform:translateX(-50%);top:${cTopV+60}px;color:#1e1b1b">
       <button data-act="rulerhide">${svg('eyeOff')}<span>隐藏尺子</span></button></div>`;}}
   /* 第一版 · 手机只读态 — Figma 3507-62075 (New Goodnotes Library · Doc Concept): the tab bar stays, the tool row is gone; a raised edit button sits top-right of the canvas; nothing else floats — tapping the edit button enters edit mode (remembered per document); 阅读模式 in the more menu returns to it. Phone-class devices open in read mode by default. */
-  if(roV1){ inner+=`<button class="dirbtn" style="${surfStyle()};color:#1e1b1b;right:12px;top:${cTop+4}px;bottom:auto" data-act="enteredit" aria-label="编辑">${svg('edit')}</button>`;
+  if(roV1){ inner+=`<button class="dirbtn" style="${surfStyle()};color:#1e1b1b;right:12px;top:${navH+tabH+11}px;bottom:auto" data-act="enteredit" aria-label="编辑">${svg('edit')}</button>`;
     if(S.anno) anno.push(`<div class="lab sys" style="left:50%;transform:translateX(-50%);top:${cTop+56}px">阅读模式 · 只有右上角的编辑按钮（Figma 3507-62075）</div>`); }
   if(S.picking) inner+=`<div class="loupe" style="left:${Math.round(W/2-44)}px;top:${Math.round(H/2-44)}px;--pick:${S._pickColor||'#ffffff'}"></div>`;   /* 10/1 · eyedropper (极速版 style): follows the finger, ring shows the sampled colour, release to pick */
   if(S.lib) inner+=libSidebar();
@@ -4315,7 +4350,7 @@ function bindSliders(root){
       let last=null;
       const at=e=>{const r=tr.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)); last=f;
         if(knob){ knob.style.left=(f*100)+'%'; knob.style.setProperty('--p',(f*100)+'%'); } if(fill) fill.style.width=(f*100)+'%'; if(tr.classList.contains('track')&&tr.closest('.slider')) paintTicks(tr.closest('.slider').parentElement||tr.closest('.slider')); if(fsvg) fsvg.style.clipPath=`inset(0 ${100-f*100}% 0 0)`;
-        if(em&&(tr.dataset.gslider||tr.dataset.eslider)) em.textContent=Math.round(f*100)+'%'; if(em&&(tr.dataset.sslider||tr.dataset.shapew)) em.textContent=(0.5+f*7.5).toFixed(1)+'pt'; if(em&&tr.dataset.tsslider) em.textContent=Math.round(8+f*64);};
+        if(em&&(tr.dataset.gslider||tr.dataset.eslider)) em.textContent=Math.round(f*100)+'%'; if(em&&(tr.dataset.sslider||tr.dataset.shapew)) em.textContent=(0.3+f*2.7).toFixed(2)+'mm'; if(em&&tr.dataset.tsslider) em.textContent=Math.round(8+f*64);};
       tr.classList.add('drag'); at(ev); try{tr.setPointerCapture(ev.pointerId);}catch(_){}
       const mv=e=>{e.preventDefault(); at(e);};
       const up=e=>{tr.removeEventListener('pointermove',mv); tr.removeEventListener('pointerup',up); tr.removeEventListener('pointercancel',up); tr.classList.remove('drag');
@@ -4765,6 +4800,7 @@ function bindCanvas(root){
       S.ctxMenu={pg:+pg0.dataset.pgidx,x:lx,y:ly,px:(ev.clientX-dr.left)/sx,py:(ev.clientY-dr.top)/sx}; S.swallowClick=true; setTimeout(()=>S.swallowClick=false,900); cur=null; drag=null; marquee=null; render(); },550);
   },true);
   cv.addEventListener('pointermove',ev=>{ if(lpT&&lp0&&(Math.abs(ev.clientX-lp0.x)+Math.abs(ev.clientY-lp0.y))>6) lpCancel(); },true);
+  window.addEventListener('pointerup',lpCancel,true); window.addEventListener('pointercancel',lpCancel,true);   /* 10/10 Tom: a tap must never open the long-press menu */
   ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,lpCancel,true));
 
   cv.addEventListener('pointerdown',ev=>{ if(mode==='pan'||S.picking) return;
@@ -5019,7 +5055,8 @@ function bind(root,compact){
     root.addEventListener('pointermove',mv,true); root.addEventListener('pointerup',up,true); root.addEventListener('pointercancel',up,true); },true);
   /* 规则文档 9/28: below 737 the library sidebar has no docked form, but a single finger dragging in from the LEFT EDGE pulls it out as an overlay; tapping outside or the sidebar icon closes it */
   root.addEventListener('pointerdown',ev=>{ if(S.lib||S.w>=BP.SIDEBAR_PUSH||ev.button>0) return; const r=root.getBoundingClientRect(); const zf=r.width/S.w||1; const x=(ev.clientX-r.left)/zf; if(x>28) return; const x0=ev.clientX; const done=()=>{root.removeEventListener('pointermove',mv);root.removeEventListener('pointerup',done);root.removeEventListener('pointercancel',done);}; const mv=e=>{ if((e.clientX-x0)/zf>40){ done(); S.lib=true; S.swallowClick=true; render(); } }; root.addEventListener('pointermove',mv); root.addEventListener('pointerup',done); root.addEventListener('pointercancel',done); },true);
-  root.addEventListener('click',e=>{ if(S.ctxMenu&&!e.target.closest('.ctxmenu')){ S.ctxMenu=null; if(!e.target.closest('[data-act]')) {e.stopPropagation(); render();} } },true);
+  root.addEventListener('click',e=>{ if(S.st==='elements'&&!secHidden('elements')&&!S._useSheet){ const panel=root.querySelector('.stk-body'); const box=panel&&panel.closest('.pop,.spanel,.menu,[class*=stk]'); if(!(box&&box.contains(e.target))&&!e.target.closest('.toolrow,.secrow,.secpill,.deckrow,[data-tool],.tabstrip,.psidebar,.duostrip,.libbar')){ S.secHideBy=S.secHideBy||{}; S.secHideBy.elements=true; render(); return; } }   /* 10/10 Tom: keep inserting, but a tap outside the sticker panel collapses it */
+    if(S.ctxMenu&&!e.target.closest('.ctxmenu')){ S.ctxMenu=null; if(!e.target.closest('[data-act]')) {e.stopPropagation(); render();} } },true);
   const cv=root.querySelector('#cv');
   if(cv){
     cv.scrollTop=NB().scroll||0;
@@ -5266,10 +5303,10 @@ function bind(root,compact){
       if(['layers','more','collab'].includes(k)){S.st=S.st===k?(S.lastTool||'writing'):k;syncState();return render();}
       if(k==='ai') return;
       if(L1.includes(k)&&!['elements','ruler'].includes(k)&&(ACTIVE_FOR[S.st]||S.st)===k){S.secHideBy=S.secHideBy||{};S.secHideBy[k]=!S.secHideBy[k];return render();}
-      if(L1.includes(k)&&S.secHideBy) S.secHideBy[k]=false;   /* 10/5 Tom: switching tools always opens the new tool's L2 (collapse is only remembered while the tool stays active) */
+      if(L1.includes(k)&&k!=='elements'&&S.secHideBy) S.secHideBy[k]=false;   /* 10/5 Tom: switching tools always opens the new tool's L2 (collapse is only remembered while the tool stays active) */
       if(k==='tape'){S.st='tape';syncState();return render();}   /* L1 only opens L2 — 胶带模式 lives on the row's first button */
       if(k==='ruler'){toggleRuler();S.st='ruler';syncState();return render();}
-      if(k==='elements'){ if(S.st==='elements'){S.secHideBy=S.secHideBy||{};S.secHideBy.elements=!S.secHideBy.elements;} else S.st='elements'; syncState();return render();}   /* 10/4 Tom: same L2 rule as every tool — tap again = collapse, not back to the pen (Lite bug) */
+      if(k==='elements'){ S.secHideBy=S.secHideBy||{}; if(S.st==='elements'){S.secHideBy.elements=!S.secHideBy.elements;} else {S.st='elements';S.secHideBy.elements=false;} syncState();return render();}   /* 10/4 Tom: same L2 rule as every tool — tap again = collapse, not back to the pen (Lite bug) */
       if(STATES.some(([v])=>v===k)){S.st=k;syncState();}
       return render();
     }
