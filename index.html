@@ -2265,6 +2265,8 @@ body.bare .bezel>div{border-radius:0!important}
 .sm-x.vs-x i{width:44px;height:44px}
 .device.ios .menu,.device.ios .appanel{background:rgba(255,255,255,.84)!important}   /* 🔴9: list menus read as one surface — the glass stays in the blur, not in the see-through (a title band over a white sidebar vs a body over the page made the title look painted white) */
 .device.android .vsheet .lpanel{background:none!important}   /* 附图1: inside an Android sheet the layers panel has no white card of its own — one ground per sheet */
+/* ═══ 10/14 · round 32 ═══ */
+.pgslide{background:transparent!important}   /* R15 Tom: no track — only the grey thumb shows where you are */
 </style>
 </head>
 <body>
@@ -5068,6 +5070,7 @@ function bindCanvas(root){
       shp={pg,x0:x,y0:y,x,y,pts:free?[[x,y]]:null}; grab(cv,ev); drawShapeGhost(); return; }
     if(mode==='text'&&!ev.target.closest('.txtin')){
       ev.preventDefault();
+      if(S.kbOpen&&S.sel){ const o=S.objs.find(v=>v.id===S.sel); S.kbOpen=false; showKeyboard(false); if(o){ S.selSet={pg:o.pg,strokes:[],objs:[o.id],box:objBox(o)}; } render(); return; }   /* 10/14 Tom (R14): a canvas tap while typing leaves the input state and lands on the SELECTED state of that text box — it never inserts a second box */
       const id=insertAt('text',{txt:'',w:36},36);
       const o=S.objs.find(v=>v.id===id); o.x=Math.max(2,Math.min(62,x-2)); o.y=Math.max(2,Math.min(92,y-2));
       render(); const el=document.querySelector(`.txtin[data-txt="${id}"]`); if(el){el.focus(); showKeyboard(true); const kb=document.querySelector('.device .kbwrap'); if(kb) requestAnimationFrame(()=>{const cv2=document.querySelector('#cv'); const r=el.getBoundingClientRect(), k=kb.getBoundingClientRect(); const dev=document.querySelector('.device'); const sy=dev.getBoundingClientRect().height/dev.offsetHeight||1; const over=(r.bottom-(k.top-24))/sy; if(over>0) cv2.scrollTop+=over;});}
