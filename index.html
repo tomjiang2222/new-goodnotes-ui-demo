@@ -2267,6 +2267,16 @@ body.bare .bezel>div{border-radius:0!important}
 .device.android .vsheet .lpanel{background:none!important}   /* 附图1: inside an Android sheet the layers panel has no white card of its own — one ground per sheet */
 /* ═══ 10/14 · round 32 ═══ */
 .pgslide{background:transparent!important}   /* R15 Tom: no track — only the grey thumb shows where you are */
+/* ═══ 10/14 · round 33 — demo sign-off fixes ═══ */
+.device.ios .menu,.device.ios .appanel,.device.ios .menu.prefs{background:rgba(255,255,255,.97)!important}   /* 图2/3: one surface — a popover straddling the paper edge must not show two tints */
+.vsheet .lh-newmenu.static,.vsheet .cb-list,.vsheet .fp-card,.colsheet .lh-newmenu.static,.colsheet .cb-list,.colsheet .fp-card{background:none!important;box-shadow:none!important}   /* 图5: inside a sheet nothing carries its own white card */
+.setmodal,.device.android .setmodal{background:#F2F2F7!important}   /* 图4 · CN 8371-96392: grey ground, white list cards */
+.sm-nav{border-right:.5px solid rgba(0,0,0,.08)!important}
+.sm-item[aria-pressed=true]{background:rgba(24,24,27,.08)!important}
+.sm-body .gnote,.setmodal .gnote{background:#FFFFFF!important}
+.setmodal .gcard{background:#FFFFFF!important;box-shadow:none!important}
+.setmodal .gcard .gopt+.gopt{border-top:.5px solid #E4E4E7}
+.sm-x.vs-x i{background:rgba(120,120,128,.16)!important;backdrop-filter:none!important}
 </style>
 </head>
 <body>
@@ -4315,7 +4325,7 @@ function render(){ S._rendering=true; if(!S.penCfg[S.pen]) S.pen='pen';   /* 10/
       ${[...Array(NB().pages)].map((_,i)=>`<div class="pg ${NB().page===i?'on':''}" data-page="${i}">
         <div class="th">${pageThumb(i)}</div>
         <div class="n">${i+1}</div></div>`).join('')}
-      <div class="addp" data-act="addpage"><div class="dash">${svg('plus')}</div><div class="n">添加页面</div></div></div></div>`;
+      <div class="addp" data-act="addpage"><div class="dash">${svg('plus')}</div><div class="n">添加页面</div></div></div>${S._qjDemo?`<div class="pgslide"><b style="top:38%"></b><span style="top:38%">${NB().page+1} / ${NB().pages}</span></div>`:''}</div>`;
 
   if(v1||flexMode){
     RAIL_POS=`left:${Math.round(canvasLeft+canvasW/2)}px;transform:translateX(-50%);top:${cTop+LITE.ROW+LITE.DOCK_MARGIN*2+6}px`;
@@ -5249,7 +5259,7 @@ function bind(root,compact){
   root.addEventListener('dblclick',e=>{ const t=e.target.closest('[data-tool="addPage"],.psidebar .addp'); if(!t) return; e.preventDefault(); NB().pages++; NB().page=Math.min(NB().pages-1,NB().page+1); S._sbFollow=true; S.st=S.lastTool||'writing'; syncState(); render(); scrollToPage(); },true);
   /* 10/2 Tom · page sidebar: long-press (450ms) anywhere on the list shows a quick-jump slider; drag to any page, release to land */
   { const sb=root.querySelector('.psidebar'); const list=sb&&sb.querySelector('.list'); if(sb&&list){ let tm=0,x0=0,y0=0,active=false,lastY=0;
-    const setP=y=>{ const r=list.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(y-r.top-24)/(r.height-48))); const n=NB().pages; const pIdx=Math.round(f*(n-1)); const sl=sb.querySelector('.pgslide'); if(sl){ sl.querySelector('b').style.top=(f*(sl.clientHeight-36))+'px'; sl.querySelector('span').style.top=(f*(sl.clientHeight-36))+'px'; sl.querySelector('span').textContent=(pIdx+1)+' / '+n; } if(NB().page!==pIdx){ NB().page=pIdx; list.querySelectorAll('.pg').forEach((el,i)=>el.classList.toggle('on',i===pIdx)); const t=list.querySelectorAll('.pg')[pIdx]; if(t) t.scrollIntoView({block:'center'}); } };
+    const setP=y=>{ const r=list.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(y-r.top-24)/(r.height-48))); const n=NB().pages; const pIdx=Math.round(f*(n-1)); const sl=sb.querySelector('.pgslide'); if(sl){ sl.querySelector('b').style.top=(f*(sl.clientHeight-36))+'px'; sl.querySelector('span').style.top=(f*(sl.clientHeight-36))+'px'; sl.querySelector('span').textContent=(pIdx+1)+' / '+n; } if(NB().page!==pIdx){ NB().page=pIdx; list.querySelectorAll('.pg').forEach((el,i)=>el.classList.toggle('on',i===pIdx)); const t=list.querySelectorAll('.pg')[pIdx]; if(t) list.scrollTop=Math.max(0,t.offsetTop-list.clientHeight/2+t.offsetHeight/2); } };   /* 10/14 Tom: scrollIntoView dragged the whole page along — only the thumbnail list scrolls */
     let st0=0,dragging=false,down=false; const zf=()=>(root.getBoundingClientRect().width/S.w)||1;
     const startSlide=()=>{ active=true; S._pgSlid=true; if(!sb.querySelector('.pgslide')){ const sl=document.createElement('div'); sl.className='pgslide'; sl.innerHTML='<b></b><span></span>'; sb.appendChild(sl); } setP(lastY); };
     sb.addEventListener('pointerdown',e=>{ if(e.target.closest('.ph,.addp')||e.button>0) return; down=true; dragging=false; x0=e.clientX; y0=lastY=e.clientY; st0=list.scrollTop; clearTimeout(tm); const lr=list.getBoundingClientRect(); if(lr.right-e.clientX<32*zf()){ startSlide(); e.preventDefault(); return; } /* 10/5 Tom: a finger on the scrollbar edge scrubs straight away — jump to page N of hundreds */ tm=setTimeout(startSlide,450); },true);
