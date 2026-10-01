@@ -2226,6 +2226,25 @@ body.bare .bezel>div{border-radius:0!important}
 .tz-ctl button{width:36px;height:36px;border-radius:999px;color:#fff;font-size:22px;line-height:1;background:none} .tz-ctl span{min-width:52px;text-align:center;font-size:14px;font-variant-numeric:tabular-nums}
 .pagemenu [data-act="pm-addsub"][aria-pressed=true]{background:rgba(24,24,27,.06)}
 [data-subof="pagemenu"]{z-index:46!important}
+/* ═══ 10/13 night · round 29 — Tom's corrections on the v2 figures ═══ */
+/* 图1/2: iOS sheet & modal corner buttons are GLASS (iOS 27 12740-37607 / 12886-24188): neutral ones = clear glass with no fill colour, accent ones = glass tinted with the accent. Android keeps its solid discs. */
+.device.ios .vs-head .vs-x i,.device.ios .sh-x i,.device.ios .dsh-x i,.device.ios .tpcard .sh-x i,.device.ios .ex-cancel,.device.ios .tz-x i,.device.ios .sm-x i{background:rgba(255,255,255,.26)!important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);box-shadow:0 1px 3px rgba(16,24,40,.10),0 0 0 .5px rgba(16,24,40,.06),inset 0 1px 0 rgba(255,255,255,.75)!important;color:#1e1b1b!important}
+.device.ios .vs-go,.device.ios .sh-send,.device.ios .ex-go,.device.ios .sh-copy.primary.sm,.device.ios .tpcard .sh-copy.primary.sm{background:color-mix(in srgb,var(--accent) 78%,transparent)!important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);box-shadow:0 1px 3px rgba(16,24,40,.14),inset 0 1px 0 rgba(255,255,255,.35)!important;color:#fff!important}
+/* 图3: no sectional tint inside a sheet — the preview strip sits on the sheet's own ground */
+.tp-pstrip{background:transparent!important;margin:0 0 8px!important}
+/* 图5: a shrunken panel's sticky fade must not paint a white bar — on glass it paints nothing, on Android it paints the panel grey */
+.device.ios .scrollfade::before,.device.ios .scrollfade::after{opacity:0!important}
+.device.android .scrollfade::before{background:linear-gradient(rgba(242,242,247,.96),rgba(242,242,247,0))} .device.android .scrollfade::after{background:linear-gradient(rgba(242,242,247,0),rgba(242,242,247,.96))}
+/* Settings dialog */
+.setmodal{display:flex!important;padding:0!important;overflow:hidden;flex-direction:row!important}
+.sm-nav{width:296px;flex:0 0 296px;padding:24px 16px;border-right:.5px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:4px;box-sizing:border-box}
+.sm-navt{font-size:20px;font-weight:600;padding:0 8px 16px}
+.sm-item{display:flex;align-items:center;gap:12px;height:52px;padding:0 16px;border-radius:14px;font-size:16px;color:#1e1b1b;background:none;text-align:left;width:100%} .sm-item svg{width:22px;height:22px;flex:0 0 auto} .sm-item[aria-pressed=true]{background:rgba(24,24,27,.08)}
+.sm-pane{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.sm-head{position:relative;height:60px;display:flex;align-items:center;justify-content:center;flex:0 0 auto} .sm-t{font-size:17px;font-weight:600}
+.sm-x{position:absolute;right:12px;top:8px;width:44px;height:44px;display:flex;align-items:center;justify-content:center} .sm-x i{width:44px;height:44px;border-radius:999px;background:rgba(120,120,128,.16);display:flex;align-items:center;justify-content:center;color:#1e1b1b} .sm-x svg{width:22px;height:22px}
+.device.android .sm-x i{background:#EFEFEF}
+.sm-body{flex:1 1 auto;overflow-y:auto;padding:0 32px 24px;scrollbar-width:none} .sm-body::-webkit-scrollbar{display:none} .sm-body .gnote{margin:0 0 16px} .sm-body .gcard{margin:0 0 16px} .sm-body .gsec{padding:4px 0 8px}
 </style>
 </head>
 <body>
@@ -3051,7 +3070,7 @@ function bindRotate(scope){
     knob.addEventListener('pointermove',mv); knob.addEventListener('pointerup',up);
   });
 }
-function placePageSub(dev){ const dr=dev.getBoundingClientRect(), sx=dr.width/dev.offsetWidth||1; dev.querySelectorAll('[data-subof="pagemenu"]').forEach(sub=>{ const menu=dev.querySelector('.pagemenu'); if(!menu||menu.style.display==='none') return; const row=menu.querySelector('[data-act="pm-addsub"]')||menu; const mr=menu.getBoundingClientRect(), rr=row.getBoundingClientRect(); const w=sub.offsetWidth, h=sub.offsetHeight; let left=(mr.right-dr.left)/sx-4; if(left+w>dev.offsetWidth-8) left=Math.max(8,(mr.left-dr.left)/sx+4-w); const top=Math.max(8,Math.min((rr.top-dr.top)/sx,dev.offsetHeight-h-8)); sub.style.left=left+'px'; sub.style.top=top+'px'; sub.style.right='auto'; sub.style.transform='none'; }); }   /* R16: the 添加页面 sub-menu hangs off the page menu's row, 4 under its right edge (same −4 as the ⋯ sub-panels) */
+function placePageSub(dev){ const dr=dev.getBoundingClientRect(), sx=dr.width/dev.offsetWidth||1; dev.querySelectorAll('[data-subof="pagemenu"]').forEach(sub=>{ const menu=dev.querySelector('.pagemenu'); if(!menu||menu.style.display==='none') return; const row=menu.querySelector('[data-act="pm-addsub"]')||menu; const mr=menu.getBoundingClientRect(), rr=row.getBoundingClientRect(); const w=sub.offsetWidth, h=sub.offsetHeight; let left=(mr.right-dr.left)/sx-4; if(left+w>dev.offsetWidth-8) left=Math.max(8,dev.offsetWidth-8-w);   /* 10/13 Tom (图6): short on room → tuck inward, keep the side; never jump to the other side */ const top=Math.max(8,Math.min((rr.top-dr.top)/sx,dev.offsetHeight-h-8)); sub.style.left=left+'px'; sub.style.top=top+'px'; sub.style.right='auto'; sub.style.transform='none'; }); }   /* R16: the 添加页面 sub-menu hangs off the page menu's row, 4 under its right edge (same −4 as the ⋯ sub-panels) */
 function placePageMenu(scope){const dev=scope.querySelector('.device'); const m=dev&&dev.querySelector('.pagemenu'); if(!m||m.closest('.vsheet')) return;
   const th=dev.querySelector(`.psidebar .pg[data-page="${m.dataset.pmfor}"] .th`); if(!th){m.style.display='none';return;}
   const dr=dev.getBoundingClientRect(), r=th.getBoundingClientRect(), sx=dr.width/dev.offsetWidth||1;
@@ -3685,7 +3704,7 @@ function tplZoomOverlay(){ const which=S.tplZoom; const nb=NB(); const R=window.
   return `<div class="tzoom"><div class="tz-back" data-act="tplzoomclose"></div><div class="tz-stage"><div class="tz-page${S.tmplLand?' land':''}" style="${face};transform:scale(${z})"></div></div>
     <button class="tz-x" data-act="tplzoomclose" aria-label="关闭"><i>${svg('xmark')}</i></button>
     <div class="tz-ctl"><button data-act="tzout" aria-label="缩小">−</button><span class="tz-pct">${Math.round(z*100)}%</span><button data-act="tzin" aria-label="放大">+</button></div></div>`; }
-function extraDialogs(c){let h=''; if(S.renaming) h+=renameDialog(); if(S.tmplOpen) h+=templateSheet(c); if(S.tmplOpen&&S.tplZoom) h+=tplZoomOverlay(); if(S.ctxMenu) h+=ctxMenuHTML(c); return h;}
+function extraDialogs(c){let h=''; if(S.renaming) h+=renameDialog(); if(S.tmplOpen) h+=templateSheet(c); if(S.tmplOpen&&S.tplZoom) h+=tplZoomOverlay(); if(S.setModal) h+=settingsModal(); if(S.ctxMenu) h+=ctxMenuHTML(c); return h;}
 /* long-press on empty paper: paste / insert (Lite's canvas context menu) */
 function ctxMenuHTML(c){const {W,H}=c, m=S.ctxMenu, mw=220, mh=4*44+16+4*4;
   const left=Math.max(16,Math.min(m.px-mw/2,W-mw-16)), top=(m.py+12+mh>H-16)?Math.max(16,m.py-12-mh):m.py+12;
@@ -3733,13 +3752,21 @@ function settingsPanel(){ const P=PREFS(); const dirBtn=v=>`<button class="pdir"
     <div class="prow"><span>显示页码</span>${prefSwitch('showPage')}</div>
     <div class="prow"><span>显示系统状态栏</span>${prefSwitch('statusBar')}</div></div>`; }
 /* ⋯ › 手势设置 (Android) — Lite GestureSettingsPane: notice card · 撤销/重做 group = one 3-row choice card + two single-switch cards */
-function gesturePanel(){ const P=PREFS(); const opt=(v,l)=>`<button class="gopt" data-act="pref" data-k="undo" data-v="${v}" aria-pressed="${P.undo===v}"><span>${l}</span>${P.undo===v?svg('check'):''}</button>`;
-  return `<div class="menu nocaret prefs gest" data-subof="more" data-subrow="gesture" style="${panelStyle()};color:#1e1b1b;min-width:320px"><div class="ph">手势设置</div>
-    <div class="gnote">${svg('gesture')}<div><b>手势设置</b><span>若手势无响应，或触发了其他功能，可能与系统的手势设置冲突，请前往系统的手势设置进行调整。</span></div></div>
+function gestureBody(){ const P=PREFS(); const opt=(v,l)=>`<button class="gopt" data-act="pref" data-k="undo" data-v="${v}" aria-pressed="${P.undo===v}"><span>${l}</span>${P.undo===v?svg('check'):''}</button>`;
+  return `<div class="gnote">${svg('gesture')}<div><b>手势设置</b><span>若手势无响应，或触发了其他功能，可能与系统的手势设置冲突，请前往系统的手势设置进行调整。</span></div></div>
     <div class="gsec">撤销 / 重做</div>
     <div class="gcard">${opt('twoFingerSingleTap','双指单击撤销')}${opt('twoFingerDoubleTap','双指双击撤销')}${opt('off','关闭双指撤销')}</div>
     <div class="gcard"><div class="prow"><span>三指单击重做</span>${prefSwitch('threeRedo')}</div></div>
-    <div class="gcard"><div class="prow"><span>三指左滑撤销，右滑重做</span>${prefSwitch('swipeUndoRedo')}</div></div></div>`; }
+    <div class="gcard"><div class="prow"><span>三指左滑撤销，右滑重做</span>${prefSwitch('swipeUndoRedo')}</div></div>`; }
+function gesturePanel(){ return `<div class="menu nocaret prefs gest" data-subof="more" data-subrow="gesture" style="${panelStyle()};color:#1e1b1b;min-width:320px"><div class="ph">手势设置</div>${gestureBody()}</div>`; }
+/* Settings dialog (Goodnotes CN 8371-96392): left nav 设置 → 账号与安全 · 手写笔设置 · 手势设置 · 关于, right pane with a centred title and × top-right. One ground colour for the whole dialog (Tom 10/13: no sectional tints), a hairline between nav and pane. */
+function settingsModal(){ const W=S.w,H=S.h, w=Math.min(856,W-64), h=Math.min(680,H-64), cur=S.setModal;
+  const nav=[['account','账号与安全','collab'],['stylus','手写笔设置','laser'],['gesture','手势设置','gesture'],['about','关于','page1']];
+  const title=(nav.find(n=>n[0]===cur)||nav[2])[1];
+  const body=cur==='gesture'?gestureBody():`<div class="gnote"><div><b>${title}</b><span>一期 demo 只做手势设置页；其余页面沿用极速版现有设计。</span></div></div>`;
+  return `<div class="vsback" data-act="setclose"></div><div class="sharewrap"><div class="sharemodal card setmodal" style="${panelStyle()};width:${w}px;height:${h}px">
+    <aside class="sm-nav"><div class="sm-navt">设置</div>${nav.map(([k,l,ic])=>`<button class="sm-item" data-act="setnav" data-k="${k}" aria-pressed="${cur===k}">${svg(ic)}<span>${l}</span></button>`).join('')}</aside>
+    <section class="sm-pane"><div class="sm-head"><div class="sm-t">${title}</div><button class="sm-x" data-act="setclose" aria-label="关闭"><i>${svg('xmark')}</i></button></div><div class="sm-body">${body}</div></section></div></div>`; }
 function dropdown(kind,pos){ const dropdownKind=kind;
   const items=kind==='export'?EXPORT_ITEMS:kind==='addpage'?ADD_ITEMS:[...(S.moreExtra||[]),...MORE_ITEMS,...(S.dev==='android'?[['gesture','手势设置','','chev']]:[])];   /* Lite MoreMainContent: 手势设置 is an Android-only row after 笔记通用设置 */
   if(kind==='addpage'&&S.version==='v1'){ /* 10/2 Tom · phase one scope: current template · default template · blank, always after the current page; position toggle + more templates move to the future version */
@@ -4084,7 +4111,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false; if(S.s
     const moreChip=chip(`data-tool="more" aria-pressed="${st==='more'}" aria-label="更多" style="${on('more')}"`,'dotsV');
     const shareChip=chip(`data-tool="share" aria-pressed="${st==='export'||st==='exportmenu'||st==='sysshare'}" aria-label="导出" style="${on('export')}"`,'share');
     const groups=inLib?group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+(libDocked?'':chip('aria-label="搜索"','search')))
-      :outerLand?group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('data-act="home" aria-label="主页"','home')+moreChip)+group(shareChip)   /* 10/13 Tom (R19): the folded column keeps the SAME two groups as the open one — navigation [library · home · ⋯] + document actions [share]; layers / collaborators / add page move into ⋯ */
+      :outerLand?group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('data-act="home" aria-label="主页"','home')+moreChip)+group(chip(`data-tool="addPage" aria-pressed="${st==='addpage'}" aria-label="添加页面" style="${on('addpage')}"`,'addPage')+shareChip+chip(`data-tool="layers" aria-pressed="${st==='layers'}" aria-label="图层" style="${on('layers')}"`,'layers'))   /* 10/13 Tom (R19 图4): folded landscape = the open grouping with everything that fits — [library · home · ⋯] + [add page · share · layers] (3 + 3 chips = 133 + 133 inside 466); only the 84-high collaborators capsule moves into ⋯ */
       :group(chip(`data-act="library" aria-pressed="${!!S.lib}" aria-label="资料库"`,'panel')+chip('data-act="home" aria-label="主页"','home')+moreChip)
       +((!v1&&showConfirm)?`<button class="ds-ai confirm" data-go="l1" aria-label="完成">${svg('check')}</button>`:'') /* 9/28: no separate page-sidebar entry — the dock pill is the entry */
       +group((v1&&!(noStrip&&outerPort)?`<button class="ds-av" data-tool="collab" aria-label="协作者"><i class="av av-sl">SL</i><span class="ds-wrap"><i class="av av-dr">DR</i><b>${svg('chevDown')}</b></span></button>`:'')
@@ -4092,7 +4119,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false; if(S.s
           +shareChip
           +chip(`data-tool="layers" aria-pressed="${st==='layers'}" aria-label="图层" style="${on('layers')}"`,'layers'));
     /* rule: when the column is too short for a third group, its actions live in the ⋯ menu */
-    S.moreExtra=outerLand?[...(noStrip?[['tabs','标签','tabmgr']]:[]),['layers','图层','layers'],...(v1?[['collab','协作者','collab']]:[]),['addPage','添加页面','addpage'],'sep']:[];
+    S.moreExtra=outerLand?[...(noStrip?[['tabs','标签','tabmgr']]:[]),...(v1?[['collab','协作者','collab']]:[]),'sep']:[];
     inner+=`<div class="duostrip${outerLand?' tight':''}" style="background:transparent;width:${DUO_STRIP}px;color:${dInk}">
       ${outerLand?'':`<div class="ds-statuscap" style="--capbg:rgba(255,255,255,${dBand?'.10':'.22'})">${outerPort?'<div class="ds-camwrap"><div class="ds-cam"></div></div>':''}${duoStatus()}</div>`}
       ${groups}
@@ -4255,7 +4282,7 @@ function render(){ S._rendering=true; if(S.st!=='penset') S.penAdv=false; if(S.s
   const pageThumb=(i)=>`<div class="thin" style="width:${pw}px;height:${ph}px;transform:scale(${(144/pw).toFixed(4)});${i===0?`background:${NB().cover}`:`background-image:${RULE[NB().rule]};background-size:${RULESZ[NB().rule]}`}">${(i===0?coverArt():artFor(i))+objFor(i).join('')+inkFor(i)}</div>`.replace(/ data-obj="\d+"| data-txt="\d+"| contenteditable="true"/g,'');
   window.PAGE_THUMB=pageThumb;
   if(S.sidebar&&S.pageMenu!=null){const PM=[['dup','复制页面','pm-dup'],['rotate','旋转页面','pm-rotate'],['tmpl','更改模板','pm-tmpl'],['clearPage','清空页面内容','pm-clear'],['addPage','添加页面','pm-addsub','chev'],'sep',['trash','删除页面','pm-del']];   /* 10/13 Tom (R16): long-press → page menu → 添加页面 › (second level, the same three-option menu); the sidebar's + tile stays the first-level entry */
-    const pmHtml=`<div class="menu nocaret pagemenu" data-pmfor="${S.pageMenu}" style="${panelStyle()};left:248px;top:120px;color:#1e1b1b;min-width:232px">${S.dev!=='android'?`<div class="mh pmh"><div class="t2">第 ${S.pageMenu+1} 页</div></div>`:''}${PM.map(it=>it==='sep'?'<div class="sep"></div>':`<button class="${it[0]==='trash'?'danger':''}" data-act="${it[2]}" ${it[2]==='pm-addsub'?`aria-pressed="${S.pmSub==='add'}"`:''}>${svg(it[0])}<span class="col"><span>${it[1]}</span></span>${it[3]==='chev'?`<span class="chev">${svg('chevRight')}</span>`:''}</button>`).join('')}</div>`+(S.pmSub==='add'&&!(typeof duoSheet!=='undefined'&&duoSheet)?dropdown('addpage','').replace(/data-anchor='[^']*'/,'data-subof="pagemenu"'):'');
+    const pmHtml=`<div class="menu nocaret pagemenu" data-pmfor="${S.pageMenu}" style="${panelStyle()};left:248px;top:120px;color:#1e1b1b;min-width:232px">${S.dev!=='android'?`<div class="mh pmh"><div class="t2">第 ${S.pageMenu+1} 页</div></div>`:''}${PM.map(it=>it==='sep'?'<div class="sep"></div>':`<button class="${it[0]==='trash'?'danger':''}" data-act="${it[2]}" ${it[2]==='pm-addsub'?`aria-pressed="${S.pmSub==='add'}"`:''}>${svg(it[0])}<span class="col"><span>${it[1]}</span></span>${it[3]==='chev'?`<span class="chev">${svg('chevRight')}</span>`:''}</button>`).join('')}</div>`+(S.pmSub==='add'&&!(typeof duoSheet!=='undefined'&&duoSheet)?dropdown('addpage','').replace(/data-anchor='[^']*'/,'data-subof="pagemenu"').replace(' fromside',''):'');   /* 10/13 Tom (图6): the sub is never the sidebar-tile (fromside) variant, whatever S.apFrom was last */
     inner+=(typeof duoSheet!=='undefined'&&duoSheet)?duoSheetWrap(pmHtml,W,H,hClass==='compact',{title:`第 ${S.pageMenu+1} 页 / 共 ${NB().pages} 页`}):pmHtml;}
   if(S.sidebar&&floatNav) inner+=`<div class="navscrim" data-act="sidebar"></div>`;
   const floatWide=floatNav&&!(phone||compact);   /* wide: the panel runs to the bottom and the dock moves beside it */
@@ -5275,6 +5302,8 @@ function bind(root,compact){
     if(d.tmtab!==undefined){S.tab=+d.tmtab;S.tabMgr=false;S.st=compact?'l1':(S.lastTool||'writing');syncState();return render();}
     if(d.tmclose!==undefined){if(S.tabs.length>1){S.tabs.splice(+d.tmclose,1);S.tab=Math.min(S.tab,S.tabs.length-1);}return render();}
     if(d.mi==='tabmgr'){S.tabMgr=true;S.st=S.lastTool||'writing';syncState();return render();}
+    if(d.mi==='gesture'&&!S._useSheet){ S.moreSub=null; S.st=S.lastTool||'writing'; S.setModal='gesture'; syncState(); return render(); }   /* 10/13 Tom: on a tablet 手势设置 opens the Settings dialog (CN 8371-96392) — the ⋯ menu closes first, like Lite's useOpenGestureSettings */
+    if(d.act==='setclose'){S.setModal=null;return render();} if(d.act==='setnav'){S.setModal=d.k;return render();}
     if(d.mi){ if(S.st==='more'&&['collab','layers','addpage','settings','gesture'].includes(d.mi)&&(!S._useSheet||['settings','gesture'].includes(d.mi))){S.moreSub=S.moreSub===d.mi?null:d.mi;return render();}   /* 10/13: 笔记通用设置 / 手势设置 are second-level pages — a side-hung sub-panel from 600 up, a navigated sheet page below */   /* 10/12 Tom: the sub-panel sits beside the ⋯ menu, the menu stays */
       if(d.mi==='expPage'||d.mi==='expAll'){S.expScope=d.mi==='expAll'?'all':'page';} S.st=d.mi==='share'?'export':((d.mi==='expPage'||d.mi==='expAll')?'exportopts':d.mi);syncState();return render();}
     if(d.act==='moreback'){S.moreSub=null;return render();}
